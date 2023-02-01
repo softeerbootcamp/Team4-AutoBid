@@ -1,0 +1,30 @@
+@import "../css/common.css";
+@import "../css/reset.css";
+@import "icon.css";
+
+.header {
+    width: 100%;
+    box-shadow: 0 -2px 2px rgba(var(--rgb-grey), 3%), 0 10px 20px rgba(var(--rgb-grey), 15%);
+}
+
+.header__container {
+    padding: 0 10px;
+    height: 50px;
+    max-width: 1000px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__container__menu {
+    display: flex;
+    width: 200px;
+    justify-content: space-between;
+}
+
+.user-profile {
+    width: 30px;
+    height: 30px;
+    background-size: 20px;
+}
