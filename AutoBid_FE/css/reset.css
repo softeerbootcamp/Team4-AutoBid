@@ -1,0 +1,139 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500,700,800|Roboto:300,400,500,700,800&display=swap&subset=korean');
+
+/* reset */
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p,
+blockquote, pre, abbr, address, cite, code, del, dfn, em, img,
+ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, footer, header,
+menu, nav, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+ul, ol, li, dl, dd, dt {
+  list-style: none;
+}
+
+img, fieldset, iframe {
+  border: 0 none;
+}
+
+img {
+  vertical-align: top;
+}
+
+textarea {
+  resize: none;
+}
+
+input, select, textarea, button {
+  font-size: 100%;
+  outline: none;
+  vertical-align: middle;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #222;
+  font-weight: normal;
+}
+
+address, caption, cite, code, dfn, em, var {
+  font-style: normal;
+  font-weight: normal;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after, q:before, q:after {
+  content: none;
+}
+
+i {
+  font-style: normal;
+}
+
+/* box-sizing */
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+/* base - IE8~7 */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block
+}
+
+/* base - input */
+input {
+  color: #000000;
+  margin: 0;
+  padding: 0;
+}
+
+input:checked[type="checkbox"] {
+  background-color: #666666;
+}
+
+button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* base - a */
+a {
+  color: inherit;
+}
+
+a, a:link, a:visited, a:hover, a:focus, a:active {
+  text-decoration: none;
+}
+
+/* base - body */
+body, input, select, textarea, button {
+  color: #000;
+  font: 14px/1 "Roboto", "Noto Sans KR", "AppleSDGothicNeo", "Malgun Gothic", "맑은 고딕", "돋움", "Arial", sans-serif;
+  font-weight: 400;
+  letter-spacing: -.5px;
+}
+
+input[type="password"] {
+  font-family: "Malgun Gothic", "맑은 고딕", "돋움", "Arial", sans-serif;
+}
+
+/* base - customize */
+/*
+.hide {
+  font-size: 0;
+  height: 0;
+  left: -9999px;
+  overflow: hidden;
+  position: absolute;
+  text-indent: -9999px;
+  width: 0;
+}
+ */
+
+.away {
+  height: 0;
+  margin: 0 !important;
+  overflow: hidden;
+  padding: 0;
+  width: 0;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
