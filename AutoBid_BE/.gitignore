@@ -8,7 +8,8 @@
 # yml
 application.yml
 
-.gradle/
+.gradle
+build
 # User-specific stuff
 .idea/**/workspace.xml
 .idea/**/tasks.xml
