@@ -105,6 +105,7 @@ body, input, select, textarea, button {
   font: 14px/1 "Roboto", "Noto Sans KR", "AppleSDGothicNeo", "Malgun Gothic", "맑은 고딕", "돋움", "Arial", sans-serif;
   font-weight: 400;
   letter-spacing: -.5px;
+  user-select: none;
 }
 
 input[type="password"] {

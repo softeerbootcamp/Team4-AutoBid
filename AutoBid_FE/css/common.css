@@ -5,4 +5,9 @@
   --color-lightest-blue: #CCF2F4;
   --color-light-blue: #A4EBF3;
   --color-grey: #888888;
+
+  --rgb-white: 255, 255, 255;
+  --rgb-lightest-blue: 204, 242, 244;
+  --rgb-light-blue: 164, 235, 243;
+  --rgb-grey: 136, 136, 136;
 }
