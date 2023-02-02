@@ -1,0 +1,162 @@
+<link rel="stylesheet" href="body.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">
+<body>
+    <div class="main-container">
+        <div class="main__filter-menu">
+            <h4 class="main__filter-menu__n-sold">오늘은 183대가 판매되었습니다</h4>
+            <h4 class="main__filter-menu__title">원하는 차량을 선택하세요</h4>
+            <div class="main__filter-menu__select-group">
+                <button class="main__filter-menu__select-group__btn">
+                    <i class="fas fa-check-circle fa-lg"></i>
+                    <span class="select-group__btn__text">전체</span>
+                </button>
+                <button class="main__filter-menu__select-group__btn">
+                    <i class="fas fa-car-side"></i>
+                    <span class="select-group__btn__text">소형</span>
+                </button>
+                <button class="main__filter-menu__select-group__btn select-group__btn--checked">
+                    <i class="fas fa-car-side fa-lg"></i>
+                    <span class="select-group__btn__text">중형</span>
+                </button>
+                <button class="main__filter-menu__select-group__btn">
+                    <i class="fas fa-truck fa-lg"></i>
+                    <span class="select-group__btn__text">화물차</span>
+                </button>
+                <button class="main__filter-menu__select-group__btn">
+                    <i class="fas fa-car fa-lg"></i>
+                    <span class="select-group__btn__text">스포츠</span>
+                </button>
+                <button class="main__filter-menu__select-group__btn">
+                    <i class="fas fa-truck-pickup fa-lg"></i>
+                    <span class="select-group__btn__text">SUV</span>
+                </button>
+            </div>
+            <button class="main__filter-menu__add-rid-btn">경매 등록</button>
+            <div class="main__filter-menu__set-fund">
+                <h4 class="main__filter-menu__set-fund__title">예산이 어떻게 되시나요?</h4>
+                <span class="main__filter-menu__set-fund__val">
+                    <b>0원</b>에서 <b>1억원</b>까지 보고싶어요
+                </span>
+                <span class="main__filter-menu__set-fund__avg">
+                    차량 평균값 <b>5,000만원</b>
+                </span>
+                <div class="main__filter-menu__set-fund__hist">
+                    <span class="main__filter-menu__set-fund__hist__bar" style="height: 10%"></span>
+                    <span class="main__filter-menu__set-fund__hist__bar" style="height: 14%"></span>
+                    <span class="main__filter-menu__set-fund__hist__bar" style="height: 23%"></span>
+                    <span class="main__filter-menu__set-fund__hist__bar" style="height: 30%"></span>
+                    <span class="main__filter-menu__set-fund__hist__bar" style="height: 12%"></span>
+                    <span class="main__filter-menu__set-fund__hist__bar" style="height: 45%"></span>
+                    <span class="main__filter-menu__set-fund__hist__bar set-fund__hist__bar--selected" style="height: 57%"></span>
+                    <span class="main__filter-menu__set-fund__hist__bar set-fund__hist__bar--selected" style="height: 60%"></span>
+                    <span class="main__filter-menu__set-fund__hist__bar set-fund__hist__bar--selected" style="height: 72%"></span>
+                    <span class="main__filter-menu__set-fund__hist__bar set-fund__hist__bar--selected" style="height: 82%"></span>
+                    <span class="main__filter-menu__set-fund__hist__bar" style="height: 40%"></span>
+                    <span class="main__filter-menu__set-fund__hist__bar" style="height: 12%"></span>
+                </div>
+                <div class="double-range-slider">
+                    <div class="double-range-slider__thumb thumb--left"></div>
+                    <div class="double-range-slider__thumb thumb--right"></div>
+                    <div class="double-range-slider__range"></div>
+                </div>
+                <div class="main__filter-menu__set-fund__labels">
+                    <span class="set-fund__labels__left">0원</span>
+                    <span class="set-fund__labels__left">1억원</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    const MIN = 0;
+    const MAX = 1000;
+
+    const $slider = document.querySelector('.double-range-slider');
+    const $thumbLeft = $slider.querySelector('.thumb--left');
+    const $thumbRight = $slider.querySelector('.thumb--right');
+    const $range = $slider.querySelector('.double-range-slider__range');
+    const $histBars = document.querySelectorAll('.main__filter-menu__set-fund__hist__bar');
+
+    let $controllingThumb = null;
+    let translatedLeft = 0;
+    let translatedRight = getTranslatedXFromVal(MAX);
+
+    fitThumbs();
+    fitRange();
+    fitHist(MIN, MAX);
+
+    document.addEventListener('mousedown', ({ target }) => {
+        const $thumb = target.closest('.double-range-slider__thumb');
+        if ($thumb) {
+            $controllingThumb = $thumb;
+        }
+    });
+    document.addEventListener('mouseup', () => {
+        if ($controllingThumb) {
+            console.log('left:', getValFromTranslatedX(translatedLeft));
+            console.log('right:', getValFromTranslatedX(translatedRight));
+        }
+        $controllingThumb = null;
+    });
+    document.addEventListener('mousemove', ({ clientX }) => {
+        if (!$controllingThumb) return;
+        const thumbWidth = $thumbLeft.clientWidth;
+        let newThumbPos = regularizeMouseX(clientX);
+        if ($controllingThumb === $thumbLeft) {
+            if (newThumbPos > (translatedRight - thumbWidth)) return;
+            translatedLeft = newThumbPos;
+        } else {
+            if (newThumbPos < (translatedLeft + thumbWidth)) return;
+            translatedRight = newThumbPos;
+        }
+        fitHist(
+            getValFromTranslatedX(translatedLeft), getValFromTranslatedX(translatedRight)
+        );
+        fitThumbs();
+        fitRange();
+    });
+    function regularizeMouseX(viewportX) {
+        const { left, width } = $slider.getBoundingClientRect();
+        const thumbWidth = $thumbLeft.clientWidth;
+        const limit = width - thumbWidth;
+        const sliderBasedX = viewportX - left;
+        const newThumbCenterX = sliderBasedX - (thumbWidth / 2);
+        if (newThumbCenterX < 0) return 0;
+        if (newThumbCenterX > limit) return limit
+        return newThumbCenterX;
+    }
+    function getTranslatedXFromVal(val) {
+        const fullRange = $slider.clientWidth - $thumbRight.clientWidth;
+        const ratio = (val / (MAX - MIN));
+        return fullRange * ratio;
+    }
+    function getValFromTranslatedX(translatedX) {
+        const { width } = $slider.getBoundingClientRect();
+        const thumbWidth = $thumbLeft.clientWidth;
+        const limit = width - thumbWidth;
+        return MIN + ((MAX - MIN) * (translatedX / limit));
+    }
+
+    function fitRange() {
+        const thumbWidth = $thumbLeft.clientWidth;
+        $range.style.width = `${translatedRight - translatedLeft + thumbWidth}px`;
+        $range.style.transform = `translateX(${translatedLeft}px)`;
+    }
+    function fitThumbs() {
+        $thumbLeft.style.transform = `translateX(${translatedLeft}px)`;
+        $thumbRight.style.transform = `translateX(${translatedRight}px)`;
+    }
+    function fitHist(leftVal, rightVal) {
+        const histSize = $histBars.length;
+        const leftRegularized = Math.floor(((leftVal - MIN) / (MAX - MIN)) * histSize);
+        const rightRegularized = Math.floor((rightVal - MIN) / (MAX - MIN) * histSize);
+        $histBars.forEach((bar, idx) => {
+            if (leftRegularized <= idx && idx <= rightRegularized) {
+                bar.classList.add('set-fund__hist__bar--selected');
+            } else {
+                bar.classList.remove('set-fund__hist__bar--selected');
+            }
+        });
+    }
+
+</script>
