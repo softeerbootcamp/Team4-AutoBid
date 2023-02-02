@@ -3,8 +3,8 @@
 :root {
     --color-blue: #007AFF;
     --color-light-blue: #D6EAFF;
-    --color-lighter-blue: rgba(214, 234, 255, 0.2);
-    --color-lightest-blue: rgba(214, 234, 255, 0.1);
+    --color-lighter-blue: #f7fbff;
+    --color-lightest-blue: #fbfdff;
     --box-shadow-level-1: 2px 2px 20px 0 #0000000f;
     --box-shadow-level-2: 4px 4px 20px 10px #0000000f;
     --box-shadow-level-3: 6px 6px 20px 20px #0000000f;
