@@ -122,7 +122,8 @@ hr {
 .car-info__bidding_status__holder {
   background-color: lightgrey;
   margin-bottom: 16px;
-  padding: 8px;
+  padding: 16px;
+  border-radius: 8px;
 }
 
 .car-info__bid-buttons__holder {
