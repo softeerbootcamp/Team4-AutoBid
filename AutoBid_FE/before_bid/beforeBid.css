@@ -108,7 +108,6 @@ hr {
 .car-info__price-holder {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 16px;
 }
 
 .car-info__price-holder > li {
@@ -117,17 +116,21 @@ hr {
 
 .car-info__starting-price {
   font-weight: bold;
+  alignment: right;
 }
 
-.car-info__bid-not-start__button {
-  background-color: var(--color-grey);
+.car-info__bid-button {
   border-radius: 8px;
   bottom: 0;
   font-size: 24px;
   height: 86px;
-  position: absolute;
+  /*position: absolute;*/
   right: 0;
   width: 100%;
+}
+
+.car-info__bid-not-start__button {
+  background-color: var(--color-grey);
 }
 
 /* Lower info components */
