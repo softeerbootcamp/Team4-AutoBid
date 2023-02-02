@@ -20,17 +20,16 @@ public class AuthHandler {
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 	private static final RestTemplate rt = new RestTemplate();
 
-	@Value("${hyundai.redirect_uri}")
+	@Value("${hyundai.auth.redirect_uri}")
 	private String REDIRECT_URI;
 
-	@Value("${hyundai.authorization_key}")
+	@Value("${hyundai.auth.authorization_key}")
 	private String AUTHORIZATION_KEY;
 
-	@Value("${hyundai.token_request_uri}")
+	@Value("${hyundai.auth.token_request_uri}")
 	private String TOKEN_REQUEST_URI;
 
 	public OauthToken getOauthToken(OauthType oauthType, String value) {
-
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", oauthType.getGrantType()); // 고정값
 		params.add("redirect_uri", REDIRECT_URI);
