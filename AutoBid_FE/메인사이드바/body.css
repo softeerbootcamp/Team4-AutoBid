@@ -8,6 +8,8 @@
     --box-shadow-level-1: 2px 2px 20px 0 #0000000f;
     --box-shadow-level-2: 4px 4px 20px 10px #0000000f;
     --box-shadow-level-3: 6px 6px 20px 20px #0000000f;
+    --container-max-width: 1000px;
+    --container-padding: 0 32px;
 }
 
 body {
@@ -15,8 +17,8 @@ body {
 }
 
 .main-container {
-    max-width: 1000px;
-    padding: 0 32px;
+    max-width: var(--container-max-width);
+    padding: var(--container-padding);
     margin: auto;
 }
 
