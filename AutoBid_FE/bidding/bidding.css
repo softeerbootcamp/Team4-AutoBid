@@ -2,19 +2,12 @@
 @import "../css/common.css";
 @import "../before_bid/beforeBid.css";
 
-.car-info__bidding_status__holder {
-  background-color: lightgrey;
-  margin-bottom: 16px;
-  padding: 8px;
-}
-
 .car-info__bidding_status__header {
   margin-bottom: 8px;
 }
 
-.car-info__bid-buttons__holder {
-  /*background-color: blue;*/
-  display: flex;
+.car-info_bidding_status__text {
+  margin-bottom: 8px;
 }
 
 .car-info__bid-price {
@@ -31,6 +24,7 @@
   width: 25%;
 }
 
-.car-info_bidding_status__text {
-  margin-bottom: 8px;
+/* TODO: highlight background-color if hovered. */
+.car-info__bid-submit:hover {
+
 }
