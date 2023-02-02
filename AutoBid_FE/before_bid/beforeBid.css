@@ -1,0 +1,122 @@
+@import "../css/reset.css";
+@import "../css/common.css";
+
+/* Overall component */
+body {
+  flex-wrap: wrap;
+  padding-top: 100px;
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+ul > li {
+  margin-bottom: 8px;
+}
+
+hr {
+  margin-bottom: 16px;
+  margin-top: 16px;
+}
+
+.upper-main {
+  display: flex;
+  max-width: 1000px;
+}
+
+.column {
+  flex: 50%;
+}
+
+.column-left {
+  flex-direction: row-reverse;
+  padding-right: 50px;
+}
+
+.column-right {
+  flex-direction: row;
+  padding-left: 50px;
+}
+
+.lower-main {
+  /*background-color: var(--color-lightest-blue);*/
+  margin-top: 64px;
+  height: fit-content;
+}
+
+/* Left side components */
+.image-slider__holder {
+  margin-bottom: 32px;
+  min-width: 400px;
+  padding-top: 56.25%;
+  position: relative;
+}
+
+.slide1 {
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  object-fit: cover;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+}
+
+.holder__timer {
+  background-color: var(--color-lightest-blue);
+  padding: 16px;
+}
+
+.timer__label {
+
+}
+
+.timer__time {
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+/* Right side components */
+.car-info__price-now {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.car-info__holder > li {
+
+}
+
+.car-info__price-holder {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.car-info__price-holder > li {
+
+}
+
+.car-info__starting-price {
+  font-weight: bold;
+}
+
+.car-info__bid-not-start__button {
+  background-color: var(--color-grey);
+  font-size: 24px;
+  height: 64px;
+  width: 100%;
+}
+
+/* Lower info components */
+.car-info__more-info-holder {
+  padding: 16px;
+}
+
+.car-info__more-info-holder > li {
+  margin: 8px;
+}
