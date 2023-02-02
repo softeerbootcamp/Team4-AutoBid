@@ -2,13 +2,14 @@
 
 :root {
     --color-blue: #007AFF;
+    --color-semi-blue: #48A2FD;
     --color-light-blue: #D6EAFF;
     --color-lighter-blue: #f7fbff;
     --color-lightest-blue: #fbfdff;
     --box-shadow-level-1: 2px 2px 20px 0 #0000000f;
     --box-shadow-level-2: 4px 4px 20px 10px #0000000f;
     --box-shadow-level-3: 6px 6px 20px 20px #0000000f;
-    --container-max-width: 1000px;
+    --container-max-width: 1050px;
     --container-padding: 0 32px;
 }
 
@@ -19,11 +20,15 @@ body {
 .main-container {
     max-width: var(--container-max-width);
     padding: var(--container-padding);
-    margin: auto;
+    margin: auto auto 64px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .main__filter-menu {
     width: 350px;
+    margin-right: 32px;
+    height: fit-content;
     text-align: center;
     border-radius: 15px;
     background-color: white;
