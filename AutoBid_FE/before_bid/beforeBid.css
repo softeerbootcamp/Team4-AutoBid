@@ -3,10 +3,13 @@
 
 /* Overall component */
 body {
+  background-color: #EEEEEE;
   flex-wrap: wrap;
-  padding-top: 100px;
   margin-left: 100px;
   margin-right: 100px;
+  overflow-y: scroll;
+  padding-top: 100px;
+  position: absolute;
 }
 
 ul {
@@ -22,6 +25,12 @@ hr {
   margin-top: 16px;
 }
 
+.section {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  padding: 32px;
+}
+
 .upper-main {
   display: flex;
   max-width: 1000px;
@@ -33,18 +42,19 @@ hr {
 
 .column-left {
   flex-direction: row-reverse;
-  padding-right: 50px;
+  margin-right: 50px;
 }
 
 .column-right {
   flex-direction: row;
-  padding-left: 50px;
+  margin-left: 50px;
+  position: relative;
 }
 
 .lower-main {
-  /*background-color: var(--color-lightest-blue);*/
-  margin-top: 64px;
   height: fit-content;
+  margin-bottom: 128px;
+  margin-top: 16px;
 }
 
 /* Left side components */
@@ -55,7 +65,7 @@ hr {
   position: relative;
 }
 
-.slide1 {
+.image_slide1 {
   bottom: 0;
   height: 100%;
   left: 0;
@@ -66,8 +76,10 @@ hr {
   width: 100%;
 }
 
-.holder__timer {
+.timer__holder {
   background-color: var(--color-lightest-blue);
+  border-radius: 8px;
+  height: 86px;
   padding: 16px;
 }
 
@@ -107,8 +119,12 @@ hr {
 
 .car-info__bid-not-start__button {
   background-color: var(--color-grey);
+  border-radius: 8px;
+  bottom: 0;
   font-size: 24px;
-  height: 64px;
+  height: 86px;
+  position: absolute;
+  right: 0;
   width: 100%;
 }
 
