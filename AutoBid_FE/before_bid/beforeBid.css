@@ -3,13 +3,13 @@
 
 /* Overall component */
 body {
+  align-items: center;
   background-color: #EEEEEE;
+  display: flex;
   flex-wrap: wrap;
-  margin-left: 100px;
-  margin-right: 100px;
+  justify-content: center;
   overflow-y: scroll;
   padding-top: 100px;
-  position: absolute;
 }
 
 ul {
@@ -33,7 +33,7 @@ hr {
 
 .upper-main {
   display: flex;
-  max-width: 1000px;
+  width: 900px;
 }
 
 .column {
@@ -55,6 +55,8 @@ hr {
   height: fit-content;
   margin-bottom: 128px;
   margin-top: 16px;
+  /*min-width: 900px;*/
+  width: 900px;
 }
 
 /* Left side components */
