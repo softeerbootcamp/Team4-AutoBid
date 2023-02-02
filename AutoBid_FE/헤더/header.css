@@ -1,15 +1,28 @@
-@import "../css/common.css";
 @import "../css/reset.css";
-@import "icon.css";
+
+:root {
+    --color-blue: #007AFF;
+    --color-light-blue: #D6EAFF;
+    --color-lighter-blue: #f7fbff;
+    --color-lightest-blue: #fbfdff;
+    --box-shadow-level-1: 2px 2px 20px 0 #0000000f;
+    --box-shadow-level-2: 4px 4px 20px 10px #0000000f;
+    --box-shadow-level-3: 6px 6px 20px 20px #0000000f;
+}
 
 .header {
     width: 100%;
-    box-shadow: 0 -2px 2px rgba(var(--rgb-grey), 3%), 0 10px 20px rgba(var(--rgb-grey), 15%);
+    box-shadow: var(--box-shadow-level-1);
+    position: sticky;
+    top: 0;
+    height: 64px;
+    margin-bottom: 32px;
+    background-color: var(--color-lightest-blue);
 }
 
 .header__container {
+    height: 100%;
     padding: 0 32px;
-    height: 50px;
     max-width: 1000px;
     margin: auto;
     display: flex;
@@ -23,8 +36,10 @@
     justify-content: space-between;
 }
 
-.user-profile {
-    width: 30px;
-    height: 30px;
-    background-size: 20px;
+.header__container__btn {
+    transition: 0.1s;
+}
+
+.header__container__btn:hover {
+    color: var(--color-blue);
 }
