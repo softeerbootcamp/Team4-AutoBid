@@ -1,0 +1,49 @@
+@import "../css/reset.css";
+
+:root {
+    --color-blue: #007AFF;
+    --color-semi-blue: #48A2FD;
+    --color-light-blue: #D6EAFF;
+    --color-lighter-blue: #f7fbff;
+    --color-lightest-blue: #fbfdff;
+    --box-shadow-level-1: 2px 2px 20px 0 #0000000f;
+    --box-shadow-level-2: 4px 4px 20px 10px #0000000f;
+    --box-shadow-level-3: 6px 6px 20px 20px #0000000f;
+    --container-max-width: 1050px;
+    --container-padding: 0 32px;
+}
+
+.header {
+    width: 100%;
+    box-shadow: var(--box-shadow-level-1);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    height: 64px;
+    margin-bottom: 32px;
+    background-color: var(--color-lightest-blue);
+}
+
+.header__container {
+    height: 100%;
+    padding: var(--container-padding);
+    max-width: var(--container-max-width);
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__container__menu {
+    display: flex;
+    width: 200px;
+    justify-content: space-between;
+}
+
+.header__container__btn {
+    transition: 0.1s;
+}
+
+.header__container__btn:hover {
+    color: var(--color-blue);
+}
