@@ -148,10 +148,11 @@
     }
     function fitHist(leftVal, rightVal) {
         const histSize = $histBars.length;
-        const leftRegularized = Math.floor(((leftVal - MIN) / (MAX - MIN)) * histSize);
+        const leftRegularized = Math.ceil(((leftVal - MIN) / (MAX - MIN)) * histSize);
         const rightRegularized = Math.floor((rightVal - MIN) / (MAX - MIN) * histSize);
+        console.log(leftRegularized)
         $histBars.forEach((bar, idx) => {
-            if (leftRegularized <= idx && idx <= rightRegularized) {
+            if (leftRegularized <= idx && idx < rightRegularized) {
                 bar.classList.add('set-fund__hist__bar--selected');
             } else {
                 bar.classList.remove('set-fund__hist__bar--selected');
