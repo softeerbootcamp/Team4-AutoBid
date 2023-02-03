@@ -21,8 +21,7 @@ ul > li {
 }
 
 hr {
-  margin-bottom: 16px;
-  margin-top: 16px;
+  margin: 16px 0;
 }
 
 .section {
@@ -42,12 +41,13 @@ hr {
 
 .column-left {
   flex-direction: row-reverse;
-  margin-right: 50px;
+  margin-right: 16px;
 }
 
 .column-right {
-  flex-direction: row;
-  margin-left: 50px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 16px;
   position: relative;
 }
 
@@ -62,7 +62,7 @@ hr {
 /* Left side components */
 .image-slider__holder {
   margin-bottom: 32px;
-  min-width: 400px;
+  min-width: 500px;
   padding-top: 56.25%;
   position: relative;
 }
@@ -108,7 +108,6 @@ hr {
 .car-info__price-holder {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 16px;
 }
 
 .car-info__price-holder > li {
@@ -116,18 +115,36 @@ hr {
 }
 
 .car-info__starting-price {
+  alignment: right;
   font-weight: bold;
 }
 
-.car-info__bid-not-start__button {
-  background-color: var(--color-grey);
+.car-info__bidding_status__holder {
+  background-color: lightgrey;
+  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.car-info__bid-buttons__holder {
+  align-self: flex-end;
+  display: flex;
+  margin-top: auto;
+  width: 100%;
+}
+
+.car-info__bid-button {
   border-radius: 8px;
   bottom: 0;
   font-size: 24px;
   height: 86px;
-  position: absolute;
+  /*position: absolute;*/
   right: 0;
   width: 100%;
+}
+
+.car-info__bid-not-start__button {
+  background-color: var(--color-grey);
 }
 
 /* Lower info components */

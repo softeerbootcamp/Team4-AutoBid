@@ -1,0 +1,30 @@
+@import "../css/reset.css";
+@import "../css/common.css";
+@import "../before_bid/beforeBid.css";
+
+.car-info__bidding_status__header {
+  margin-bottom: 8px;
+}
+
+.car-info_bidding_status__text {
+  margin-bottom: 8px;
+}
+
+.car-info__bid-price {
+  background-color: var(--color-light-blue);
+  height: fit-content;
+  margin-right: 8px;
+  padding: 8px;
+  width: 75%;
+}
+
+.car-info__bid-submit {
+  background-color: var(--color-light-blue);
+  height: inherit;
+  width: 25%;
+}
+
+/* TODO: highlight background-color if hovered. */
+.car-info__bid-submit:hover {
+
+}
