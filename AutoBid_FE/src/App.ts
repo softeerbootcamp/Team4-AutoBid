@@ -1,10 +1,16 @@
 import Component from "./core/component";
+import Counter from "../src/Counter/Counter";
 
 class App extends Component<any> {
     template(): InnerHTML["innerHTML"] {
         return `
-        Hello World
+        <div data-component="Counter"></div>
         `;
+    }
+
+    mounted() {
+        const $counter = this.$target.querySelector('[data-component="Counter"]') as HTMLElement;
+        new Counter($counter, {});
     }
 }
 
