@@ -1,13 +1,13 @@
 package com.codesquad.autobid.car.domain;
 
 import com.codesquad.autobid.handler.car.vo.CarVO;
-import com.codesquad.autobid.user.domain.User;
+import com.codesquad.autobid.user.domain.Users;
+
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.sql.ResultSet;
 import java.time.LocalDateTime;
 
 @Table("car")
@@ -18,7 +18,7 @@ public class Car {
     private Long id;
     @Column("user_id")
     @AccessType(AccessType.Type.PROPERTY)
-    private User user;
+    private Users user;
 
     // @Column("car_state")
     // @AccessType(AccessType.Type.PROPERTY)
