@@ -8,7 +8,6 @@ sudo docker rmi benny1020/autobid:1.0
 sudo docker pull benny1020/autobid:1.0
 
 # docker run
-docker run -d -p 8080:8080 -v /home/ec2-user:/config --name autobid benny
-1020/autobid:1.0
+docker run -d -p 8080:8080 -v /home/ec2-user:/config --name autobid benny1020/autobid:1.0
 
 docker rmi -f $(docker images -f "dangling=true" -q) || true
