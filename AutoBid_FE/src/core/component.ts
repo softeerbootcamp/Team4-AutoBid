@@ -16,7 +16,7 @@ class Component<State, Props = {}> {
     }
 
     initialize(): void {}
-    onStateChanged(newLocalState: State): void {}
+    onStateChanged(prevLocalState: State): void {}
     stateSelector(globalState: any): State|undefined { return undefined; }
     mounted() {}
     template(): InnerHTML['innerHTML'] { return ''; }
@@ -46,9 +46,10 @@ class Component<State, Props = {}> {
             }
             const globalState = store.getState();
             const newLocalState = this.stateSelector(globalState);
-            if (newLocalState && this.state !== newLocalState) {
-                this.onStateChanged(newLocalState);
+            if (this.state && this.state !== newLocalState) {
+                const prevLocalState = this.state;
                 this.state = newLocalState;
+                this.onStateChanged(prevLocalState);
             }
         });
     }

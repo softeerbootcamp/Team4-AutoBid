@@ -26,8 +26,8 @@ class Counter extends Component<CounterState, any> {
         });
     }
 
-    onStateChanged(newLocalState: CounterState) {
-        const { count } = newLocalState;
+    onStateChanged(prevLocalState: CounterState) {
+        const { count } = this.state || { count: 0 };
         console.log(count);
         this.render();
     }
