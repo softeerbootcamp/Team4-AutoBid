@@ -1,5 +1,5 @@
-import Component from "./core/component";
-import Counter from "../src/Counter/Counter";
+import Component from "../core/component";
+import Counter from "./Counter/Counter";
 
 class App extends Component<any> {
     template(): InnerHTML["innerHTML"] {
