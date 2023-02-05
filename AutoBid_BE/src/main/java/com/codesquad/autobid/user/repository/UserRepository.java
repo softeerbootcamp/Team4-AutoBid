@@ -1,16 +1,12 @@
 package com.codesquad.autobid.user.repository;
 
-import com.codesquad.autobid.user.domain.Users;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
+import com.codesquad.autobid.user.domain.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Repository
 public class UserRepository {
@@ -21,7 +17,7 @@ public class UserRepository {
         this.template = new JdbcTemplate(dataSource);
     }
 
-    public Users save(Users user) {
+    public User save(User user) {
 
         // 저장 시간 설정
         LocalDateTime current = LocalDateTime.now();
@@ -46,14 +42,14 @@ public class UserRepository {
         return user;
     }
 
-    public Users findById(String userId) {
+    public User findById(String userId) {
         String sql = "SELECT * FROM where user_id = ?";
         return template.queryForObject(sql, userRowMapper(), userId);
     }
 
-    private RowMapper<Users> userRowMapper() {
+    private RowMapper<User> userRowMapper() {
         return (rs, rowNum) -> {
-            Users user = new Users();
+            User user = new User();
             user.setUserUid(rs.getString("user_uid"));
             user.setUserEmail(rs.getString("user_email"));
             user.setUserName(rs.getString("user_name"));
