@@ -1,42 +1,40 @@
 package com.codesquad.autobid.handler.car.vo;
 
+import com.codesquad.autobid.car.domain.Type;
+
 public class CarVO {
+
     private String carId;
-    private String carNickname;
-    private String carType;
-    private String carName;
-    private String carSellname;
+    private Type type;
+    private String name;
+    private String sellname;
+    private AvailableDistanceVO availableDistanceVO;
 
     private CarVO() {
     }
 
-    public static CarVO from(String carId, String carNickname, String carType, String carName, String carSellname) {
-        CarVO carVO = new CarVO();
-        carVO.carId = carId;
-        carVO.carNickname = carNickname;
-        carVO.carType = carType;
-        carVO.carName = carName;
-        carVO.carSellname = carSellname;
-        return carVO;
+    public AvailableDistanceVO getAvailableDistanceVO() {
+        return availableDistanceVO;
+    }
+
+    public CarVO addDistanceInfo(AvailableDistanceVO availableDistanceVO) {
+        this.availableDistanceVO = availableDistanceVO;
+        return this;
     }
 
     public String getCarId() {
         return carId;
     }
 
-    public String getCarNickname() {
-        return carNickname;
+    public Type getType() {
+        return type;
     }
 
-    public String getCarType() {
-        return carType;
+    public String getName() {
+        return name;
     }
 
-    public String getCarName() {
-        return carName;
-    }
-
-    public String getCarSellname() {
-        return carSellname;
+    public String getSellname() {
+        return sellname;
     }
 }
