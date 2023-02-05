@@ -2,7 +2,6 @@ package com.codesquad.autobid.car.domain;
 
 import com.codesquad.autobid.handler.car.vo.CarVO;
 import com.codesquad.autobid.user.domain.Users;
-
 import org.springframework.data.annotation.AccessType;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
