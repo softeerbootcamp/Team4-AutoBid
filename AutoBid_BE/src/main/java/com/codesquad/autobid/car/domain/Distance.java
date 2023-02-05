@@ -1,6 +1,7 @@
 package com.codesquad.autobid.car.domain;
 
 import com.codesquad.autobid.handler.car.enums.DistanceUnit;
+import com.codesquad.autobid.handler.car.vo.AvailableDistanceVO;
 import org.springframework.data.relational.core.mapping.Column;
 
 public class Distance {
@@ -18,6 +19,10 @@ public class Distance {
     public static Distance from(String carDistance) {
         String[] chunks = carDistance.split("\\s");
         return new Distance(Long.parseLong(chunks[0]), DistanceUnit.valueOf(chunks[1]));
+    }
+
+    public static Distance from(AvailableDistanceVO availableDistanceVO) {
+        return new Distance(availableDistanceVO.getDistance(), availableDistanceVO.getUnit());
     }
 
     @Override
