@@ -63,18 +63,6 @@ public class Car {
                 LocalDateTime.now());
     }
 
-    public void setUser(AggregateReference<User, Long> userId) {
-        this.userId = userId;
-    }
-
-    public AggregateReference<User, Long> getUser() {
-        return userId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
     public String getCarId() {
         return carId;
     }
