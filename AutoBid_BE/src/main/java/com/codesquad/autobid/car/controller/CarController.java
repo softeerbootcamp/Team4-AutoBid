@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,8 +26,8 @@ public class CarController {
     @GetMapping("/user/{id}/cars")
     // todo: filter(interceptor)에서 session 받는걸로 변경하기
     // @SessionAttribute(name = "user") User user, @SessionAttribute(name = "accessToken") String accessToken, boolean refresh
-    public List<Car> getCars(@PathVariable("id") Long id, boolean refresh, String accessToken) {
-        logger.info("user/{}/cars refresh={} accessToken={}", id,refresh, accessToken);
+    public List<Car> getCars(@PathVariable("id") Long id, @RequestParam(name = "refresh", required = false, defaultValue = "false") boolean refresh, String accessToken) {
+        logger.info("user/{}/cars refresh={} accessToken={}", id, refresh, accessToken);
         return carService.getCars(id, accessToken, refresh);
     }
 }
