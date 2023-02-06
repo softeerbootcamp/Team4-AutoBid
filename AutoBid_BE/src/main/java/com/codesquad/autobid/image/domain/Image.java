@@ -1,0 +1,19 @@
+package com.codesquad.autobid.image.domain;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.data.relational.core.mapping.Column;
+
+import com.codesquad.autobid.auction.domain.Auction;
+
+public class Image {
+
+	@Id
+	@Column(value = "image_id")
+	private Long id;
+	@Column(value = "auction_id")
+	private AggregateReference<Auction, Long> auctionId;
+	@Column(value = "image_url")
+	private String imageUrl;
+
+}
