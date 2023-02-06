@@ -16,4 +16,12 @@ public class Image {
 	@Column(value = "image_url")
 	private String imageUrl;
 
+	private Image(Long auctionId, String imageUrl) {
+		this.auctionId = AggregateReference.to(auctionId);
+		this.imageUrl = imageUrl;
+	}
+
+	public static Image of(Long auctionId, String imageUrl) {
+		return new Image(auctionId, imageUrl);
+	}
 }
