@@ -13,6 +13,13 @@ repositories {
 }
 
 dependencies {
+    //lombok
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+
     // swagger setting
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.13'
     implementation 'org.springdoc:springdoc-openapi-data-rest:1.6.13'

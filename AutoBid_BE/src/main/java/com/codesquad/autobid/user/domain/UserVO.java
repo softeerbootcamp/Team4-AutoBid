@@ -1,8 +1,14 @@
 package com.codesquad.autobid.user.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
 public class UserVO {
 
     private String id;
+
+    private String masterId;
 
     private String email;
 
@@ -12,14 +18,27 @@ public class UserVO {
 
     private String birthdate;
 
+    private String status;
+
     private String lang;
 
+    private String country;
+
+    private String dialect;
+
     private String social;
+
+    private String password;
+
+    private String passwordDate;
+
+    private String pinDate;
+
+    private String signUpDate;
 
     public UserVO() {
 
     }
-
 
     public UserVO(String id, String email, String name, String mobilenum, String birthdate, String lang, String social) {
         this.id = id;
@@ -31,73 +50,20 @@ public class UserVO {
         this.social = social;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    public UserVO(String masterId, String email, String name, String mobileNum, String birthdate, String status, String lang, String country, String dialect, String social, String password, String passwordDate, String pinDate, String signUpDate) {
+        this.masterId = masterId;
         this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getMobilenum() {
-        return mobileNum;
-    }
-
-    public void setMobilenum(String mobilenum) {
-        this.mobileNum = mobilenum;
-    }
-
-    public String getBirthdate() {
-        return birthdate;
-    }
-
-    public void setBirthdate(String birthdate) {
+        this.mobileNum = mobileNum;
         this.birthdate = birthdate;
-    }
-
-    public String getLang() {
-        return lang;
-    }
-
-    public void setLang(String lang) {
+        this.status = status;
         this.lang = lang;
-    }
-
-    public String getSocial() {
-        return social;
-    }
-
-    public void setSocial(String social) {
+        this.country = country;
+        this.dialect = dialect;
         this.social = social;
-    }
-
-
-    @Override
-    public String toString() {
-        return "UserVO{" +
-                "uid='" + id + '\'' +
-                ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", mobilenum='" + mobileNum + '\'' +
-                ", birthdate='" + birthdate + '\'' +
-                ", lang='" + lang + '\'' +
-                ", social='" + social + '\'' +
-                '}';
+        this.password = password;
+        this.passwordDate = passwordDate;
+        this.pinDate = pinDate;
+        this.signUpDate = signUpDate;
     }
 }
