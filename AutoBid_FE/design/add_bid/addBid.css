@@ -1,0 +1,104 @@
+@import "../css/reset.css";
+@import "../css/common.css";
+
+/* TODO: ADD HR, .VL IN COMMON CSS FILE */
+hr {
+  border-bottom: 1px solid var(--color-semi-gray);
+  border-top: 0;
+  margin: 16px 0;
+}
+
+.vl {
+  border-left: 1px solid var(--color-semi-gray);
+  height: inherit;
+}
+
+.add-bid {
+  /*background-color: var(--color-light-gray);*/
+  background-color: #EEEEEE;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+}
+
+.add-bid__label {
+  font-size: 18px;
+  font-weight: bold;
+  /*flex: 30%;*/
+}
+
+.add-bid__title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.add-bid__car-type__div {
+  display: flex;
+  justify-content: center;
+}
+
+.add-bid__car-type__label {
+  height: fit-content;
+  margin-right: 16px;
+  margin-top: 16px;
+}
+
+.add-bid__car-type__car-list {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  margin-left: 16px;
+  padding: 16px;
+}
+
+.add-bid__car-type__car-list > li {
+  padding: 8px;
+}
+
+.add-bid__bid-time__div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.add-bid__bid-time__div > div {
+  display: flex;
+  justify-content: center;
+}
+
+.add-bid__bid-start-time__div, .add-bid__bid-end-time__div {
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+}
+
+.add-bid__bid_start-time__label, .add-bid__bid-end-time__label {
+  margin-right: 16px;
+}
+
+.add-bid__bid-start-time__input, .add-bid__bid-end-time__input {
+  margin-left: 16px;
+}
+
+.add-bid__bid-start-price__div {
+  display: flex;
+  justify-content: center;
+}
+
+.add-bid__bid-start-price__label {
+  margin-right: 16px;
+}
+
+.add-bid__bid-start-price__input {
+  margin-left: 16px;
+}
+
+.add-bid__bid-submit__button {
+  background-color: var(--color-gray);
+  border-radius: 8px;
+  flex-direction: row-reverse;
+  padding: 16px;
+  width: fit-content;
+}
