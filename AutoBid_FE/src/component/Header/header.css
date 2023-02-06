@@ -23,14 +23,14 @@
 
 .header__container__menu {
     display: flex;
-    width: 200px;
     justify-content: space-between;
 }
 
-.header__container__btn {
+.header__container__content {
+    margin-left: 20px;
     transition: 0.1s;
 }
 
-.header__container__btn:hover {
+.header__container__content--btn:hover {
     color: var(--color-blue);
 }
