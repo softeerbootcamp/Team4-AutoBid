@@ -35,30 +35,6 @@ public class AuthController {
         String accessToken = oauthToken.getAccess_token();
         String refreshtoken = oauthToken.getRefresh_token();
 
-
         authHandler.userProfileAPICall(accessToken);
-
-        Map<String, String> map = new HashMap<>();
-    }
-
-    @RequestMapping(value = "/authorization") //설정한 redirect_uri에 맞게 정의
-    public void account(@RequestParam(value="code") String code,
-                        @RequestParam(value="state") String state,
-                        HttpServletResponse response) throws IOException {
-
-        String requestState = "{YOUR_STATE_TEXT}"; //request로 설정한 state와 동일한 값
-        String redirectURL = "{YOUR_RECIRECT_URI}";
-
-
-        // SUCCESS 200 Response code, state
-        System.out.println("RESPONSE_STATE = " + state);
-        System.out.println("RESPONSE_CODE = " + code);
-
-
-        // state 검증
-        if(!state.equals(requestState)) {
-            System.out.println(state + " 유효하지 않은 state 응답입니다.");
-            return;
-        }
     }
 }

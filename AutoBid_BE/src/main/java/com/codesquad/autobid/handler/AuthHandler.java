@@ -1,5 +1,7 @@
 package com.codesquad.autobid.handler;
 
+import com.codesquad.autobid.user.domain.UserVO;
+import com.codesquad.autobid.user.domain.Users;
 import com.codesquad.autobid.user.repository.UserRepository;
 import com.codesquad.autobid.user.service.UserService;
 import org.slf4j.Logger;
@@ -49,6 +51,9 @@ public class AuthHandler {
 	@Value("${hyundai.auth.token_request_uri}")
 	private String TOKEN_REQUEST_URI;
 
+	// JSON 응답을 객체로 변환
+	private OauthToken oauthToken = null;
+
 	public OauthToken getOauthToken(OauthType oauthType, String value) {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", oauthType.getGrantType()); // 고정값
@@ -72,8 +77,7 @@ public class AuthHandler {
 			String.class
 		);
 
-		// JSON 응답을 객체로 변환
-		OauthToken oauthToken = null;
+
 		try {
 			oauthToken = objectMapper.readValue(accessTokenResponse.getBody(), OauthToken.class);
 		} catch (JsonProcessingException e) {
@@ -85,7 +89,7 @@ public class AuthHandler {
 
 	public void userProfileAPICall(String accessToken) {    // 발급받은 Access Token
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, String> userData = new HashMap<>();
+		UserVO user = new UserVO();
 		StringBuffer sb;
 		String responseData = "";
 
@@ -116,12 +120,12 @@ public class AuthHandler {
 			br.close();
 
 			try{
-				userData = mapper.readValue(sb.toString(), Map.class);
+				user = mapper.readValue(sb.toString(), UserVO.class);
 			}catch (IOException e){
 				e.printStackTrace();
 			}
 
-			userService.login(userData);
+			userService.login(user, oauthToken);
 			logger.info("responseCode = {}",responseCode);
 			logger.info("userData = {}",sb.toString());
 

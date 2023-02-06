@@ -1,5 +1,7 @@
 package com.codesquad.autobid.user.service;
 
+import com.codesquad.autobid.OauthToken;
+import com.codesquad.autobid.user.domain.UserVO;
 import com.codesquad.autobid.user.domain.Users;
 import com.codesquad.autobid.user.repository.UserRepository;
 import org.slf4j.Logger;
@@ -7,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,21 +26,24 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void login(Map<String,String> userData) {
+    public void login(UserVO userVO, OauthToken oauthToken) {
+        Users user = mapperUser(userVO);
+        user.setAccessToken(oauthToken.getAccess_token());
+        user.setRefreshToken(oauthToken.getRefresh_token());
+        userRepository.save(user);
+        logger.debug("userUID : {}",userVO.getUserUid());
+    }
 
-        Set<String> collect = userData.entrySet().stream()
-                .filter(e -> e.getKey().startsWith("id"))
-                .filter(e -> e.getKey().startsWith("email"))
-                .filter(e -> e.getKey().startsWith("name"))
-                .filter(e -> e.getKey().startsWith("mobileNum"))
-                .filter(e -> e.getKey().startsWith("birthdate"))
-                .map(Map.Entry::getValue)
-                .collect(Collectors.toSet());
+    public Users mapperUser(UserVO userVO) {
+        Users user = new Users();
+        user.setUserUid(userVO.getUserUid());
+        user.setUserEmail(userVO.getUserEmail());
+        user.setUserBirthdate(userVO.getUserBirthdate());
+        user.setUserMobilenum(userVO.getUserMobilenum());
+        user.setUserName(userVO.getUserName());
+        user.setCreateAt(LocalDateTime.now());
+        user.setUpdateAt(LocalDateTime.now());
 
-        for(String s : collect){
-            logger.info("s is : {}",s);
-        }
-
-//        logger.info("id : {}",data);
+        return user;
     }
 }
