@@ -6,7 +6,8 @@
   "scripts": {
     "start": "parcel index.html --open",
     "build": "parcel build index.html",
-    "server": "node server/server.js"
+    "server": "node server/server.js",
+    "test": "parcel test/test.html --open"
   },
   "dependencies": {
     "redux": "4.0.0",
