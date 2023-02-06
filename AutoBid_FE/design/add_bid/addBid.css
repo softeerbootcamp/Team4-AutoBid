@@ -23,9 +23,10 @@ hr {
 }
 
 .add-bid__label {
+  flex: 30%;
+  flex-grow: 0;
   font-size: 18px;
   font-weight: bold;
-  /*flex: 30%;*/
 }
 
 .add-bid__title {
@@ -37,7 +38,9 @@ hr {
 
 .add-bid__car-type__div {
   display: flex;
-  justify-content: center;
+  /*justify-content: center;*/
+  flex: 30%;
+  text-align: right;
 }
 
 .add-bid__car-type__label {
@@ -65,12 +68,14 @@ hr {
 
 .add-bid__bid-time__div > div {
   display: flex;
-  justify-content: center;
+  /*justify-content: center;*/
+  flex: 30%;
+  text-align: right;
 }
 
 .add-bid__bid-start-time__div, .add-bid__bid-end-time__div {
-  display: flex;
-  justify-content: center;
+  /*display: flex;*/
+  /*justify-content: center;*/
   padding: 8px;
 }
 
@@ -84,7 +89,9 @@ hr {
 
 .add-bid__bid-start-price__div {
   display: flex;
-  justify-content: center;
+  /*justify-content: center;*/
+  flex: 30%;
+  text-align: right;
 }
 
 .add-bid__bid-start-price__label {
