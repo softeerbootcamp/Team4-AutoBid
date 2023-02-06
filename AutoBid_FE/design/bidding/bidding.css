@@ -11,7 +11,8 @@
 }
 
 .car-info__bid-price {
-  background-color: var(--color-light-blue);
+  background-color: var(--color-light-gray);
+  color: var(--color-black);
   height: fit-content;
   margin-right: 8px;
   padding: 8px;
@@ -19,7 +20,8 @@
 }
 
 .car-info__bid-submit {
-  background-color: var(--color-light-blue);
+  background-color: var(--color-blue);
+  color: var(--color-white);
   height: inherit;
   width: 25%;
 }
