@@ -12,7 +12,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 
 @Component
-@Service
 public class S3Uploader {
 
 	private final AmazonS3 amazonS3;
