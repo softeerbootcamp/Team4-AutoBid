@@ -1,6 +1,7 @@
 import Component from "../../core/component";
 import {CounterState, counterStateSelector, decrement, increment} from "../../store/counter";
 import GlobalStore from "../../core/store";
+import "./counter.css";
 
 class Counter extends Component<CounterState, any> {
     stateSelector(globalState: any): CounterState | undefined {

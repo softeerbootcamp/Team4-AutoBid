@@ -1,5 +1,6 @@
 import Component from "../core/component";
 import Counter from "./Counter/Counter";
+import "./app.css";
 
 class App extends Component<any> {
     template(): InnerHTML["innerHTML"] {

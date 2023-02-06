@@ -1,0 +1,21 @@
+/* WARN: DO NOT REFORMAT THIS CODE */
+
+:root {
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-blue: #007AFF;
+  --color-semi-blue: #48A2FD;
+  --color-light-blue: #D6EAFF;
+  --color-lighter-blue: #F7FBFF;
+  --color-lightest-blue: #FBFDFF;
+  --color-gray: #666666;
+  --color-semi-gray: #808080;
+  --color-light-gray: #D3D3D3;
+
+  --box-shadow-level-1: 2px 2px 20px 0 #0000000f;
+  --box-shadow-level-2: 4px 4px 20px 10px #0000000f;
+  --box-shadow-level-3: 6px 6px 20px 20px #0000000f;
+
+  --container-max-width: 1050px;
+  --container-padding: 0 32px;
+}
