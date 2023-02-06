@@ -1,16 +1,13 @@
 package com.codesquad.autobid.user.domain;
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Table("users")
-public class Users {
+public class User {
 
     @Id
     @Column("user_id")
@@ -43,11 +40,11 @@ public class Users {
     @Column("refresh_token")
     private String refreshToken;
 
-    public Users() {
+    public User() {
 
     }
 
-    public Users(String userUid, String userEmail, String userName, String userMobilenum, String userBirthdate, LocalDateTime createAt, LocalDateTime updateAt, String accessToken, String refreshToken) {
+    public User(String userUid, String userEmail, String userName, String userMobilenum, String userBirthdate, LocalDateTime createAt, LocalDateTime updateAt, String accessToken, String refreshToken) {
         this.userUid = userUid;
         this.userEmail = userEmail;
         this.userName = userName;

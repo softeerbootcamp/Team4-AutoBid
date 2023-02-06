@@ -1,6 +1,6 @@
 package com.codesquad.autobid.user.repository;
 
-import com.codesquad.autobid.user.domain.Users;
+import com.codesquad.autobid.user.domain.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,9 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @SpringBootTest
 class UserRepositoryTest {
@@ -34,9 +32,9 @@ class UserRepositoryTest {
     void save() {
         LocalDateTime formatted = LocalDateTime.now();
 
-        Users user = new Users("123456","email@email.com","성준", "01012341234","19960214", formatted, formatted,"accessToken","refreshToken");
+        User user = new User("123456","email@email.com","성준", "01012341234","19960214", formatted, formatted,"accessToken","refreshToken");
 
-        Users saveUser = userRepository.save(user);
+        User saveUser = userRepository.save(user);
 
         Assertions.assertThat(saveUser).isEqualTo(user);
     }
