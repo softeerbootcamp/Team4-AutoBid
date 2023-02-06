@@ -51,14 +51,16 @@ public class AuthHandler {
 	@Value("${hyundai.auth.token_request_uri}")
 	private String TOKEN_REQUEST_URI;
 
-	// JSON 응답을 객체로 변환
-	private OauthToken oauthToken = null;
+
 
 	public OauthToken getOauthToken(OauthType oauthType, String value) {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", oauthType.getGrantType()); // 고정값
 		params.add("redirect_uri", REDIRECT_URI);
 		params.add(oauthType.getTokenType(), value);
+
+		// JSON 응답을 객체로 변환
+		OauthToken oauthToken = null;
 
 		// HttpHeader 오브젝트 생성
 		HttpHeaders headersForAccessToken = new HttpHeaders();
@@ -87,51 +89,5 @@ public class AuthHandler {
 		return oauthToken;
 	}
 
-	public void userProfileAPICall(String accessToken) {    // 발급받은 Access Token
-		ObjectMapper mapper = new ObjectMapper();
-		UserVO user = new UserVO();
-		StringBuffer sb;
-		String responseData = "";
-
-		try{
-			String apiURL = "https://prd.kr-ccapi.hyundai.com/api/v1/user/profile";
-			URL url = new URL(apiURL);
-
-			HttpURLConnection con = (HttpURLConnection)url.openConnection();
-
-			con.setRequestMethod("GET");
-
-			// Set Header Info
-			con.setRequestProperty("Authorization", "Bearer " + accessToken);
-
-			int responseCode = con.getResponseCode();
-			BufferedReader br;
-			if(con.getResponseCode() == HttpURLConnection.HTTP_OK){
-				br = new BufferedReader(new InputStreamReader(con.getInputStream())); // 정상호출
-			} else {
-				br = new BufferedReader(new InputStreamReader(con.getErrorStream())); // 에러발생
-			}
-
-			sb = new StringBuffer();
-			while ((responseData = br.readLine()) != null){
-				sb.append(responseData);
-			}
-
-			br.close();
-
-			try{
-				user = mapper.readValue(sb.toString(), UserVO.class);
-			}catch (IOException e){
-				e.printStackTrace();
-			}
-
-			userService.login(user, oauthToken);
-			logger.info("responseCode = {}",responseCode);
-			logger.info("userData = {}",sb.toString());
-
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-	}
 
 }

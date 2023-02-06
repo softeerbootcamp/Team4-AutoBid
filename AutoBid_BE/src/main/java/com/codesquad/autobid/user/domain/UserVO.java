@@ -2,22 +2,25 @@ package com.codesquad.autobid.user.domain;
 
 import org.springframework.data.relational.core.mapping.Column;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class UserVO {
 
     @Column("user_uid")
-    private String userUid;
+    private String uid;
 
     @Column("user_email")
-    private String userEmail;
+    private String email;
 
     @Column("user_name")
-    private String userName;
+    private String name;
 
     @Column("user_mobilenum")
-    private String userMobilenum;
+    private String mobilenum;
 
     @Column("user_birthdate")
-    private String userBirthdate;
+    private LocalDate birthdate;
 
     private String lang;
 
@@ -27,54 +30,54 @@ public class UserVO {
 
     }
 
-    public UserVO(String userUid, String userEmail, String userName, String userMobilenum, String userBirthdate, String lang, String social) {
-        this.userUid = userUid;
-        this.userEmail = userEmail;
-        this.userName = userName;
-        this.userMobilenum = userMobilenum;
-        this.userBirthdate = userBirthdate;
+    public UserVO(String uid, String email, String name, String mobilenum, LocalDate birthdate, String lang, String social) {
+        this.uid = uid;
+        this.email = email;
+        this.name = name;
+        this.mobilenum = mobilenum;
+        this.birthdate = birthdate;
         this.lang = lang;
         this.social = social;
     }
 
-    public String getUserUid() {
-        return userUid;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUserUid(String userUid) {
-        this.userUid = userUid;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getUserMobilenum() {
-        return userMobilenum;
+    public String getMobilenum() {
+        return mobilenum;
     }
 
-    public void setUserMobilenum(String userMobilenum) {
-        this.userMobilenum = userMobilenum;
+    public void setMobilenum(String mobilenum) {
+        this.mobilenum = mobilenum;
     }
 
-    public String getUserBirthdate() {
-        return userBirthdate;
+    public LocalDate getBirthdate() {
+        return birthdate;
     }
 
-    public void setUserBirthdate(String userBirthdate) {
-        this.userBirthdate = userBirthdate;
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     public String getLang() {
