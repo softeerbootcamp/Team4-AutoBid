@@ -1,0 +1,122 @@
+@import "../css/reset.css";
+@import "../css/common.css";
+
+.my-page__sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: auto auto 64px;
+  max-width: var(--container-max-width);
+  padding: var(--container-padding);
+}
+
+.my-page__main__ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.main__card-list__select-btn-group {
+  border-bottom: 1px solid lightgray;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.main__card-list__select-btn-group__btn {
+  border-bottom: 1px solid transparent;
+  font-size: 20px;
+  padding: 0 20px 15px;
+  transition: 0.1s;
+}
+
+.main__card-list__select-btn-group__btn--selected,
+.main__card-list__select-btn-group__btn:hover {
+  border-bottom: 1px solid var(--color-blue);
+  color: var(--color-blue);
+}
+
+.my-page__main__card-list {
+  display: flex;
+  gap: 36px;
+  padding: 32px 0;
+}
+
+.main__card-list__grid__item {
+  border-radius: 15px;
+  box-shadow: var(--box-shadow-level-1);
+  display: inline-block;
+  transition: 0.1s;
+  width: 250px;
+}
+
+.main__card-list__grid__item:hover {
+  transform: scale(1.02);
+}
+
+.main__card-list__grid__item__img-group {
+  align-items: center;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  display: flex;
+  height: 140px;
+  overflow: hidden;
+}
+
+.main__card-list__grid__item__img {
+  width: 250px;
+}
+
+.main__card-list__grid__item__img-swap-btn-group {
+  display: flex;
+  height: 140px;
+  justify-content: space-between;
+  opacity: 0;
+  position: absolute;
+  transition: 0.5s;
+  width: 250px;
+  z-index: 1;
+}
+
+.main__card-list__grid__item__img-swap-btn-group:hover {
+  opacity: 0.5;
+}
+
+.grid__item__img-swap-btn-group__btn {
+  color: white;
+  margin: 5px
+}
+
+.main__card-list__grid__item__details {
+  cursor: pointer;
+  padding: 16px;
+  text-align: left;
+}
+
+.grid__item__details__tags {
+  color: var(--color-semi-blue);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.grid__item__details__title {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.grid__item__details__infos {
+  display: block;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.grid__item__details__price {
+  align-items: baseline;
+  display: flex;
+}
+
+.grid__item__details__price b {
+  color: var(--color-blue);
+  font-size: 25px;
+  margin-right: 4px;
+}
