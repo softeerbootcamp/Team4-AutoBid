@@ -1,5 +1,7 @@
 package com.codesquad.autobid.user.domain;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -8,7 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Table("users")
+@Table("users") @Getter @Setter
 public class User {
 
     @Id
@@ -54,88 +56,16 @@ public class User {
         this.refreshToken = refreshToken;
     }
 
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getMobilenum() {
-        return mobilenum;
-    }
-
-    public void setMobilenum(String mobilenum) {
-        this.mobilenum = mobilenum;
-    }
-
-    public LocalDate getBirthdate() {
-        return birthdate;
-    }
-
-    public void setBirthdate(LocalDate birthdate) {
-        this.birthdate = birthdate;
-    }
-
-    public LocalDateTime getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(LocalDateTime createAt) {
-        this.createAt = createAt;
-    }
-
-    public LocalDateTime getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(LocalDateTime updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void update(UserVO userVO) {
         this.uid = userVO.getId();
         this.birthdate = parseDate(userVO.getBirthdate());
         this.email = userVO.getEmail();
-        this.mobilenum = userVO.getMobilenum();
+        this.mobilenum = userVO.getMobileNum();
         this.name = userVO.getName();
     }
 
     public static User of(UserVO userVo, String refreshToken){
-        return new User(userVo.getId(), userVo.getEmail(), userVo.getName(), userVo.getMobilenum(), parseDate(userVo.getBirthdate()), LocalDateTime.now(), LocalDateTime.now(), refreshToken);
+        return new User(userVo.getId(), userVo.getEmail(), userVo.getName(), userVo.getMobileNum(), parseDate(userVo.getBirthdate()), LocalDateTime.now(), LocalDateTime.now(), refreshToken);
     }
 
     public static LocalDate parseDate(String date){

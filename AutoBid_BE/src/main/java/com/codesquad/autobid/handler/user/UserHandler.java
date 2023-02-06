@@ -53,7 +53,6 @@ public class UserHandler {
 
             try{
                 user = mapper.readValue(sb.toString(), UserVO.class);
-                System.out.println("#######" + sb.toString());
             }catch (IOException e){
                 e.printStackTrace();
             }
