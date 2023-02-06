@@ -2,6 +2,7 @@ import Component from "../../core/component";
 import "./header.css";
 import {login, logout, UserState, userStateSelector} from "../../store/user";
 import GlobalStore from "../../core/store";
+import AuthManager from "../../api/AuthManager";
 
 class Header extends Component<UserState> {
     stateSelector(globalState: any): UserState | undefined {
@@ -33,7 +34,9 @@ class Header extends Component<UserState> {
 
     initialize() {
         this.addEvent('click', '.my-page-btn', () => {
-            GlobalStore.get().dispatch(login('이수균'));
+            AuthManager.authRequiredFetch(() => fetch(''), 200).then(res => {
+                console.log(res);
+            }).catch(console.error);
         });
         this.addEvent('click', '.logout-btn', () => {
             GlobalStore.get().dispatch(logout());
