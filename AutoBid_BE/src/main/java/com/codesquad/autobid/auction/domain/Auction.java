@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.annotation.processing.Generated;
 
+import org.springframework.core.SpringVersion;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -46,7 +47,7 @@ public class Auction {
 	@Column(value = "updated_at")
 	private LocalDateTime updatedAt;
 
-	public Auction(Long carId, Long userId, LocalDateTime auctionStartTime, LocalDateTime auctionEndTime,
+	private Auction(Long carId, Long userId, LocalDateTime auctionStartTime, LocalDateTime auctionEndTime,
 		Long auctionStartPrice,
 		Long auctionEndPrice, AuctionStatus auctionStatus) {
 		this.carId = AggregateReference.to(carId);
@@ -57,4 +58,11 @@ public class Auction {
 		this.auctionEndPrice = auctionEndPrice;
 		this.auctionStatus = auctionStatus;
 	}
+
+	public static Auction of(Long carId, Long userId, LocalDateTime auctionStartTime, LocalDateTime auctionEndTime,
+		Long auctionStartPrice, Long auctionEndPrice, AuctionStatus auctionStatus) {
+		return new Auction(carId, userId, auctionStartTime, auctionEndTime, auctionStartPrice, auctionEndPrice,
+			auctionStatus);
+	}
+
 }
