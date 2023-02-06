@@ -4,7 +4,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Table("users")
 public class User {
@@ -14,28 +16,25 @@ public class User {
     private Long id;
 
     @Column("user_uid")
-    private String userUid;
+    private String uid;
 
     @Column("user_email")
-    private String userEmail;
+    private String email;
 
     @Column("user_name")
-    private String userName;
+    private String name;
 
     @Column("user_mobilenum")
-    private String userMobilenum;
+    private String mobilenum;
 
     @Column("user_birthdate")
-    private String userBirthdate;
+    private LocalDate birthdate;
 
-    @Column("create_at")
+    @Column("created_at")
     private LocalDateTime createAt;
 
-    @Column("update_at")
+    @Column("updated_at")
     private LocalDateTime updateAt;
-
-    @Column("access_token")
-    private String accessToken;
 
     @Column("refresh_token")
     private String refreshToken;
@@ -44,56 +43,55 @@ public class User {
 
     }
 
-    public User(String userUid, String userEmail, String userName, String userMobilenum, String userBirthdate, LocalDateTime createAt, LocalDateTime updateAt, String accessToken, String refreshToken) {
-        this.userUid = userUid;
-        this.userEmail = userEmail;
-        this.userName = userName;
-        this.userMobilenum = userMobilenum;
-        this.userBirthdate = userBirthdate;
+    public User(String userUid, String userEmail, String userName, String userMobilenum, LocalDate userBirthdate, LocalDateTime createAt, LocalDateTime updateAt, String refreshToken) {
+        this.uid = userUid;
+        this.email = userEmail;
+        this.name = userName;
+        this.mobilenum = userMobilenum;
+        this.birthdate = userBirthdate;
         this.createAt = createAt;
         this.updateAt = updateAt;
-        this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 
-    public String getUserUid() {
-        return userUid;
+    public String getUid() {
+        return uid;
     }
 
-    public void setUserUid(String userUid) {
-        this.userUid = userUid;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getUserMobilenum() {
-        return userMobilenum;
+    public String getMobilenum() {
+        return mobilenum;
     }
 
-    public void setUserMobilenum(String userMobilenum) {
-        this.userMobilenum = userMobilenum;
+    public void setMobilenum(String mobilenum) {
+        this.mobilenum = mobilenum;
     }
 
-    public String getUserBirthdate() {
-        return userBirthdate;
+    public LocalDate getBirthdate() {
+        return birthdate;
     }
 
-    public void setUserBirthdate(String userBirthdate) {
-        this.userBirthdate = userBirthdate;
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
     }
 
     public LocalDateTime getCreateAt() {
@@ -112,14 +110,6 @@ public class User {
         this.updateAt = updateAt;
     }
 
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
-
     public String getRefreshToken() {
         return refreshToken;
     }
@@ -135,4 +125,23 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public void update(UserVO userVO) {
+        this.uid = userVO.getId();
+        this.birthdate = parseDate(userVO.getBirthdate());
+        this.email = userVO.getEmail();
+        this.mobilenum = userVO.getMobilenum();
+        this.name = userVO.getName();
+    }
+
+    public static User of(UserVO userVo, String refreshToken){
+        return new User(userVo.getId(), userVo.getEmail(), userVo.getName(), userVo.getMobilenum(), parseDate(userVo.getBirthdate()), LocalDateTime.now(), LocalDateTime.now(), refreshToken);
+    }
+
+    public static LocalDate parseDate(String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
+//        return LocalDate.parse(date, formatter);
+        return LocalDate.now();
+    }
+
 }
