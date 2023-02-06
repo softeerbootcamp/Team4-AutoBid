@@ -23,11 +23,6 @@ public class UserRepository {
 
     public Users save(Users user) {
 
-        // 저장 시간 설정
-        LocalDateTime current = LocalDateTime.now();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분");
-//        String formatted = current.format(formatter);
-
         String sql = "INSERT INTO users(" +
                 "user_uid, user_email, user_name, user_mobilenum,user_birthdate, created_at, updated_at, refresh_token)" +
                 " values (?,?,?,?,?,?,?,?)";

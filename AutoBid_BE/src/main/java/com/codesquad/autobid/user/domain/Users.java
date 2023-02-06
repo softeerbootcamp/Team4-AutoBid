@@ -59,6 +59,14 @@ public class Users {
         this.refreshToken = refreshToken;
     }
 
+    public Users(String userUid, String userEmail, String userName, String userMobilenum, String userBirthdate) {
+        this.userUid = userUid;
+        this.userEmail = userEmail;
+        this.userName = userName;
+        this.userMobilenum = userMobilenum;
+        this.userBirthdate = userBirthdate;
+    }
+
     public String getUserUid() {
         return userUid;
     }

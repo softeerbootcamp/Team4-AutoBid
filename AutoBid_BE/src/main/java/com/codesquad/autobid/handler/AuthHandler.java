@@ -1,5 +1,10 @@
 package com.codesquad.autobid.handler;
 
+import com.codesquad.autobid.user.repository.UserRepository;
+import com.codesquad.autobid.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,11 +19,26 @@ import com.codesquad.autobid.OauthToken;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 public class AuthHandler {
 
+	private Logger logger = LoggerFactory.getLogger(AuthHandler.class);
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 	private static final RestTemplate rt = new RestTemplate();
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Value("${hyundai.auth.redirect_uri}")
 	private String REDIRECT_URI;
@@ -38,8 +58,7 @@ public class AuthHandler {
 		// HttpHeader 오브젝트 생성
 		HttpHeaders headersForAccessToken = new HttpHeaders();
 		headersForAccessToken.add("Content-type", "application/x-www-form-urlencoded");
-		headersForAccessToken.add("Authorization",
-			AUTHORIZATION_KEY);
+		headersForAccessToken.add("Authorization", AUTHORIZATION_KEY);
 
 		// HttpHeader와 HttpBody를 하나의 오브젝트에 담기
 		HttpEntity<MultiValueMap<String, String>> hyundaiTokenRequest = new HttpEntity<>(params, headersForAccessToken);
@@ -63,4 +82,52 @@ public class AuthHandler {
 
 		return oauthToken;
 	}
+
+	public void userProfileAPICall(String accessToken) {    // 발급받은 Access Token
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, String> userData = new HashMap<>();
+		StringBuffer sb;
+		String responseData = "";
+
+		try{
+			String apiURL = "https://prd.kr-ccapi.hyundai.com/api/v1/user/profile";
+			URL url = new URL(apiURL);
+
+			HttpURLConnection con = (HttpURLConnection)url.openConnection();
+
+			con.setRequestMethod("GET");
+
+			// Set Header Info
+			con.setRequestProperty("Authorization", "Bearer " + accessToken);
+
+			int responseCode = con.getResponseCode();
+			BufferedReader br;
+			if(con.getResponseCode() == HttpURLConnection.HTTP_OK){
+				br = new BufferedReader(new InputStreamReader(con.getInputStream())); // 정상호출
+			} else {
+				br = new BufferedReader(new InputStreamReader(con.getErrorStream())); // 에러발생
+			}
+
+			sb = new StringBuffer();
+			while ((responseData = br.readLine()) != null){
+				sb.append(responseData);
+			}
+
+			br.close();
+
+			try{
+				userData = mapper.readValue(sb.toString(), Map.class);
+			}catch (IOException e){
+				e.printStackTrace();
+			}
+
+			userService.login(userData);
+			logger.info("responseCode = {}",responseCode);
+			logger.info("userData = {}",sb.toString());
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
 }
