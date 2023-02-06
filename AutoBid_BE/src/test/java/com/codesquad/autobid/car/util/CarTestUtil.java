@@ -4,7 +4,10 @@ import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.car.domain.Distance;
 import com.codesquad.autobid.car.domain.State;
 import com.codesquad.autobid.car.domain.Type;
+import com.codesquad.autobid.user.domain.User;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +18,7 @@ public class CarTestUtil {
         for (int i = 0; i < count; i++) {
             cars.add(new Car(
                     null,
-                    userId,
+                    AggregateReference.to(userId),
                     State.NOT_FOR_SALE,
                     Type.ETC,
                     Distance.from(count + " KM"),
@@ -26,5 +29,9 @@ public class CarTestUtil {
                     LocalDateTime.now()));
         }
         return cars;
+    }
+
+    public static User getNewUser() {
+        return new User("uid#1", "email#1", "name#1", "phoneNumber#1", LocalDate.now(), LocalDateTime.now(), LocalDateTime.now(), "refreshToken#1");
     }
 }
