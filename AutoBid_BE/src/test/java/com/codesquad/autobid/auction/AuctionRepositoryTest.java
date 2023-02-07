@@ -9,6 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.codesquad.autobid.auction.domain.Auction;
@@ -46,14 +47,15 @@ public class AuctionRepositoryTest {
 
 		user = userRepository.save(user);
 
-		Car car = new Car(null, user.getId(), State.FOR_SALE, Type.ETC, Distance.from(new AvailableDistanceVO(100L, 1)),
+		Car car = new Car(null, AggregateReference.to(user.getId()), State.FOR_SALE, Type.ETC, Distance.from(new AvailableDistanceVO(100L, 1)),
 			"carid", "name", "sellname",
 			LocalDateTime.now(), LocalDateTime.now());
 
 		car = carRepository.save(car);
 
 		// when
-		Auction auction = new Auction(car.getId(), user.getId(), LocalDateTime.now(), LocalDateTime.now(), 100L, 100L, AuctionStatus.BEFORE);
+		Auction auction = Auction.of(car.getId(), user.getId(), LocalDateTime.now(), LocalDateTime.now(), 100L, 100L,
+			AuctionStatus.BEFORE);
 
 		Auction auctionData = auctionRepository.save(auction);
 
