@@ -8,6 +8,9 @@ import com.codesquad.autobid.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
+@CrossOrigin("${client.origin}")
 public class AuthController {
+
+    /**
+     *  TODO
+     *   1. SameSite 허용 : 쿠키 허용
+     *   2. 클라이언트에 user 정보 전달
+     * **/
 
     private final AuthService authService;
 
@@ -36,5 +46,6 @@ public class AuthController {
         HttpSession httpSession = httpServletRequest.getSession();
         httpSession.setAttribute("user", user);
         httpSession.setAttribute("accessToken", oauthToken.getAccessToken());
+
     }
 }

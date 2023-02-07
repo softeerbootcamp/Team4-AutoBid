@@ -36,7 +36,7 @@ public class UserVO {
 
     private String signUpDate;
 
-    public UserVO() {
+     public UserVO() {
 
     }
 
