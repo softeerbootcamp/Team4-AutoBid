@@ -54,8 +54,6 @@ body {
     border-radius: 15px;
     width: 250px;
     transition: 0.1s;
-    /*overflow: hidden;*/
-    /*position: relative;*/
 }
 
 .main__card-list__grid__item:hover {
@@ -68,6 +66,8 @@ body {
     align-items: center;
     overflow: scroll;
     scroll-behavior: smooth;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
 }
 
 .main__card-list__grid__item__img {
