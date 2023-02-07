@@ -1,6 +1,7 @@
 package com.codesquad.autobid.car.controller;
 
 import com.codesquad.autobid.car.domain.Car;
+import com.codesquad.autobid.car.domain.CheckCarListRequest;
 import com.codesquad.autobid.car.repository.CarRepository;
 import com.codesquad.autobid.car.util.CarTestUtil;
 import com.codesquad.autobid.user.domain.User;
@@ -47,7 +48,7 @@ class CarControllerTest {
         String accessToken = "accessToken";
         boolean refresh = false;
         // when
-        List<Car> cars = carController.getCars(user, accessToken, refresh);
+        List<Car> cars = carController.getCars(user, accessToken, new CheckCarListRequest(false));
         // then
         Assertions.assertAll(
                 () -> org.assertj.core.api.Assertions.assertThat(cars.size()).isEqualTo(3)
