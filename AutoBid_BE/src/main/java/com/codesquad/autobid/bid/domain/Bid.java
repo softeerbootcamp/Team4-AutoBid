@@ -1,4 +1,4 @@
-package com.codesquad.autobid.bid;
+package com.codesquad.autobid.bid.domain;
 
 import java.time.LocalDateTime;
 
