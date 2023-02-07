@@ -35,7 +35,7 @@ public class AuctionService {
 			auctionRegisterRequest.getAuctionEndTime(), auctionRegisterRequest.getAuctionStartPrice(),
 			AuctionStatus.BEFORE_END_PRICE, AuctionStatus.BEFORE);
 
-		auction = auctionRepository.save(auction);
+		auctionRepository.save(auction);
 
 		addImageList(auctionRegisterRequest.getMultipartFileList(), auction.getId());
 
@@ -43,6 +43,7 @@ public class AuctionService {
 
 	@Transactional
 	public void addImageList(List<MultipartFile> multipartFiles, Long auctionId) {
+
 		for (MultipartFile multipartFile : multipartFiles) {
 			try {
 				String imageUrl = s3Uploader.upload(multipartFile);
@@ -52,6 +53,5 @@ public class AuctionService {
 			}
 		}
 	}
-
 
 }
