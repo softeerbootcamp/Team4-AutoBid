@@ -1,30 +1,44 @@
-import { registerReducer } from "../core/store";
-import { Action, Reducer } from "redux";
+import GlobalStore, { registerReducer } from "../core/store";
+import {Reducer} from "redux";
+import {requestCode, requestInvalidateSession, requestLiveSession, UserInfo} from "../api/auth";
 
 enum UserActionType {
     LOGIN = 'user/LOGIN',
     LOGOUT = 'user/LOGOUT'
 }
 
-export interface UserAction extends Action<UserActionType> { username: string }
-export type UserState = { isLogin: boolean, username: string };
+export type UserState = UserInfo & { isLogin: boolean };
 
-const initialState: UserState = { isLogin: false, username: "" };
+const initialState: UserState = {
+    isLogin: false,
+    userId: -1,
+    username: "",
+    email: "",
+    phone: ""
+};
 
-export const login = (username: string) => ({ type: UserActionType.LOGIN, username });
-export const logout = () => ({ type: UserActionType.LOGOUT, username: "" });
+export const login = async () => {
+    const code = await requestCode();
+    const userInfo = await requestLiveSession(code);
+    if (!userInfo) return;
+    GlobalStore.get().dispatch({ type: UserActionType.LOGIN, userInfo });
+};
 
-const user: Reducer<UserState, UserAction> = (state = initialState, action: UserAction) => {
+export const logout = async () => {
+    const logoutResult = await requestInvalidateSession();
+    if (!logoutResult) return;
+    GlobalStore.get().dispatch({ type: UserActionType.LOGOUT });
+};
+
+const user: Reducer<UserState> = (state = initialState, action) => {
     switch (action.type) {
         case UserActionType.LOGIN:
             return { ...state,
                 isLogin: true,
-                username: action.username
+                ...(action.userInfo)
             }
         case UserActionType.LOGOUT:
-            return { ...state,
-                isLogin: false,
-            }
+            return initialState;
         default:
             return state;
     }
