@@ -6,12 +6,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Table("users") @Getter @Setter
-public class User {
+public class User implements Serializable {
 
     @Id
     @Column("user_id")

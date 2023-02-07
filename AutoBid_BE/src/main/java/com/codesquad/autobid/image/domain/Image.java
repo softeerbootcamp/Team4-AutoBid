@@ -1,11 +1,15 @@
 package com.codesquad.autobid.image.domain;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
 
 import com.codesquad.autobid.auction.domain.Auction;
 
+@Getter
+@Setter
 public class Image {
 
 	@Id
