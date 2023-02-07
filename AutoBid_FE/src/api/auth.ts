@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import {popupCenter} from "../core/util";
 
 dotenv.config();
 const AUTH_CLIENT_ID = process.env.AUTH_CLIENT_ID as string;
@@ -17,8 +18,7 @@ const getAuthUri = () => {
 
 export const requestCode = () => {
     const authUri = getAuthUri();
-    const popup = window.open(authUri, 'Hyundai OAuth',
-        'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no') as Window;
+    const popup = popupCenter({url: authUri, title: 'Hyundai OAuth', w: 500, h: 600});
     return new Promise((resolve: (code: string) => any, reject) => {
         const targetUrl = new URL(AUTH_REDIRECT_URI);
         const checker = setInterval(() => {
