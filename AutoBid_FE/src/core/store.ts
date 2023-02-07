@@ -1,5 +1,6 @@
 import {combineReducers, createStore, Reducer, Store} from "redux";
 
+const emptyReducer = () => {};
 const reducers: Reducer<any, any>[] = [];
 
 export const registerReducer = (reducer: Reducer<any, any>): string => {
@@ -18,12 +19,14 @@ class GlobalStore {
     static #store: Store|null = null;
     static get(): Store {
         if (GlobalStore.#store === null) {
-            const combinedReducer = combineReducers(reducers);
+            let combinedReducer: Reducer = reducers.length ?
+                combineReducers(reducers) : emptyReducer;
             GlobalStore.#store = createStore(combinedReducer,
                 window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
         }
         return GlobalStore.#store;
     }
 }
+
 
 export default GlobalStore;
