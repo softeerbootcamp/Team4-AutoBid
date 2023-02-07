@@ -45,6 +45,5 @@ public class AuthController {
         HttpSession httpSession = httpServletRequest.getSession();
         httpSession.setAttribute("user", user);
         httpSession.setAttribute("accessToken", oauthToken.getAccessToken());
-
     }
 }
