@@ -11,10 +11,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         HttpSession session = request.getSession(false);
-        if (session == null) {
-            return false;
-        }
-        if (session.getAttribute(OauthToken.ACCESS_TOKEN_KEY) == null) {
+        if (session == null || session.getAttribute(OauthToken.ACCESS_TOKEN_KEY) == null) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
         return true;
