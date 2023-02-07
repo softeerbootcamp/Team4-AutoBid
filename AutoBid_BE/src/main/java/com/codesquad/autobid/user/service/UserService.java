@@ -30,7 +30,7 @@ public class UserService {
     @Transactional
     public User findUser(OauthToken oauthToken) {
         UserVO userVO = userHandler.userProfileAPICall(oauthToken);
-        User user = userRepository.findByUid(userVO.getId()).orElse(User.of(userVO, oauthToken.getRefreshToken()));
+        User user = userRepository.findByUid(userVO.getId()).orElseGet(() -> User.of(userVO, oauthToken.getRefreshToken()));
         return userRepository.save(user);
     }
 }
