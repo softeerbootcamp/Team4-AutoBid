@@ -1,6 +1,7 @@
 package com.codesquad.autobid.car.service;
 
 import com.codesquad.autobid.car.domain.Car;
+import com.codesquad.autobid.car.domain.CheckCarResponse;
 import com.codesquad.autobid.car.repository.CarRepository;
 import com.codesquad.autobid.car.util.CarTestUtil;
 import com.codesquad.autobid.user.domain.User;
@@ -47,7 +48,7 @@ class CarServiceTest {
         boolean refresh = false;
         saveCar(user.getId(), 3);
         // when
-        List<Car> cars = carService.getCars(user.getId(), accessToken, refresh);
+        List<CheckCarResponse> cars = carService.getCars(user.getId(), accessToken, refresh);
         // then
         assertAll(
                 () -> assertThat(cars.size()).isEqualTo(3)
