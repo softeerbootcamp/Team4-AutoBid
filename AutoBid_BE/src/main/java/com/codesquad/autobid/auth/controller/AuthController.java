@@ -28,7 +28,6 @@ public class AuthController {
      * **/
 
     private final AuthService authService;
-
     private final UserService userService;
     private final Logger logger = LoggerFactory.getLogger(AuthController.class);
 

@@ -1,6 +1,7 @@
 package com.codesquad.autobid.user.controller;
 
 import com.codesquad.autobid.user.domain.User;
+import com.codesquad.autobid.web.argumentresolver.AuthorizedUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,14 +15,9 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/user")
 public class UserController {
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> findById(HttpServletRequest httpServletRequest) {
-
-        User user = (User) httpServletRequest.getSession().getAttribute("user");
-
-        ResponseEntity<User> userEntity = new ResponseEntity<>(user, HttpStatus.OK);
-
-        return userEntity;
+    @GetMapping
+    public ResponseEntity<User> findById(@AuthorizedUser User user) {
+        return  new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     /**
