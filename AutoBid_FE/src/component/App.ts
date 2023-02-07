@@ -1,17 +1,17 @@
 import Component from "../core/component";
-import Counter from "./Counter/Counter";
 import "./app.css";
+import Header from "./Header/Header";
 
 class App extends Component<any> {
     template(): InnerHTML["innerHTML"] {
         return `
-        <div data-component="Counter"></div>
+        <header data-component="Header"></header>
         `;
     }
 
     mounted() {
-        const $counter = this.$target.querySelector('[data-component="Counter"]') as HTMLElement;
-        new Counter($counter, {});
+        const $header = this.$target.querySelector('[data-component="Header"]') as HTMLElement;
+        new Header($header, {});
     }
 }
 
