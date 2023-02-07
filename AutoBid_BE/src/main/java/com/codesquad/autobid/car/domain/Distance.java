@@ -30,6 +30,6 @@ public class Distance {
 
     @Override
     public String toString() {
-        return distance + " " + unit.getPlaceholder();
+        return distance + unit.getPlaceholder();
     }
 }
