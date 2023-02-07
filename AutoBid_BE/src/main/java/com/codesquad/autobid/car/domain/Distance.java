@@ -10,6 +10,7 @@ public class Distance {
 
     @Column("car_distance")
     private Long distance;
+
     @Column("car_distance_unit")
     private DistanceUnit unit;
 

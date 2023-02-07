@@ -9,7 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 @Service
 public class UserService {
 
@@ -25,6 +27,7 @@ public class UserService {
         this.userHandler = userHandler;
     }
 
+    @Transactional
     public User findUser(OauthToken oauthToken) {
         UserVO userVO = userHandler.userProfileAPICall(oauthToken);
         User user = userRepository.findByUid(userVO.getId()).orElse(User.of(userVO, oauthToken.getRefreshToken()));

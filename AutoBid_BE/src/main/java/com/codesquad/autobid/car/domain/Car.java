@@ -29,9 +29,11 @@ public class Car {
     private State state;
     @Column("car_type")
     private Type type;
+
     @Column("car_distance")
     @Embedded(onEmpty = Embedded.OnEmpty.USE_EMPTY)
     private Distance distance;
+
     @Column("car_carid")
     private String carId;
     @Column("car_name")
