@@ -31,23 +31,10 @@ public class AuthController {
     @GetMapping("/oauth/login")
     public void oauth(String code, HttpServletRequest httpServletRequest) {
         OauthToken oauthToken = authService.getOauthToken(code);
-
-        String accessToken = oauthToken.getAccess_token();
-
         User user = userService.findUser(oauthToken);
 
         HttpSession httpSession = httpServletRequest.getSession();
-
-        httpSession.setAttribute("user",user);
-        httpSession.setAttribute("access_token",accessToken);
-
-
-
-
-
-
-
-
-        String refreshtoken = oauthToken.getRefresh_token();
+        httpSession.setAttribute("user", user);
+        httpSession.setAttribute("accessToken", oauthToken.getAccessToken());
     }
 }

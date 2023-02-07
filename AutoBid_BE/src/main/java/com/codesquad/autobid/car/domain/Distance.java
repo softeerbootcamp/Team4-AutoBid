@@ -2,8 +2,10 @@ package com.codesquad.autobid.car.domain;
 
 import com.codesquad.autobid.handler.car.enums.DistanceUnit;
 import com.codesquad.autobid.handler.car.vo.AvailableDistanceVO;
+import lombok.Getter;
 import org.springframework.data.relational.core.mapping.Column;
 
+@Getter
 public class Distance {
 
     @Column("car_distance")

@@ -27,7 +27,7 @@ public class UserService {
 
     public User findUser(OauthToken oauthToken) {
         UserVO userVO = userHandler.userProfileAPICall(oauthToken);
-        User user = userRepository.findByUid(userVO.getId()).orElse(User.of(userVO, oauthToken.getRefresh_token()));
+        User user = userRepository.findByUid(userVO.getId()).orElse(User.of(userVO, oauthToken.getRefreshToken()));
         return userRepository.save(user);
     }
 }

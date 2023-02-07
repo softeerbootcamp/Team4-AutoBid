@@ -2,11 +2,13 @@ package com.codesquad.autobid.car.controller;
 
 import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.car.service.CarService;
+import com.codesquad.autobid.user.domain.User;
+import com.codesquad.autobid.web.argumentresolver.AccessToken;
+import com.codesquad.autobid.web.argumentresolver.AuthorizedUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,10 +25,8 @@ public class CarController {
     }
 
     @GetMapping("/user/{id}/cars")
-    // todo: filter(interceptor)에서 session 받는걸로 변경하기
-    // @SessionAttribute(name = "user") User user, @SessionAttribute(name = "accessToken") String accessToken, boolean refresh
-    public List<Car> getCars(@PathVariable("id") Long id, boolean refresh, String accessToken) {
-        logger.info("user/{}/cars refresh={} accessToken={}", id,refresh, accessToken);
-        return carService.getCars(id, accessToken, refresh);
+    public List<Car> getCars(@AuthorizedUser User user, @AccessToken String accessToken, boolean refresh) {
+        logger.info("user/{}/cars refresh={} accessToken={}", user.getId(), refresh, accessToken);
+        return carService.getCars(user.getId(), accessToken, refresh);
     }
 }
