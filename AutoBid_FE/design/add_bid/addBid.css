@@ -14,16 +14,16 @@ hr {
 }
 
 .add-bid {
-  /*background-color: var(--color-light-gray);*/
   background-color: #EEEEEE;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   padding: 32px;
+  width: calc(var(--container-max-width) / 2);
 }
 
 .add-bid__label {
-  flex: 30%;
+  flex: 25%;
   flex-grow: 0;
   font-size: 18px;
   font-weight: bold;
@@ -36,9 +36,9 @@ hr {
   text-align: center;
 }
 
-.add-bid__car-type__div {
+.add-bid__car-type__container {
   display: flex;
-  flex: 30%;
+  flex: 25%;
   text-align: right;
 }
 
@@ -60,19 +60,19 @@ hr {
   text-align: start;
 }
 
-.add-bid__bid-time__div {
+.add-bid__bid-time__container {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.add-bid__bid-time__div > div {
+.add-bid__bid-time__container > div {
   display: flex;
-  flex: 30%;
+  flex: 25%;
   text-align: right;
 }
 
-.add-bid__bid-start-time__div, .add-bid__bid-end-time__div {
+.add-bid__bid-start-time__container, .add-bid__bid-end-time__container {
   padding-bottom: 8px;
   padding-top: 8px;
 }
@@ -85,9 +85,9 @@ hr {
   margin-left: 16px;
 }
 
-.add-bid__bid-start-price__div {
+.add-bid__bid-start-price__container {
   display: flex;
-  flex: 30%;
+  flex: 25%;
   text-align: right;
 }
 
@@ -99,10 +99,16 @@ hr {
   margin-left: 16px;
 }
 
-.add-bid__bid-images__div {
+.add-bid__add-image__container {
   background-color: white;
-  padding-bottom: 56.25%;
-  width: inherit;
+  display: flex;
+}
+
+.add-bid__images-container {
+  display: flex;
+  align-items: center;
+  overflow: scroll;
+  scroll-behavior: smooth;
 }
 
 .add-bid__bid-submit__button {
@@ -112,3 +118,24 @@ hr {
   padding: 16px;
   width: fit-content;
 }
+
+.add-bid__image {
+  width: 60px;
+  height: 60px;
+  margin: 8px;
+}
+
+/*.card-item__swap-button-container {*/
+/*  position: absolute;*/
+/*  display: flex;*/
+/*  justify-content: space-between;*/
+/*  width: 250px;*/
+/*  height: 140px;*/
+/*  opacity: 0;*/
+/*  transition: 0.5s;*/
+/*  z-index: 1;*/
+/*}*/
+
+/*.card-item__swap-button-container:hover {*/
+/*  opacity: 0.5;*/
+/*}*/

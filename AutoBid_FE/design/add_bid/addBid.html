@@ -2,7 +2,7 @@
 <div class="add-bid">
     <h2 class="add-bid__title">경매 등록하기</h2>
     <hr>
-    <div class="add-bid__car-type__div">
+    <div class="add-bid__car-type__container">
         <p class="add-bid__label add-bid__car-type__label">차종</p>
         <div class="vl"></div>
         <ul class="add-bid__car-type__car-list">
@@ -13,15 +13,15 @@
         </ul>
     </div>
     <hr>
-    <div class="add-bid__bid-time__div">
-        <div class="add-bid__bid-start-time__div">
+    <div class="add-bid__bid-time__container">
+        <div class="add-bid__bid-start-time__container">
             <p class="add-bid__label add-bid__bid_start-time__label">경매 시작 시간</p>
             <div class="vl"></div>
             <label>
                 <input type="datetime-local" class="add-bid__bid-start-time__input">
             </label>
         </div>
-        <div class="add-bid__bid-end-time__div">
+        <div class="add-bid__bid-end-time__container">
             <p class="add-bid__label add-bid__bid-end-time__label">경매 종료 시간</p>
             <div class="vl"></div>
             <label>
@@ -30,17 +30,38 @@
         </div>
     </div>
     <hr>
-    <div class="add-bid__bid-start-price__div">
+    <div class="add-bid__bid-start-price__container">
         <p class="add-bid__label add-bid__bid-start-price__label">경매 시작 가격</p>
         <div class="vl"></div>
         <label>
             <input type="number" class="add-bid__bid-start-price__input">
         </label>
     </div>
-    <!-- FIXME: BELOW HR TAG IS TEMP -->
     <hr>
-    <div class="add-bid__bid-images__div">
-        사진 나열되는 곳
+    <div class="add-bid__add-image__container">
+        <button class="add-bid__add-image__button">
+            <img class="add-bid__image" src="https://picsum.photos/100" alt="">
+        </button>
+        <div class="add-bid__images-swap-button-container">
+            <button class="add-bid__swap-button-left"><i
+                    class="fas fa-chevron-left fa-lg slider_1"></i>
+            </button>
+            <button class="add-bid__swap-button-right">
+                <i class="fas fa-chevron-right fa-lg slider-1"></i>
+            </button>
+        </div>
+        <div class="add-bid__images-container">
+            <button><img class="add-bid__image" src="https://picsum.photos/90" alt=""></button>
+            <button><img class="add-bid__image" src="https://picsum.photos/99" alt=""></button>
+            <button><img class="add-bid__image" src="https://picsum.photos/98" alt=""></button>
+            <button><img class="add-bid__image" src="https://picsum.photos/97" alt=""></button>
+            <button><img class="add-bid__image" src="https://picsum.photos/96" alt=""></button>
+            <button><img class="add-bid__image" src="https://picsum.photos/95" alt=""></button>
+            <button><img class="add-bid__image" src="https://picsum.photos/94" alt=""></button>
+            <button><img class="add-bid__image" src="https://picsum.photos/93" alt=""></button>
+            <button><img class="add-bid__image" src="https://picsum.photos/92" alt=""></button>
+            <button><img class="add-bid__image" src="https://picsum.photos/91" alt=""></button>
+        </div>
     </div>
     <hr>
     <button type="submit" class="add-bid__bid-submit__button">등록</button>
