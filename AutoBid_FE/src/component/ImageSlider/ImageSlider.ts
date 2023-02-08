@@ -1,32 +1,46 @@
-// CODE FOR MULTIPLE CARD HANDLER
-const slidesContainers = document.getElementsByClassName("card-item__img-container");
-const leftButtons = document.getElementsByClassName("card-item__swap-button-left");
-const rightButtons = document.getElementsByClassName("card-item__swap-button-right");
-const cardWidth = document.querySelector(".card-container__card-item")!.clientWidth;
+import Component from "../../core/component";
+import './imageslider.css';
 
-// TODO: find better way than for looping
-for (let i = 0; i < slidesContainers.length; i++) {
-    leftButtons[i].addEventListener("click", () => {
-        slidesContainers[i].scrollLeft -= cardWidth;
-    });
-    rightButtons[i].addEventListener("click", () => {
-        slidesContainers[i].scrollLeft += cardWidth;
-    });
+export type ImageURL = string;
+
+class ImageSlider extends Component<any, { imageUrls: ImageURL[], width: number, height: number }> {
+    template(): InnerHTML["innerHTML"] {
+        const { imageUrls, width } = this.props;
+        return `
+        <div class="swap-button-container">
+            <button class="swap-button-left">
+                <i class="fas fa-chevron-left fa-lg"></i>
+            </button>
+            <button class="swap-button-right">
+                <i class="fas fa-chevron-right fa-lg"></i>
+            </button>
+        </div>
+        <div class="img-container">
+            <div class="img-container__scrollable">
+            ${imageUrls.map(url => `
+                <img class="img-container__img" src="${url}" width="${width}" alt="">
+            `).join('')}            
+            </div>
+        </div>`;
+    }
+
+    initialize() {
+        const { width, height } = this.props;
+        this.$target.style.width = `${width}px`;
+        this.$target.style.height = `${height}px`;
+        this.addEvent('click', '.swap-button-left', this.swapImage.bind(this, 'left'));
+        this.addEvent('click', '.swap-button-right', this.swapImage.bind(this, 'right'));
+    }
+
+    swapImage(direction: 'left'|'right') {
+        const $imgContainer = this.$target.querySelector('.img-container') as HTMLElement;
+        const { width } = this.props;
+        if (direction === 'left') {
+            $imgContainer.scrollLeft -= width;
+        } else {
+            $imgContainer.scrollLeft += width;
+        }
+    }
 }
 
-// BELOW CODE IS FOR SINGLE CARD HANDLER
-// TODO: refactoring/renaming required for single card handler
-// const slidesContainer = document.querySelector(".card-item__img-container");
-// const slide = document.querySelector(".card-item__img");
-// const prevButton = document.querySelector(".card-item__swap-button-left");
-// const nextButton = document.querySelector(".card-item__swap-button-right");
-//
-// prevButton.addEventListener("click", () => {
-//     const slideWidth = slide.clientWidth;
-//     slidesContainer.scrollLeft -= slideWidth;
-// });
-//
-// nextButton.addEventListener("click", () => {
-//     const slideWidth = slide.clientWidth;
-//     slidesContainer.scrollLeft += slideWidth;
-// });
+export default ImageSlider;
