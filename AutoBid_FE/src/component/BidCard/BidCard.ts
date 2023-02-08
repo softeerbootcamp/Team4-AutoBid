@@ -2,15 +2,23 @@ import Component from "../../core/component";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import "./bidcard.css";
 
-class BidCard extends Component<any> {
+export type Bid = { images: string[], tags: string[], title: string, carInfo: CarInfo, price: number };
+export type CarInfo = { year: number, distance: number, type: string, region: string };
+
+const getTagStr = (tags: string[]) => tags.map(tag => `#${tag}`).join(' ');
+const getInfoStr = ({ year, distance, type, region }: CarInfo) =>
+    `${year} | ${distance.toLocaleString()}km | ${type} | ${region}`;
+
+class BidCard extends Component<any, Bid> {
     template(): InnerHTML["innerHTML"] {
+        const { tags, title, carInfo, price } = this.props;
         return `
         <div data-component="ImageSlider"></div>
         <div class="card-item__details-container">
-            <span class="card-item__details__tags">#1인신조 #완전무사고 #여성운전자</span>
-            <h4 class="card-item__details__title">현대 아반떼MD 프리미어 1.6 GDi</h4>
-            <span class="card-item__details__info">2018 | 142,852km | 가솔린 | 대전</span>
-            <h3 class="card-item__details__price"><b>1,090</b>만원</h3>
+            <span class="card-item__details__tags">${getTagStr(tags)}</span>
+            <h4 class="card-item__details__title">${title}</h4>
+            <span class="card-item__details__info">${getInfoStr(carInfo)}</span>
+            <h3 class="card-item__details__price"><b>${price.toLocaleString()}</b>만원</h3>
         </div>
         `;
     }
