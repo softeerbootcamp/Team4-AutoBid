@@ -15,6 +15,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 public class S3Uploader {
 
 	private final AmazonS3 amazonS3;
+
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
 
