@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RestController
-//@CrossOrigin(origins = "${client.origin}", allowedHeaders = "*")
 public class AuthController {
 
     /**
