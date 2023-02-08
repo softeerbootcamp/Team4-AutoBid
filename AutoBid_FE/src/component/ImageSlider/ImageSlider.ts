@@ -1,20 +1,19 @@
 // CODE FOR MULTIPLE CARD HANDLER
-var slidesContainers = document.getElementsByClassName("card-item__img-container");
-var leftButtons = document.getElementsByClassName("card-item__swap-button-left");
-var rightButtons = document.getElementsByClassName("card-item__swap-button-right");
-var cardWidth = document.querySelector(".card-container__card-item").clientWidth;
-var _loop_1 = function (i) {
-    leftButtons[i].addEventListener("click", function () {
+const slidesContainers = document.getElementsByClassName("card-item__img-container");
+const leftButtons = document.getElementsByClassName("card-item__swap-button-left");
+const rightButtons = document.getElementsByClassName("card-item__swap-button-right");
+const cardWidth = document.querySelector(".card-container__card-item")!.clientWidth;
+
+// TODO: find better way than for looping
+for (let i = 0; i < slidesContainers.length; i++) {
+    leftButtons[i].addEventListener("click", () => {
         slidesContainers[i].scrollLeft -= cardWidth;
     });
-    rightButtons[i].addEventListener("click", function () {
+    rightButtons[i].addEventListener("click", () => {
         slidesContainers[i].scrollLeft += cardWidth;
     });
-};
-// TODO: find better way than for looping
-for (var i = 0; i < slidesContainers.length; i++) {
-    _loop_1(i);
 }
+
 // BELOW CODE IS FOR SINGLE CARD HANDLER
 // TODO: refactoring/renaming required for single card handler
 // const slidesContainer = document.querySelector(".card-item__img-container");
