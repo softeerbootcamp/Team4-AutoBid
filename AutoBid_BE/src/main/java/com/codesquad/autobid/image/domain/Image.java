@@ -7,9 +7,11 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
 
 import com.codesquad.autobid.auction.domain.Auction;
+import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
 @Setter
+@Table("image")
 public class Image {
 
 	@Id
