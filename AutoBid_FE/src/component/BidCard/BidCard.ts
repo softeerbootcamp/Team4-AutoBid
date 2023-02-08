@@ -24,11 +24,9 @@ class BidCard extends Component<any, Bid> {
     }
 
     mounted() {
+        const { images } = this.props;
         const $imageSlider = this.$target.querySelector('[data-component="ImageSlider"]') as HTMLElement;
-        new ImageSlider($imageSlider, {
-            imageUrls: ['https://picsum.photos/200', 'https://picsum.photos/200', 'https://picsum.photos/200'],
-            width: 200, height: 140
-        });
+        new ImageSlider($imageSlider, { imageUrls: images, width: 200, height: 140 });
     }
 }
 
