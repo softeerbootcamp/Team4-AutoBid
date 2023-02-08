@@ -5,6 +5,7 @@ import com.codesquad.autobid.car.domain.CheckCarResponse;
 import com.codesquad.autobid.car.repository.CarRepository;
 import com.codesquad.autobid.handler.car.CarHandler;
 import com.codesquad.autobid.handler.car.vo.CarVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,15 +14,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class CarService {
 
     private final CarRepository carRepository;
     private final CarHandler carHandler;
-
-    public CarService(CarRepository carRepository, CarHandler carHandler) {
-        this.carRepository = carRepository;
-        this.carHandler = carHandler;
-    }
 
     @Transactional
     public List<CheckCarResponse> getCars(Long userId, String accessToken, boolean refresh) {
