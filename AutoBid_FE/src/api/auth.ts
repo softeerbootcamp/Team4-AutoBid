@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import {popupCenter} from "../core/util";
+import {asyncTaskWrapper, popupCenter} from "../core/util";
 
 dotenv.config();
 const AUTH_CLIENT_ID = process.env.AUTH_CLIENT_ID as string;
@@ -16,7 +16,7 @@ const getAuthUri = () => {
     return authUri;
 };
 
-export const requestCode = () => {
+export const requestCode = asyncTaskWrapper(() => {
     const authUri = getAuthUri();
     const popup = popupCenter({url: authUri, title: 'Hyundai OAuth', w: 500, h: 600});
     return new Promise((resolve: (code: string) => any, reject) => {
@@ -37,11 +37,11 @@ export const requestCode = () => {
             }
         }, 100);
     });
-};
+});
 
 export type UserInfo = { userId: number, username: string, email: string, phone: string };
 
-export const requestLiveSession = async (code: string): Promise<UserInfo | null> => {
+export const requestLiveSession = asyncTaskWrapper(async (code: string): Promise<UserInfo | null> => {
     const res = await fetch(`${API_BASE_URL}${SESSION_ENDPOINT}`, {
         method: 'POST',
         headers: { 'X-Auth-Code': code }
@@ -49,12 +49,12 @@ export const requestLiveSession = async (code: string): Promise<UserInfo | null>
     if (res.ok)
         return await res.json() as UserInfo;
     return null;
-};
+});
 
-export const requestInvalidateSession = async (): Promise<boolean> => {
+export const requestInvalidateSession = asyncTaskWrapper(async (): Promise<boolean> => {
     const res = await fetch(`${API_BASE_URL}${SESSION_ENDPOINT}`, {
         method: 'DELETE'
     });
     return res.ok;
-};
+});
 
