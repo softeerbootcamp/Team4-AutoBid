@@ -13,7 +13,7 @@ class BidCard extends Component<any, Bid> {
     template(): InnerHTML["innerHTML"] {
         const { tags, title, carInfo, price } = this.props;
         return `
-        <div data-component="ImageSlider"></div>
+        <div class="card-item__img-slider" data-component="ImageSlider"></div>
         <div class="card-item__details-container">
             <span class="card-item__details__tags">${getTagStr(tags)}</span>
             <h4 class="card-item__details__title">${title}</h4>
@@ -26,7 +26,7 @@ class BidCard extends Component<any, Bid> {
     mounted() {
         const { images } = this.props;
         const $imageSlider = this.$target.querySelector('[data-component="ImageSlider"]') as HTMLElement;
-        new ImageSlider($imageSlider, { imageUrls: images, width: 200, height: 140 });
+        new ImageSlider($imageSlider, { imageUrls: images, width: 250, height: 140 });
     }
 }
 

@@ -23,10 +23,12 @@
     align-items: center;
     overflow: hidden;
     scroll-behavior: smooth;
+    border-radius: inherit;
 }
 
 [data-component="ImageSlider"] .img-container__scrollable {
     display: inline-flex;
+    border-radius: inherit;
 }
 
 [data-component="ImageSlider"] .img-container__img {
