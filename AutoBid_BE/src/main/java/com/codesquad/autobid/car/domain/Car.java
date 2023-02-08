@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Embedded;
@@ -29,11 +30,9 @@ public class Car {
     private State state;
     @Column("car_type")
     private Type type;
-
     @Column("car_distance")
     @Embedded(onEmpty = Embedded.OnEmpty.USE_EMPTY)
     private Distance distance;
-
     @Column("car_carid")
     private String carId;
     @Column("car_name")
@@ -41,8 +40,10 @@ public class Car {
     @Column("car_sellName")
     private String sellName;
     @CreatedDate
+    @Column("created_at")
     private LocalDateTime createdAt;
     @Column("updated_at")
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     public static Car from(CarVO carVO, Long userId) {
