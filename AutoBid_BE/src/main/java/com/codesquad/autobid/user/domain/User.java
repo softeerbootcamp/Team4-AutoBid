@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Table("users") @Getter @Setter
+@Table("users") @Getter
 public class User implements Serializable {
 
     @Id
