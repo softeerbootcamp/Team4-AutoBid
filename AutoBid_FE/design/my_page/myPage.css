@@ -17,16 +17,16 @@ hr {
 
 /* Sidebar */
 .my-page__sidebar {
-  display: flex;
-  flex-direction: column;
-  min-width: 300px;
-  max-width: var(--container-max-width);
-  padding: var(--container-padding);
-  margin-bottom: 64px;
-  margin-right: 16px;
-  margin-left: 16px;
   background-color: var(--color-white);
   border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 64px;
+  margin-left: 16px;
+  margin-right: 16px;
+  max-width: var(--container-max-width);
+  min-width: 300px;
+  padding: var(--container-padding);
 }
 
 .my-page__sidebar__title {
@@ -49,15 +49,13 @@ hr {
 
 /* Main */
 .my-page__main__ul {
-  display: flex;
-  flex-direction: column;
-  /*padding-top: 32px;*/
-  /*padding-left: 16px;*/
-  padding: var(--container-padding);
-  margin-left: 16px;
-  margin-bottom: 64px;
   background-color: var(--color-white);
   border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 64px;
+  margin-left: 16px;
+  padding: var(--container-padding);
 }
 
 .my-page__main__card-list > h3 {
@@ -77,9 +75,9 @@ hr {
   border-radius: 15px;
   box-shadow: var(--box-shadow-level-1);
   display: inline-block;
+  margin: 8px 8px 32px;
   transition: 0.1s;
   width: 250px;
-  margin: 8px 8px 32px;
 }
 
 .card-container__card-item:hover {
@@ -92,7 +90,8 @@ hr {
   border-top-right-radius: 15px;
   display: flex;
   height: 140px;
-  overflow: hidden;
+  overflow: scroll;
+  scroll-behavior: smooth;
 }
 
 .card-item__img {
