@@ -3,6 +3,7 @@ package com.codesquad.autobid.handler.user;
 import com.codesquad.autobid.OauthToken;
 import com.codesquad.autobid.user.domain.UserVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -14,6 +15,9 @@ import java.net.URL;
 @Service
 public class UserHandler {
 
+    @Value("${hyundai.auth.token_profile_url}")
+    private String apiURL;
+
     public UserVO userProfileAPICall(OauthToken oauthToken) {    // 발급받은 Access Token
         String access_token = oauthToken.getAccessToken();
 
@@ -23,7 +27,6 @@ public class UserHandler {
         String responseData = "";
 
         try {
-            String apiURL = "https://prd.kr-ccapi.hyundai.com/api/v1/user/profile";
             URL url = new URL(apiURL);
 
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
