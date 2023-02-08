@@ -1,6 +1,7 @@
 package com.codesquad.autobid.car.controller;
 
 import com.codesquad.autobid.car.domain.Car;
+import com.codesquad.autobid.car.domain.CheckCarResponse;
 import com.codesquad.autobid.car.repository.CarRepository;
 import com.codesquad.autobid.car.util.CarTestUtil;
 import com.codesquad.autobid.user.domain.User;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -21,21 +23,22 @@ class CarControllerTest {
 
     private final CarController carController;
     private final CarRepository carRepository;
+
     private final UserRepository userRepository;
     private static User user;
 
     @Autowired
-    public CarControllerTest(CarController carController, UserRepository userRepository, CarRepository carRepository) {
+    public CarControllerTest(CarController carController, CarRepository carRepository, UserRepository userRepository) {
         this.carController = carController;
         this.carRepository = carRepository;
         this.userRepository = userRepository;
 
         user = CarTestUtil.getNewUser();
-        userRepository.save(user);
     }
 
     @BeforeEach
     void beforeEach() {
+        userRepository.save(user);
         List<Car> cars = CarTestUtil.getNewCars(user.getId(), 3);
         carRepository.saveAll(cars);
     }
@@ -45,12 +48,12 @@ class CarControllerTest {
     void getCarsSuccess() {
         // given
         String accessToken = "accessToken";
-        boolean refresh = false;
         // when
-        List<Car> cars = carController.getCars(user, accessToken, refresh);
+        ResponseEntity<List<CheckCarResponse>> response = carController.getCars(user, accessToken, false);
         // then
+        List<CheckCarResponse> body = response.getBody();
         Assertions.assertAll(
-                () -> org.assertj.core.api.Assertions.assertThat(cars.size()).isEqualTo(3)
+                () -> org.assertj.core.api.Assertions.assertThat(body.size()).isEqualTo(3)
         );
     }
 }
