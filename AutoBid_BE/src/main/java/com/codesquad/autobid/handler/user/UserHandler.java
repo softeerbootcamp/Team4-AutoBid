@@ -23,41 +23,16 @@ public class UserHandler {
     private static final RestTemplate rt = new RestTemplate();
 
     @Value("${hyundai.auth.token_profile_url}")
-    private String apiURL;
+    private String PROFILE_URI;
 
     public UserVO userProfileAPICall(OauthToken oauthToken) {    // 발급받은 Access Token
         String access_token = oauthToken.getAccessToken();
         UserVO user = new UserVO();
-        StringBuffer sb;
-        String responseData = "";
-
         try {
-            URL url = new URL(apiURL);
-
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
-            con.setRequestMethod("GET");
-
-            // Set Header Info
-            con.setRequestProperty("Authorization", "Bearer " + access_token);
-
-            int responseCode = con.getResponseCode();
-            BufferedReader br;
-            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                br = new BufferedReader(new InputStreamReader(con.getInputStream())); // 정상호출
-            } else {
-                br = new BufferedReader(new InputStreamReader(con.getErrorStream())); // 에러발생
-            }
-
-            sb = new StringBuffer();
-            while ((responseData = br.readLine()) != null) {
-                sb.append(responseData);
-            }
-
-            br.close();
-
+            URL url = new URL(PROFILE_URI);
+            String parsingData = UrlReader.reader(url,access_token);
             try {
-                user = mapper.readValue(sb.toString(), UserVO.class);
+                user = mapper.readValue(parsingData, UserVO.class);
             } catch (IOException e) {
                 e.printStackTrace();
             }

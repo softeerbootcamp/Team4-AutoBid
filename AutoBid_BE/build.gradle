@@ -13,13 +13,12 @@ repositories {
 }
 
 dependencies {
-    //websocket
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    //gson
+    implementation 'com.google.code.gson:gson:2.9.0'
 
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.session:spring-session-data-redis:2.7.0'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.12'
@@ -39,10 +38,6 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-    // Spring Scheduler ShedLock
-    implementation 'net.javacrumbs.shedlock:shedlock-spring:4.14.0'
-    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.14.0'
 }
 
 tasks.named('test') {
