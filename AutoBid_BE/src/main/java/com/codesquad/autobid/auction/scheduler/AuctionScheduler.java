@@ -1,6 +1,7 @@
 package com.codesquad.autobid.auction.scheduler;
 
 import lombok.extern.slf4j.Slf4j;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,12 +16,14 @@ public class AuctionScheduler {
 
     @Async
     @Scheduled(cron = CRON_RATE)
+    @SchedulerLock(name = "openPendingAuctionsLock")
     public void openPendingAuctions() {
         log.info("openPendingAuctions: " + LocalDateTime.now());
     }
 
     @Async
     @Scheduled(cron = CRON_RATE)
+    @SchedulerLock(name = "closeInProgressAuctionsLock")
     public void closeInProgressAuctions() {
         log.info("closeInProgressAuctions: " + LocalDateTime.now());
     }
