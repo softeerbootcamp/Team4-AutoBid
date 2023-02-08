@@ -24,7 +24,7 @@ public class AuctionService {
 
 	private final S3Uploader s3Uploader;
 	private final AuctionRepository auctionRepository;
-//	private final ImageRepository imageRepository;
+	private final ImageRepository imageRepository;
 
     @Transactional
 	public void addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
@@ -46,7 +46,7 @@ public class AuctionService {
 		for (MultipartFile multipartFile : multipartFiles) {
 			try {
 				String imageUrl = s3Uploader.upload(multipartFile);
-//				imageRepository.save(Image.of(auctionId, imageUrl));
+				imageRepository.save(Image.of(auctionId, imageUrl));
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
