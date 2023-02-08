@@ -13,10 +13,12 @@ repositories {
 }
 
 dependencies {
+    //gson
+    implementation 'com.google.code.gson:gson:2.9.0'
+
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.session:spring-session-data-redis:2.7.0'
-
 
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.12'
