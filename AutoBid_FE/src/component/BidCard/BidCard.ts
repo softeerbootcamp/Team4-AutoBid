@@ -9,9 +9,9 @@ const getTagStr = (tags: string[]) => tags.map(tag => `#${tag}`).join(' ');
 const getInfoStr = ({ year, distance, type, region }: CarInfo) =>
     `${year} | ${distance.toLocaleString()}km | ${type} | ${region}`;
 
-class BidCard extends Component<any, Bid> {
+class BidCard extends Component<any, { bid: Bid, onClick: (a: any) => any }> {
     template(): InnerHTML["innerHTML"] {
-        const { tags, title, carInfo, price } = this.props;
+        const { tags, title, carInfo, price } = this.props.bid;
         return `
         <div class="card-item__img-slider" data-component="ImageSlider"></div>
         <div class="card-item__details-container">
@@ -24,9 +24,14 @@ class BidCard extends Component<any, Bid> {
     }
 
     mounted() {
-        const { images } = this.props;
+        const { images } = this.props.bid;
         const $imageSlider = this.$target.querySelector('[data-component="ImageSlider"]') as HTMLElement;
         new ImageSlider($imageSlider, { imageUrls: images, width: 250, height: 140 });
+    }
+
+    initialize() {
+        const { onClick } = this.props;
+        this.addEvent('click', '.card-item__details-container', onClick);
     }
 }
 
