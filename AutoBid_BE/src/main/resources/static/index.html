@@ -1,15 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Document</title>
+    <meta charset="UTF-8">
+    <title>{{auction.name}}</title>
 </head>
 <body>
-<a href="https://prd.kr-ccapi.hyundai.com/api/v1/user/oauth2/authorize?response_type=code&client_id=7e27ebbc-695a-46d6-aa1c-ee7c38d6190e&redirect_uri=http://localhost:8080/oauth/login">로그인</a>
-<a href="http://localhost:8080/user-cars">get Car List From Hyundai</a>
-<a href="http://localhost:8080/user-cars?refresh=false">get Car List From DB</a>
+
+<form id="btn" name="btn">
+    <div class="form-group">
+        <button type="submit">방만들기</button>
+    </div>
+</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+<script>
+    var btn = document.querySelector('#btn');
+
+    var stompClient = null;
+    console.log("data-b")
+
+    btn.addEventListener('submit', connect, true)
+
+    function connect(event){
+        console.log("data-a")
+
+        var socket = new SockJS("/auction-room");
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, onConnected);
+        event.preventDefault();
+    }
+
+    function onConnected() {
+        console.log("data1")
+        var auctionRoomInfo = {
+            auctionId: "1",
+            username: "sungjun"
+        };
+        console.log("data2")
+        stompClient.send("/publish/createRoom", {}, JSON.stringify(auctionRoomInfo));
+        console.log("data3")
+
+        // Subscribe to the Public Topic
+        stompClient.subscribe('/subscribe/auction'); // 구독을 퍼블리쉬로 보낸다.
+
+        // Tell your username to the server
+        // stompClient.send("/publish/auction/createRoom",
+        //     {},
+        //     JSON.stringify({auctionId: "auctionRoomId", username: "user"})
+        // )
+    }
+
+</script>
 </body>
 </html>
 
