@@ -25,23 +25,24 @@ class ImageSlider extends Component<any, { imageUrls: ImageURL[], width: number,
     }
 
     initialize() {
-        const { width, height } = this.props;
+        const {width, height} = this.props;
         this.$target.style.width = `${width}px`;
         this.$target.style.height = `${height}px`;
         this.addEvent('click', '.swap-button-left', this.swapImage.bind(this, 'left'));
         this.addEvent('click', '.swap-button-right', this.swapImage.bind(this, 'right'));
     }
 
-    scrollDiff = 0;
-    swapImage(direction: 'left'|'right') {
+    private scrollDiff = 0;
+
+    swapImage(direction: 'left' | 'right') {
         const $imgContainer = this.$target.querySelector('.img-container') as HTMLElement;
         if (direction === 'left') {
-            this.scrollDiff -= 250;
-            $imgContainer.scrollLeft = this.scrollDiff;
-        } else {
+            if (this.scrollDiff >= 250)
+                this.scrollDiff -= 250;
+        } else if (this.scrollDiff < $imgContainer.scrollWidth - 250) {
             this.scrollDiff += 250;
-            $imgContainer.scrollLeft = this.scrollDiff;
         }
+        $imgContainer.scrollLeft = this.scrollDiff;
     }
 }
 
