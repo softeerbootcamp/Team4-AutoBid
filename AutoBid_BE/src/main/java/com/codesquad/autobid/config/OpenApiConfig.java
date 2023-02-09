@@ -1,5 +1,8 @@
 package com.codesquad.autobid.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +12,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
 public class OpenApiConfig {
@@ -32,8 +36,12 @@ public class OpenApiConfig {
 		SecurityRequirement securityRequirement = new SecurityRequirement();
 		securityRequirement.addList("bearer-key");
 
+		Server server = new Server();
+		server.setUrl("https://www.autobid.site");
+
 		return new OpenAPI()
 			.components(components)
+			.servers(List.of(server))
 			.info(info)
 			.addSecurityItem(securityRequirement);
 	}
