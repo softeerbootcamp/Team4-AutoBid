@@ -1,15 +1,24 @@
 package com.codesquad.autobid.auction.controller;
 
-import com.codesquad.autobid.testAuction.testAuctionRepository;
-import com.codesquad.autobid.user.domain.AuctionRoomDto;
-import com.codesquad.autobid.user.domain.EnterUserDto;
+import javax.servlet.http.HttpServletRequest;
+
+import com.codesquad.autobid.auction.domain.Auction;
+import com.codesquad.autobid.user.domain.AuctionUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
 import com.codesquad.autobid.auction.service.AuctionService;
@@ -44,18 +53,17 @@ public class AuctionController {
 	}
 
 	@MessageMapping("/createRoom") // 클라이언트에서 보내는 메세지 매핑
-	public AuctionRoomDto createRoom(@Payload AuctionRoomDto auctionRoomDto) {
-		log.info("auction 방 번호 : {} 생성", auctionRoomDto.getAuctionId());
-		messagingTemplate.convertAndSend("/subscribe/auction/room/" + auctionRoomDto.getAuctionId(), auctionRoomDto);
-		return auctionRoomDto;
+	@SendTo("/subscribe/auction")
+	public AuctionUserDto createRoom(@Payload AuctionUserDto auctionUserDto) {
+		log.info("auction 방 번호 : {} 생성", auctionUserDto.getAuctionId());
+		return auctionUserDto;
 	}
 
-	@MessageMapping("/enterRoom/{roomnum}") // 클라이언트에서 보내는 메세지 매핑
-	public EnterUserDto enterRoom(@DestinationVariable(value = "roomnum") String roomNum, @Payload EnterUserDto enterUserDto) {
-		log.info("{} 님이 {} 번호님이 {}번 방에 입장", enterUserDto.getUserName(), enterUserDto.getMobileNum(), roomNum);
-		messagingTemplate.convertAndSend("/subscribe/auction/room/" + enterUserDto.getRoomNum(), enterUserDto);
+	@MessageMapping("/enterRoom") // 클라이언트에서 보내는 메세지 매핑
+	public void enterRoom(@Payload AuctionUserDto auctionUserDto) {
+		log.info("{} 님이 {} 방에 입장", auctionUserDto.getUserName(), auctionUserDto.getAuctionId());
+		messagingTemplate.convertAndSend("/subscribe/auction/room" + auctionUserDto.getAuctionId(), auctionUserDto);
 		// 해당 방으로 입장한다는 메세지
-		return enterUserDto;
 	}
 
 }
