@@ -5,7 +5,6 @@ import com.codesquad.autobid.auth.service.AuthService;
 import com.codesquad.autobid.handler.OauthType;
 import com.codesquad.autobid.user.domain.UserVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
