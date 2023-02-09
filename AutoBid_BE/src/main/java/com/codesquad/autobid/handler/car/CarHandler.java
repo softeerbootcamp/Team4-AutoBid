@@ -46,7 +46,6 @@ public class CarHandler {
             return objectMapper.readValue(body, new TypeReference<>() {
             });
         } catch (JsonProcessingException e) {
-            System.out.println("hi");
             e.printStackTrace();
             logger.debug("unhandled car list request exception");
             return new CarListVO();
@@ -55,6 +54,7 @@ public class CarHandler {
 
     public DistanceVO getDistance(String accessToken, String carId) {
         // HttpEntity request = getAuthorizedRequest(accessToken);
+        // 현대차 API에서 제공하는 더미 차량 정보는 실제로 존재하지 않음 -> 현대차 제공 차량 정보로 거리 정보 못 찾음 (유효하지 않은 carId)
         // ResponseEntity<String> carListResponse = rt.exchange(
         //         String.format(CAR_DETAIL_REQUEST_URL, carId),
         //         HttpMethod.GET,
@@ -62,7 +62,7 @@ public class CarHandler {
         //         String.class
         // );
         // return parseToAvailableDistance(carListResponse.getBody()); // True Code
-        return parseToAvailableDistance(CarTestUtil.getDistance()); // Test Code
+        return parseToAvailableDistance(CarTestUtil.getDistance()); // True Code
     }
 
     private DistanceVO parseToAvailableDistance(String body) {
