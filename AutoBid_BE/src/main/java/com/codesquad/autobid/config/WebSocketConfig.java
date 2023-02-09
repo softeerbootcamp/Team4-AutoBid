@@ -8,9 +8,16 @@ import org.springframework.web.socket.config.annotation.*;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    /**
+     *  TODO
+     *   1. 배치에서 누가 방만들지에 대한
+     * **/
+
+
+
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/auction-room").setAllowedOriginPatterns("http://localhost:8080","http://localhost:5500","http://localhost:3000")
+        registry.addEndpoint("/auction-room/").setAllowedOriginPatterns("http://localhost:8080","http://localhost:5500","http://localhost:3000")
                 .withSockJS();
     }
 
