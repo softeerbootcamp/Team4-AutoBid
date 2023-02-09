@@ -1,5 +1,6 @@
 package com.codesquad.autobid.car.domain;
 
+import com.codesquad.autobid.handler.car.enums.DistanceUnit;
 import com.codesquad.autobid.handler.car.vo.CarVO;
 import com.codesquad.autobid.user.domain.User;
 import lombok.AllArgsConstructor;
@@ -31,8 +32,7 @@ public class Car {
     @Column("car_type")
     private Type type;
     @Column("car_distance")
-    @Embedded(onEmpty = Embedded.OnEmpty.USE_EMPTY)
-    private Distance distance;
+    private String distance;
     @Column("car_carid")
     private String carId;
     @Column("car_name")
@@ -51,7 +51,7 @@ public class Car {
                 AggregateReference.to(userId),
                 State.NOT_FOR_SALE,
                 carVO.getType(),
-                Distance.from(carVO.getAvailableDistanceVO()),
+                carVO.getDistance(),
                 carVO.getCarId(),
                 carVO.getName(),
                 carVO.getSellName(),
