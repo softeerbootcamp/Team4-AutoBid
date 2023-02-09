@@ -9,10 +9,10 @@ class ImageSlider extends Component<any, { imageUrls: ImageURL[], width: number,
         return `
         <div class="swap-button-container">
             <button class="swap-button-left">
-                <i class="fas fa-chevron-left fa-lg"></i>
+                <i class="fas fa-circle-chevron-left"></i>
             </button>
             <button class="swap-button-right">
-                <i class="fas fa-chevron-right fa-lg"></i>
+                <i class="fas fa-circle-chevron-right"></i>
             </button>
         </div>
         <div class="img-container">
