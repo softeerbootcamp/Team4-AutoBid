@@ -5,6 +5,7 @@ import com.codesquad.autobid.car.service.CarService;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.web.argumentresolver.AccessToken;
 import com.codesquad.autobid.web.argumentresolver.AuthorizedUser;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,10 @@ public class CarController {
     private final CarService carService;
 
     @GetMapping("/user-cars")
-    public ResponseEntity<List<CheckCarResponse>> getCars(@AuthorizedUser User user, @AccessToken String accessToken, @RequestParam(name = "refresh", required = false, defaultValue = "true") boolean refresh) {
+    public ResponseEntity<List<CheckCarResponse>> getCars(
+            @Parameter(hidden = true) @AuthorizedUser User user,
+            @Parameter(hidden = true) @AccessToken String accessToken,
+            @RequestParam(name = "refresh", required = false, defaultValue = "true") boolean refresh) {
         log.info("user/{}/cars refresh={} accessToken={}", user.getId(), refresh, accessToken);
         List<CheckCarResponse> cars = carService.getCars(user.getId(), accessToken, refresh);
 

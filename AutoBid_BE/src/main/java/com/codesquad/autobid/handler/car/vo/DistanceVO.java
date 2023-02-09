@@ -1,21 +1,19 @@
 package com.codesquad.autobid.handler.car.vo;
 
-import com.codesquad.autobid.handler.car.enums.DistanceUnit;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
-@NoArgsConstructor
+@ToString
 public class DistanceVO {
 
     @JsonProperty("timestamp")
     private String timestamp;
     @JsonProperty("value")
-    private Long distance;
+    private Float distance;
     @JsonProperty("unit")
-    private int unitCode;
+    private int unit;
     @JsonProperty("msgId")
     private String messageId;
 }

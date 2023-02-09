@@ -1,11 +1,8 @@
 package com.codesquad.autobid.car.util;
 
 import com.codesquad.autobid.car.domain.Car;
-import com.codesquad.autobid.car.domain.Distance;
 import com.codesquad.autobid.car.domain.State;
 import com.codesquad.autobid.car.domain.Type;
-import com.codesquad.autobid.handler.car.enums.DistanceUnit;
-import com.codesquad.autobid.handler.car.vo.DistanceVO;
 import com.codesquad.autobid.user.domain.User;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
@@ -23,7 +20,7 @@ public class CarTestUtil {
                     AggregateReference.to(userId),
                     State.NOT_FOR_SALE,
                     Type.ETC,
-                    new Distance(100l, 1).toString(),
+                    100l,
                     "id#" + count,
                     "name#" + count,
                     "sellname#" + count,

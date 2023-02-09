@@ -1,33 +1,34 @@
 package com.codesquad.autobid.handler.car.vo;
 
 import com.codesquad.autobid.car.domain.Type;
-import com.codesquad.autobid.handler.car.enums.DistanceUnit;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Getter
 @ToString
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class CarVO {
 
     @JsonProperty("carId")
     private String carId;
+    @JsonProperty("carNickname")
+    private String nickname;
     @JsonProperty("carType")
     private Type type;
     @JsonProperty("carName")
     private String name;
     @JsonProperty("carSellname")
     private String sellName;
-    @JsonProperty("carNickname")
-    private String nickname;
     @JsonIgnore
-    private String distance;
+    private Float distance;
 
-    public CarVO setDistanceVO(DistanceVO distanceVO) {
-        this.distance = distanceVO.getDistance() + DistanceUnit.findByCode(distanceVO.getUnitCode()).getPlaceholder();
+    public CarVO setDistance(DistanceVO distanceVO) {
+        this.distance = distanceVO.getDistance();
         return this;
     }
 }
