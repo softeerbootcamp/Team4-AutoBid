@@ -1,5 +1,7 @@
 package com.codesquad.autobid.web.interceptor;
 
+import java.util.Objects;
+
 import com.codesquad.autobid.OauthToken;
 import com.codesquad.autobid.test.UserTestUtil;
 
@@ -12,9 +14,9 @@ import javax.servlet.http.HttpSession;
 public class AuthorizationInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-		if (request.getHeader("Authorization") != null) {
+		if (Objects.equals(request.getHeader("Authorization"), "random")) {
 			HttpSession session = request.getSession();
-			session.setAttribute("user", UserTestUtil.TEST_USER_1);
+			session.setAttribute("user", UserTestUtil.RANDOM_USER);
 			session.setAttribute("accessToken", "accessToken");
 		}
 
