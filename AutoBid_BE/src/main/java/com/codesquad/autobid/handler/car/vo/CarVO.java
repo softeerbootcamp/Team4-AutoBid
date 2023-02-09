@@ -25,7 +25,7 @@ public class CarVO {
     @JsonProperty("carSellname")
     private String sellName;
     @JsonIgnore
-    private Long distance;
+    private Float distance;
 
     public CarVO setDistance(DistanceVO distanceVO) {
         this.distance = distanceVO.getDistance();

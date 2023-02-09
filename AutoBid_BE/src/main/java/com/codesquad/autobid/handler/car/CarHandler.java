@@ -70,7 +70,6 @@ public class CarHandler {
             return objectMapper.readValue(body, new TypeReference<>() {
             });
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
             logger.debug("unhandled car list request exception");
             return new DistanceVO();
         }

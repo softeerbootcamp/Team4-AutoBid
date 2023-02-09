@@ -30,7 +30,7 @@ public class Car {
     @Column("car_type")
     private Type type;
     @Column("car_distance")
-    private Long distance;
+    private Float distance;
     @Column("car_carid")
     private String carId;
     @Column("car_name")
@@ -62,8 +62,9 @@ public class Car {
             return;
         }
         this.carId = carVO.getCarId();
+        this.type = carVO.getType();
         this.name = carVO.getName();
         this.sellName = carVO.getSellName();
-        this.type = carVO.getType();
+        this.distance = carVO.getDistance();
     }
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CheckCarResponse {
 
-    private Long distance;
+    private Float distance;
     private String name;
     private Type type;
     private String sellName;
