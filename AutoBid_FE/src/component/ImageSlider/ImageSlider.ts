@@ -36,11 +36,12 @@ class ImageSlider extends Component<any, { imageUrls: ImageURL[], width: number,
 
     swapImage(direction: 'left' | 'right') {
         const $imgContainer = this.$target.querySelector('.img-container') as HTMLElement;
+        const imageWidth = this.props.width
         if (direction === 'left') {
-            if (this.scrollDiff >= 250)
-                this.scrollDiff -= 250;
-        } else if (this.scrollDiff < $imgContainer.scrollWidth - 250) {
-            this.scrollDiff += 250;
+            if (this.scrollDiff >= imageWidth)
+                this.scrollDiff -= imageWidth;
+        } else if (this.scrollDiff < $imgContainer.scrollWidth - imageWidth) {
+            this.scrollDiff += imageWidth;
         }
         $imgContainer.scrollLeft = this.scrollDiff;
     }
