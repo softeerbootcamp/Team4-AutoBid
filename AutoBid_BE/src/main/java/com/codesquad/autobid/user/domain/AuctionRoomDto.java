@@ -5,17 +5,17 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AuctionUserDto {
+public class AuctionRoomDto {
 
     private String auctionId;
     private String userName;
 
 
-    public AuctionUserDto(String auctionId, String userName) {
+    public AuctionRoomDto(String auctionId, String userName) {
         this.auctionId = auctionId;
         this.userName = userName;
     }
 
-    public AuctionUserDto() {
+    public AuctionRoomDto() {
     }
 }

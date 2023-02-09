@@ -18,39 +18,71 @@
     var btn = document.querySelector('#btn');
 
     var stompClient = null;
-    console.log("data-b")
-
     btn.addEventListener('submit', connect, true)
 
     function connect(event){
-        console.log("data-a")
-
+        var id1 = "1"
+        var id2 = "2"
+        var id3 = "3"
         var socket = new SockJS("/auction-room");
         stompClient = Stomp.over(socket);
         stompClient.connect({}, onConnected);
         event.preventDefault();
     }
 
-    function onConnected() {
-        console.log("data1")
-        var auctionRoomInfo = {
+    function onConnected() { // 방만들기
+
+        var auctionDto = {
             auctionId: "1",
-            username: "sungjun"
+            username: "ttta"
         };
-        console.log("data2")
-        stompClient.send("/publish/createRoom", {}, JSON.stringify(auctionRoomInfo));
-        console.log("data3")
 
-        // Subscribe to the Public Topic
-        stompClient.subscribe('/subscribe/auction'); // 구독을 퍼블리쉬로 보낸다.
+        var auctionDto2 = {
+            auctionId: "2",
+            username: "juy"
+        };
 
-        // Tell your username to the server
-        // stompClient.send("/publish/auction/createRoom",
-        //     {},
-        //     JSON.stringify({auctionId: "auctionRoomId", username: "user"})
-        // )
+
+        // stompClient.send("/publish/createRoom", {}, JSON.stringify(auctionDto));
+        // // stompClient.subscribe('/subscribe/auction/room/' + auctionDto.auctionId);
+        // stompClient.subscribe('/subscribe/auction/room/' + auctionDto.auctionId, function (auctionDto) {
+        //     var content = JSON.parse(auctionDto.body);
+        // });
+
+
+
+        // console.log(auctionDto.username + "님이 방을 만드셨습니다.");
+        //
+        // stompClient.send("/publish/createRoom", {}, JSON.stringify(auctionDto2));
+        // stompClient.subscribe('/subscribe/auction/room/' + auctionDto2.auctionId);
+
+        // console.log(auctionDto2.username + "님이 방을 만드셨습니다.");
+
+        var userDto = {
+            roomNum: auctionDto.auctionId,
+            userName: "park",
+            mobileNum: "4537"
+        };
+
+        var userDto2 = {
+            roomNum: "2",
+            userName: "nob",
+            mobileNum: "1234"
+        };
+
+        stompClient.send("/publish/enterRoom/"+userDto.roomNum, {}, JSON.stringify(userDto));
+        stompClient.subscribe('/subscribe/auction/room/' + userDto.roomNum);
+
+        console.log("logic1" + userDto.userName + "님이" + userDto.roomNum + "번 방에 입장하셨습니다.");
+
+        var roomnum = userDto2.roomNum;
+
+        stompClient.send("/publish/enterRoom/"+roomnum, {}, JSON.stringify(userDto2));
+        stompClient.subscribe('/subscribe/auction/room/' + userDto2.roomNum);
+
+        console.log("logic2: " + userDto2.userName + "님이" + userDto2.roomNum + "번 방에 입장하셨습니다.");
+
     }
-
 </script>
 </body>
 </html>
