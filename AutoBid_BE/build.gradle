@@ -13,30 +13,12 @@ repositories {
 }
 
 dependencies {
-<<<<<<< HEAD
-<<<<<<< HEAD
     //websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
-=======
-    //gson
-    implementation 'com.google.code.gson:gson:2.9.0'
->>>>>>> 021e229 (fix: refactoring)
-=======
-    //websocket
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
->>>>>>> 8a96023 (feat: websocket config 추가)
 
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.session:spring-session-data-redis:2.7.0'
-<<<<<<< HEAD
-<<<<<<< HEAD
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
-=======
->>>>>>> 021e229 (fix: refactoring)
-=======
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
->>>>>>> 8a96023 (feat: websocket config 추가)
 
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.12'
