@@ -27,7 +27,7 @@ public class AutoBidApplication {
 				registry.addMapping("/**")
 					.allowedMethods("GET", "POST", "PUT", "DELETE")
 					.allowedHeaders("Access-Control-Allow-Origin","Authorization", "Refreshtoken","Access-Control-Request-Method", "origin", "x-requested-with","Content-Type","Access-Control-Allow-Headers","Access-Control-Request-Headers")
-					.allowedOrigins("http://localhost:1234","http://localhost:3000", "https://www.autobid.im", "http://localhost:8080")
+					.allowedOrigins("http://localhost:1234","http://localhost:3000", "https://www.autobid.im", "http://localhost:8080","https://www.autobid.site/swagger-ui/index.html")
 					.allowCredentials(true)
 					.maxAge(3000);
 			}
