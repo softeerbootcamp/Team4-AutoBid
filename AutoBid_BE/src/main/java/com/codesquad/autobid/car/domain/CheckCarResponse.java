@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CheckCarResponse {
 
-    private String distance;
+    private Long distance;
     private String name;
     private Type type;
     private String sellName;
@@ -16,7 +16,7 @@ public class CheckCarResponse {
 
     public static CheckCarResponse from(Car car) {
         CheckCarResponse response = new CheckCarResponse();
-        response.distance = car.getDistance().toString();
+        response.distance = car.getDistance();
         response.name = car.getName();
         response.type = car.getType();
         response.sellName = car.getSellName();
