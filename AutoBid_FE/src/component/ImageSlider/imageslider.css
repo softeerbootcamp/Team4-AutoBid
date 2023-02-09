@@ -8,12 +8,18 @@
     display: flex;
     justify-content: space-between;
     opacity: 0;
-    transition: 0.1s;
+    transition: 0.3s;
     z-index: 1;
 }
 
+[data-component="ImageSlider"] .fas {
+    color: var(--color-white);
+    font-size: 20px;
+    padding: 4px;
+}
+
 [data-component="ImageSlider"] .swap-button-container:hover {
-    opacity: 0.5;
+    opacity: 0.75;
 }
 
 [data-component="ImageSlider"] .img-container {
