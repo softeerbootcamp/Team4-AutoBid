@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 public class AuthorizationInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-		if (Objects.equals(request.getHeader("Authorization"), "random")) {
+		if (Objects.equals(request.getHeader("Authorization"), "Bearer random")) {
 			HttpSession session = request.getSession();
 			session.setAttribute("user", UserTestUtil.RANDOM_USER);
 			session.setAttribute("accessToken", "accessToken");
