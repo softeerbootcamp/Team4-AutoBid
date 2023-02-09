@@ -1,12 +1,5 @@
 package com.codesquad.autobid.test;
 
-import com.codesquad.autobid.car.domain.Car;
-import com.codesquad.autobid.car.domain.CheckCarResponse;
-import com.codesquad.autobid.car.domain.Type;
-import com.codesquad.autobid.handler.car.vo.CarVO;
-
-import java.util.List;
-
 public class CarTestUtil {
 
     public static String getCarListJson() {
@@ -59,15 +52,5 @@ public class CarTestUtil {
                 "  \"unit\": 1,\n" +
                 "  \"msgId\": \"714dd6b9-af57-4c25-9630-0f0eef9175f9\"\n" +
                 "}";
-    }
-
-    public static List<CheckCarResponse> getCarList() {
-        return List.of(
-                CheckCarResponse.from(Car.from(new CarVO("6d97337b-eb53-467b-baf4-7faec6d7065e", Type.EV, "AD", "Avante", "nickname", "10000KM"), 1l)),
-                CheckCarResponse.from(Car.from(new CarVO("3f979d64-1e57-4ead-90af-25da1756e206", Type.GN, "AD", "Avante", "nickname", "10000KM"), 1l)),
-                CheckCarResponse.from(Car.from(new CarVO("ce7dfc88-f6b3-41ad-9099-4eb57bce4944", Type.HEV, "AD", "Avante", "nickname", "10000KM"), 1l)),
-                CheckCarResponse.from(Car.from(new CarVO("b23f1cd3-517c-4ac0-b574-cfc8eeca5fed", Type.FCEV, "AD", "Avante", "nickname", "10000KM"), 1l)),
-                CheckCarResponse.from(Car.from(new CarVO("10cc6538-82b5-48aa-9d85-16416b8e07fb", Type.PHEV, "AD", "Avante", "nickname", "10000KM"), 1l))
-        );
     }
 }
