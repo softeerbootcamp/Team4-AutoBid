@@ -5,7 +5,7 @@ export type ImageURL = string;
 
 class ImageSlider extends Component<any, { imageUrls: ImageURL[], width: number, height: number }> {
     template(): InnerHTML["innerHTML"] {
-        const { imageUrls, width } = this.props;
+        const {imageUrls, width} = this.props;
         return `
         <div class="swap-button-container">
             <button class="swap-button-left">
@@ -18,7 +18,7 @@ class ImageSlider extends Component<any, { imageUrls: ImageURL[], width: number,
         <div class="img-container">
             <div class="img-container__scrollable">
             ${imageUrls.map(url => `
-                <img class="img-container__img" src="${url}" width="${width}" alt="">
+                <img class="img-container__img" loading="lazy" src="${url}" width="${width}" alt="">
             `).join('')}            
             </div>
         </div>`;
@@ -32,13 +32,15 @@ class ImageSlider extends Component<any, { imageUrls: ImageURL[], width: number,
         this.addEvent('click', '.swap-button-right', this.swapImage.bind(this, 'right'));
     }
 
+    scrollDiff = 0;
     swapImage(direction: 'left'|'right') {
         const $imgContainer = this.$target.querySelector('.img-container') as HTMLElement;
-        const { width } = this.props;
         if (direction === 'left') {
-            $imgContainer.scrollLeft -= width;
+            this.scrollDiff -= 250;
+            $imgContainer.scrollLeft = this.scrollDiff;
         } else {
-            $imgContainer.scrollLeft += width;
+            this.scrollDiff += 250;
+            $imgContainer.scrollLeft = this.scrollDiff;
         }
     }
 }
