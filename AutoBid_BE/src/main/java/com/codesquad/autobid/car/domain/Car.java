@@ -1,6 +1,5 @@
 package com.codesquad.autobid.car.domain;
 
-import com.codesquad.autobid.handler.car.enums.DistanceUnit;
 import com.codesquad.autobid.handler.car.vo.CarVO;
 import com.codesquad.autobid.user.domain.User;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
@@ -32,7 +30,7 @@ public class Car {
     @Column("car_type")
     private Type type;
     @Column("car_distance")
-    private String distance;
+    private Long distance;
     @Column("car_carid")
     private String carId;
     @Column("car_name")
