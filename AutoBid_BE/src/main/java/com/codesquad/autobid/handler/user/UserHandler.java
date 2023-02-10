@@ -4,12 +4,14 @@ import com.codesquad.autobid.OauthToken;
 import com.codesquad.autobid.user.domain.UserVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
@@ -28,12 +30,16 @@ public class UserHandler {
     @Value("${hyundai.auth.token_profile_url}")
     private String TOKEN_PROFILE_URL;
 
+    @Value("${hyundai.auth.token_request_uri}")
+    private String TOKEN_REQUEST_URI;
+
     public UserVO userProfileAPICall(OauthToken oauthToken) {
         UserVO userVO = null;
+
         // HttpHeader 오브젝트 생성
         HttpHeaders headersForAccessToken = new HttpHeaders();
-//        headersForAccessToken.add("Content-type", "application/x-www-form-urlencoded");
         headersForAccessToken.add("Authorization", "Bearer "+oauthToken.getAccessToken());
+
         // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
         HttpEntity<HttpHeaders> hyundaiTokenRequest = new HttpEntity<>(headersForAccessToken);
 
@@ -53,6 +59,5 @@ public class UserHandler {
         }
         return userVO;
     }
-
 
 }
