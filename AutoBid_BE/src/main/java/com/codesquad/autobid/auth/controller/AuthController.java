@@ -40,13 +40,11 @@ public class AuthController {
     @Operation(summary = "로그인 API", description = "로그인을 합니다.")
     @GetMapping("/oauth/login")
     public void oauth(String code, HttpServletRequest httpServletRequest) {
-        logger.info("code = {}",code);
         OauthToken oauthToken = authService.getOauthToken(code);
         User user = userService.findUser(oauthToken);
 
         HttpSession httpSession = httpServletRequest.getSession();
         httpSession.setAttribute("user", user);
         httpSession.setAttribute("accessToken", oauthToken.getAccessToken());
-
     }
 }
