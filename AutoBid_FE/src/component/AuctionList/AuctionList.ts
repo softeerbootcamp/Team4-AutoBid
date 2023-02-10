@@ -1,6 +1,6 @@
 import Component from "../../core/component";
 import AuctionCard from "../AuctionCard/AuctionCard";
-import {QUERY_INITIAL, queryStateSelector, selectStatus} from "../../store/query";
+import {QUERY_INITIAL, queryStateSelector, selectPage, selectStatus} from "../../store/query";
 import {AuctionQuery} from "../../model/query";
 import {Auction, AuctionStatus} from "../../model/auction";
 import {requestAuctionList} from "../../api/auction";
@@ -22,6 +22,7 @@ class AuctionList extends Component<AuctionQuery> {
 
     template(): InnerHTML["innerHTML"] {
         const query = this.state || QUERY_INITIAL;
+        console.log(this.pages);
         return `
         <div class="header-button-container">
             <button class="header-button-container__header-button bid-status-all
@@ -41,15 +42,27 @@ class AuctionList extends Component<AuctionQuery> {
                 종료된 경매
             </button>
         </div>
+        <div class="card-container">
         ${this.auctionList?.map(() => `
-        <div data-component="AuctionCard"></div>
+            <div data-component="AuctionCard"></div>
+        `).join('')}        
+        </div>
+        <div class="pagination">
+        ${[...Array(this.pages).keys()].map((_, idx) => `
+            <button class="pagination__btn 
+                ${idx + 1 === query.page ? 'pagination__btn--selected' : ''}"
+                data-page="${idx + 1}">
+                ${idx + 1}
+            </button>
         `).join('')}
+        </div>
         `
     }
 
     initialize() {
         const queryState = this.state || QUERY_INITIAL;
         this.updateBidList(queryState);
+
         this.addEvent('click', '.bid-status-all',
             () => { selectStatus(AuctionStatus.ALL) });
         this.addEvent('click', '.bid-status-progress',
@@ -58,6 +71,14 @@ class AuctionList extends Component<AuctionQuery> {
             () => { selectStatus(AuctionStatus.BEFORE) });
         this.addEvent('click', '.bid-status-complete',
             () => { selectStatus(AuctionStatus.COMPLETE) });
+
+        this.addEvent('click', '.pagination__btn', this.pageButtonEvent.bind(this));
+    }
+
+    pageButtonEvent(e: Event) {
+        const $pageButton = (e.target as Element).closest('.pagination__btn') as HTMLElement;
+        const page = $pageButton.dataset.page as string;
+        selectPage(parseInt(page));
     }
 
     mounted() {
