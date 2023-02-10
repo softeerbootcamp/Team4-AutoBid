@@ -1,27 +1,12 @@
 import {Reducer} from "redux";
 import GlobalStore, {registerReducer} from "../core/store";
+import {AuctionQuery} from "../model/query";
+import {AuctionStatus} from "../model/auction";
+import {CarType} from "../model/car";
 
-export enum BidStatus {
-    ALL = -1,
-    PROGRESS,
-    BEFORE,
-    COMPLETE
-}
-
-export enum CarType {
-    ALL = -1,
-    GN = '내연기관',
-    EV = '전기',
-    HEV = '하이브리드',
-    PHEV = '플러그인하이브리드',
-    FCEV = '수소전기'
-}
-
-export type QueryState = {
-    bidStatus: BidStatus, carType: CarType, minPrice: number, maxPrice: number, page: number
-};
-export const QUERY_INITIAL: QueryState = {
-    bidStatus: BidStatus.ALL, carType: CarType.ALL, minPrice: 0, maxPrice: 10000, page: 1
+export const QUERY_INITIAL: AuctionQuery = {
+    auctionStatus: AuctionStatus.ALL, carType: CarType.ALL,
+    minPrice: 0, maxPrice: 10000, page: 1
 };
 
 enum QueryActionType {
@@ -32,11 +17,11 @@ enum QueryActionType {
 export const selectPage = (page: number) => {
     GlobalStore.get().dispatch({ type: QueryActionType.PAGE, page: page });
 }
-export const selectStatus = (bidStatus: BidStatus) => {
-    GlobalStore.get().dispatch({ type: QueryActionType.STATUS, bidStatus: bidStatus });
+export const selectStatus = (auctionStatus: AuctionStatus) => {
+    GlobalStore.get().dispatch({ type: QueryActionType.STATUS, auctionStatus: auctionStatus });
 }
 
-const query: Reducer<QueryState> = (state = QUERY_INITIAL, action) => {
+const query: Reducer<AuctionQuery> = (state = QUERY_INITIAL, action) => {
     switch (action.type) {
         case QueryActionType.PAGE:
             return { ...state,
@@ -44,7 +29,7 @@ const query: Reducer<QueryState> = (state = QUERY_INITIAL, action) => {
             };
         case QueryActionType.STATUS:
             return { ...state,
-                bidStatus: action.bidStatus
+                auctionStatus: action.auctionStatus
             };
         default:
             return state;

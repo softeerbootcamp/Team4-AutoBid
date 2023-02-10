@@ -1,6 +1,6 @@
 @import "../../style/all.css";
 
-[data-component="BidCard"] {
+[data-component="AuctionCard"] {
     display: inline-block;
     box-shadow: var(--box-shadow-level-1);
     border-radius: 15px;
@@ -8,46 +8,46 @@
     transition: 0.1s;
 }
 
-[data-component="BidCard"]:hover {
+[data-component="AuctionCard"]:hover {
     transform: scale(1.02);
 }
 
-[data-component="BidCard"] .card-item__img-slider {
+[data-component="AuctionCard"] .card-item__img-slider {
     border-top-right-radius: inherit;
     border-top-left-radius: inherit;
 }
 
-[data-component="BidCard"] .card-item__details-container {
+[data-component="AuctionCard"] .card-item__details-container {
     cursor: pointer;
     padding: 16px;
     text-align: left;
 }
 
-[data-component="BidCard"] .card-item__details__tags {
+[data-component="AuctionCard"] .card-item__details__tags {
     display: block;
     color: var(--color-semi-blue);
     margin-bottom: 8px;
 }
 
-[data-component="BidCard"] .card-item__details__title {
+[data-component="AuctionCard"] .card-item__details__title {
     display: block;
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 8px;
 }
 
-[data-component="BidCard"] .card-item__details__info {
+[data-component="AuctionCard"] .card-item__details__info {
     display: block;
     opacity: 0.6;
     margin-bottom: 16px;
 }
 
-[data-component="BidCard"] .card-item__details__price {
+[data-component="AuctionCard"] .card-item__details__price {
     display: flex;
     align-items: baseline;
 }
 
-[data-component="BidCard"] .card-item__details__price b {
+[data-component="AuctionCard"] .card-item__details__price b {
     margin-right: 4px;
     color: var(--color-blue);
     font-size: 25px;
