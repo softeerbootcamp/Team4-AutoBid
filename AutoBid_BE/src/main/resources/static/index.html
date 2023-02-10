@@ -20,15 +20,9 @@
     var stompClient = null;
     btn.addEventListener('submit', connect, true)
 
-    function addRoom() {
-        for (var i = 1; i < 5; i++) {
-            var socket = new SockJS("/auction-room/"+i+"/");
-            stompClient = Stomp.over(socket);
-        }
-    }
-
     function connect(event){
-        addRoom();
+        var socket = new SockJS("/auction-room");
+        stompClient = Stomp.over(socket);
         stompClient.connect({}, onConnected);
         event.preventDefault();
     }

@@ -28,10 +28,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         testaAuctionRoomId.add(2);
         testaAuctionRoomId.add(3);
         testaAuctionRoomId.add(4);
-        for (Integer i : testaAuctionRoomId) {
-            registry.addEndpoint("/auction-room/"+i+"/").setAllowedOriginPatterns("http://localhost:8080","http://localhost:5500","http://localhost:3000")
-                    .withSockJS();
-        }
+        registry.addEndpoint("/auction-room").setAllowedOriginPatterns("http://localhost:8080","http://localhost:5500","http://localhost:3000")
+                .withSockJS();
 //        registry.addEndpoint("/auction-room/").setAllowedOriginPatterns("http://localhost:8080","http://localhost:5500","http://localhost:3000")
 //                .withSockJS();
     }

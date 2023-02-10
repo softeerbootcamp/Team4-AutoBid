@@ -1,6 +1,6 @@
 package com.codesquad.autobid;
 
-import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
+//import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @SpringBootApplication
 @EnableScheduling
 @EnableAsync
-@EnableSchedulerLock(defaultLockAtLeastFor = "PT10S", defaultLockAtMostFor = "PT5M")
+//@EnableSchedulerLock(defaultLockAtLeastFor = "PT10S", defaultLockAtMostFor = "PT5M")
 public class AutoBidApplication {
 
     public static void main(String[] args) {

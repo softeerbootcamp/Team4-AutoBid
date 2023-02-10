@@ -1,6 +1,5 @@
 package com.codesquad.autobid.auction.controller;
 
-import com.codesquad.autobid.testAuction.testAuctionRepository;
 import com.codesquad.autobid.user.domain.AuctionRoomDto;
 import com.codesquad.autobid.user.domain.EnterUserDto;
 import org.springframework.beans.factory.annotation.Autowired;
