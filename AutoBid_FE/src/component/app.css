@@ -1,1 +1,9 @@
 @import "../style/all.css";
+
+#App .main-container {
+    max-width: var(--container-max-width);
+    padding: var(--container-padding);
+    margin: auto auto 64px;
+    display: flex;
+    justify-content: space-between;
+}

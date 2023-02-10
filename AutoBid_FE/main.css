@@ -1,1 +1,5 @@
 @import "./src/style/all.css";
+
+body {
+    background-color: var(--color-lighter-blue);
+}
