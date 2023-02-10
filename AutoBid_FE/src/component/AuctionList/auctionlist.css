@@ -1,0 +1,57 @@
+[data-component="AuctionList"] {
+    width: 600px;
+    text-align: center;
+    border-radius: 15px;
+    background-color: white;
+    padding: 32px;
+    box-shadow: var(--box-shadow-level-1);
+}
+
+[data-component="AuctionList"] .header-button-container {
+    display: flex;
+    justify-content: space-evenly;
+    border-bottom: 1px solid lightgray;
+}
+
+[data-component="AuctionList"] .header-button-container__header-button {
+    font-size: 20px;
+    padding: 0 20px 15px;
+    border-bottom: 1px solid transparent;
+    transition: 0.1s;
+}
+
+[data-component="AuctionList"] .header-button--selected {
+    pointer-events: none;
+}
+
+[data-component="AuctionList"] .header-button--selected,
+[data-component="AuctionList"] .header-button-container__header-button:hover {
+    color: var(--color-blue);
+    border-bottom: 1px solid var(--color-blue);
+}
+
+[data-component="AuctionList"] .card-container {
+    padding: 32px 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 36px
+}
+
+[data-component="AuctionList"] .pagination__btn {
+    outline: 1px solid var(--color-semi-gray);
+    margin: 0 5px;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+[data-component="AuctionList"] .pagination__btn--selected {
+    pointer-events: none;
+}
+
+[data-component="AuctionList"] .pagination__btn--selected,
+[data-component="AuctionList"] .pagination__btn:hover {
+    outline: 1px solid var(--color-blue);
+    color: var(--color-blue);
+}

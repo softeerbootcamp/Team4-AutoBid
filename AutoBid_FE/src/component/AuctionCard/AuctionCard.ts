@@ -1,17 +1,17 @@
 import Component from "../../core/component";
 import ImageSlider from "../ImageSlider/ImageSlider";
-import "./bidcard.css";
+import {CarInfo, getCarTypeName} from "../../model/car";
+import {Auction} from "../../model/auction";
+import "./auctioncard.css";
 
-export type Bid = { images: string[], tags: string[], title: string, carInfo: CarInfo, price: number };
-export type CarInfo = { year: number, distance: number, type: string, region: string };
 
 const getTagStr = (tags: string[]) => tags.map(tag => `#${tag}`).join(' ');
-const getInfoStr = ({ year, distance, type, region }: CarInfo) =>
-    `${year} | ${distance.toLocaleString()}km | ${type} | ${region}`;
+const getInfoStr = ({ distance, type, sellName }: CarInfo) =>
+    `${sellName} | ${distance.toLocaleString()}km | ${getCarTypeName(type)}`;
 
-class BidCard extends Component<any, { bid: Bid, onClick: (a: any) => any }> {
+class AuctionCard extends Component<any, { auction: Auction, onClick: (arg: any) => any }> {
     template(): InnerHTML["innerHTML"] {
-        const { tags, title, carInfo, price } = this.props.bid;
+        const { tags, title, carInfo, price } = this.props.auction;
         return `
         <div class="card-item__img-slider" data-component="ImageSlider"></div>
         <div class="card-item__details-container">
@@ -24,7 +24,7 @@ class BidCard extends Component<any, { bid: Bid, onClick: (a: any) => any }> {
     }
 
     mounted() {
-        const { images } = this.props.bid;
+        const { images } = this.props.auction;
         const $imageSlider = this.$target.querySelector('[data-component="ImageSlider"]') as HTMLElement;
         new ImageSlider($imageSlider, { imageUrls: images, width: 250, height: 140 });
     }
@@ -35,4 +35,4 @@ class BidCard extends Component<any, { bid: Bid, onClick: (a: any) => any }> {
     }
 }
 
-export default BidCard;
+export default AuctionCard;
