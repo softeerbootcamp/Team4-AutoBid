@@ -23,11 +23,11 @@ public class AuthService {
         return authHandler.getOauthToken(OauthType.NEW, code);
     }
 
-    public OauthToken getOauthDeleteToken(String accessToken) {
+    public OauthToken deleteOauthToken(String accessToken) {
         return authHandler.getOauthDeleteToken(OauthType.DELETE, accessToken);
     }
 
-    public OauthToken getOauthRefreshToken(String refreshToken) {
+    public OauthToken refreshOauthToken(String refreshToken) {
         return authHandler.getOauthRefreshToken(OauthType.REFRESH, refreshToken);
     }
 }

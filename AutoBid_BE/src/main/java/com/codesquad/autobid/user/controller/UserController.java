@@ -53,9 +53,7 @@ public class UserController {
 
     @DeleteMapping("/user/session")
     public void delete(String code, HttpServletRequest httpServletRequest) {
-        authService.getOauthToken(code);
-        HttpSession session = httpServletRequest.getSession();
-//        grant_type=delete&access_token={access_token}&redirect_uri={redirect_uri}
-//        {BASE_URL}/oauth/session
+        OauthToken oauthToken = authService.getOauthToken(code);
+        authService.deleteOauthToken(oauthToken.getAccessToken());
     }
 }
