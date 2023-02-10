@@ -2,9 +2,15 @@ package com.codesquad.autobid.handler.user;
 
 import com.codesquad.autobid.OauthToken;
 import com.codesquad.autobid.user.domain.UserVO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,51 +21,37 @@ import java.net.URL;
 @Service
 public class UserHandler {
 
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
+    private static final RestTemplate rt = new RestTemplate();
+
     @Value("${hyundai.auth.token_profile_url}")
-    private String apiURL;
+    private String TOKEN_PROFILE_URL;
 
-    public UserVO userProfileAPICall(OauthToken oauthToken) {    // 발급받은 Access Token
-        String access_token = oauthToken.getAccessToken();
+    public UserVO userProfileAPICall(OauthToken oauthToken) {
+        UserVO userVO = null;
+        // HttpHeader 오브젝트 생성
+        HttpHeaders headersForAccessToken = new HttpHeaders();
+//        headersForAccessToken.add("Content-type", "application/x-www-form-urlencoded");
+        headersForAccessToken.add("Authorization", "Bearer "+oauthToken.getAccessToken());
+        // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
+        HttpEntity<HttpHeaders> hyundaiTokenRequest = new HttpEntity<>(headersForAccessToken);
 
-        ObjectMapper mapper = new ObjectMapper();
-        UserVO user = new UserVO();
-        StringBuffer sb;
-        String responseData = "";
+        // 실제로 요청하기
+        // Http 요청하기 - POST 방식으로 - 그리고 response 변수에 응답을 받음.
+        ResponseEntity<String> userResponse = rt.exchange(
+                TOKEN_PROFILE_URL,
+                HttpMethod.GET,
+                hyundaiTokenRequest,
+                String.class
+        );
 
         try {
-            URL url = new URL(apiURL);
-
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
-            con.setRequestMethod("GET");
-
-            // Set Header Info
-            con.setRequestProperty("Authorization", "Bearer " + access_token);
-
-            int responseCode = con.getResponseCode();
-            BufferedReader br;
-            if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                br = new BufferedReader(new InputStreamReader(con.getInputStream())); // 정상호출
-            } else {
-                br = new BufferedReader(new InputStreamReader(con.getErrorStream())); // 에러발생
-            }
-
-            sb = new StringBuffer();
-            while ((responseData = br.readLine()) != null) {
-                sb.append(responseData);
-            }
-
-            br.close();
-
-            try {
-                user = mapper.readValue(sb.toString(), UserVO.class);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+            userVO = objectMapper.readValue(userResponse.getBody(), UserVO.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
-        return user;
+        return userVO;
     }
 
 
