@@ -8,6 +8,7 @@ import com.codesquad.autobid.user.service.UserService;
 import com.codesquad.autobid.web.argumentresolver.AuthorizedUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -53,7 +55,10 @@ public class UserController {
 
     @DeleteMapping("/user/session")
     public void delete(String code, HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        session.invalidate(); // 세션삭제
         OauthToken oauthToken = authService.getOauthToken(code);
-        authService.deleteOauthToken(oauthToken.getAccessToken());
+        OauthToken deleteToken = authService.deleteOauthToken(oauthToken.getAccessToken());
+        log.info("deleteToken : {}",deleteToken.getAccessToken());
     }
 }
