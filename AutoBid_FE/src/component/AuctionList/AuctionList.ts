@@ -22,7 +22,6 @@ class AuctionList extends Component<AuctionQuery> {
 
     template(): InnerHTML["innerHTML"] {
         const query = this.state || QUERY_INITIAL;
-        console.log(this.pages);
         return `
         <div class="header-button-container">
             <button class="header-button-container__header-button bid-status-all
