@@ -1,10 +1,12 @@
 import {AuctionQuery} from "../model/query";
 import {AuctionListDTO} from "../model/auction";
 import {CarType} from "../model/car";
+import {asyncTaskWrapper, lazyReturn} from "../core/util";
 
 
-export const requestAuctionList = async (query: AuctionQuery): Promise<AuctionListDTO> => {
-    return {
+
+export const requestAuctionList = asyncTaskWrapper(async (query: AuctionQuery): Promise<AuctionListDTO> => {
+    return await lazyReturn({
         auctionList: [
             {
                 id: 1,
@@ -83,5 +85,5 @@ export const requestAuctionList = async (query: AuctionQuery): Promise<AuctionLi
             }
         ],
         pages: 5
-    }
-};
+    } as AuctionListDTO, 1000);
+});

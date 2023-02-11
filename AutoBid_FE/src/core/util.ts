@@ -45,3 +45,11 @@ export const asyncTaskWrapper = <A extends unknown[], R, P>(asyncFunc: (...args:
         });
     });
 };
+
+export const lazyReturn = <R>(returnValue: R, timeout: number): Promise<R> => {
+    return new Promise<R>(res => {
+        setTimeout(() => {
+            res(returnValue);
+        }, timeout);
+    });
+}

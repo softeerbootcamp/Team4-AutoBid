@@ -1,0 +1,28 @@
+@import "../../style/all.css";
+
+[data-component="QueryCarTypeGroup"] {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: center;
+    margin-bottom: 32px;
+}
+
+.query-car-type-group__btn {
+    border-radius: 10px;
+    width: 80px;
+    height: 80px;
+    outline: 1px solid lightgray;
+    transition: 0.1s;
+}
+
+.query-car-type-group__btn:hover,
+.query-car-type-group__btn--checked {
+    outline: 1px solid var(--color-blue);
+    color: var(--color-blue);
+}
+
+.query-car-type-group__btn__text {
+    padding-top: 10%;
+    display: block;
+}
