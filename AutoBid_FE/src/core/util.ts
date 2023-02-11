@@ -53,33 +53,3 @@ export const lazyReturn = <R>(returnValue: R, timeout: number): Promise<R> => {
         }, timeout);
     });
 }
-
-export const deltaTimeToString = (timeMilli: number) => {
-    const isMinus = timeMilli < 0;
-    if (isMinus) {
-        timeMilli = -timeMilli;
-    }
-
-    let timeSeconds = Math.floor(timeMilli / 1000);
-    let ret = '';
-
-    const days = Math.floor(timeSeconds / 86400);
-    if (days) {
-        ret += `${days}일 `;
-        timeSeconds %= 86400;
-    }
-
-    const hours = Math.floor(timeSeconds / 3600);
-    if (hours) {
-        ret += `${hours}시간 `;
-        timeSeconds %= 3600;
-    }
-
-    const mins = Math.floor(timeSeconds / 60);
-    if (mins) {
-        ret += `${mins}분 `;
-        timeSeconds %= 60;
-    }
-
-    return `${isMinus ? '-' : ''}${ret}${timeSeconds}초`
-}
