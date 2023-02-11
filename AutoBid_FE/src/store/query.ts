@@ -37,14 +37,17 @@ const query: Reducer<AuctionQuery> = (state = QUERY_INITIAL, action) => {
             };
         case QueryActionType.STATUS:
             return { ...state,
+                page: 1,
                 auctionStatus: action.auctionStatus
             };
         case QueryActionType.TYPE:
             return { ...state,
+                page: 1,
                 carType: action.carType
             };
         case QueryActionType.RANGE:
             return { ...state,
+                page: 1,
                 minPrice: action.minPrice,
                 maxPrice: action.maxPrice
             }
