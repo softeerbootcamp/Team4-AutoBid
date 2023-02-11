@@ -12,6 +12,7 @@ export const QUERY_INITIAL: AuctionQuery = {
 enum QueryActionType {
     PAGE = 'query/PAGINATE',
     STATUS = 'query/STATUS',
+    TYPE = 'query/TYPE',
 }
 
 export const selectPage = (page: number) => {
@@ -19,6 +20,9 @@ export const selectPage = (page: number) => {
 }
 export const selectStatus = (auctionStatus: AuctionStatus) => {
     GlobalStore.get().dispatch({ type: QueryActionType.STATUS, auctionStatus: auctionStatus });
+}
+export const selectCarType = (carType: CarType) => {
+    GlobalStore.get().dispatch({ type: QueryActionType.TYPE, carType: carType });
 }
 
 const query: Reducer<AuctionQuery> = (state = QUERY_INITIAL, action) => {
@@ -31,6 +35,10 @@ const query: Reducer<AuctionQuery> = (state = QUERY_INITIAL, action) => {
             return { ...state,
                 auctionStatus: action.auctionStatus
             };
+        case QueryActionType.TYPE:
+            return { ...state,
+                carType: action.carType
+            }
         default:
             return state;
     }

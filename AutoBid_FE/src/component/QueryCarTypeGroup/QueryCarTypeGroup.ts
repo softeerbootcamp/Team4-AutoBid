@@ -1,6 +1,6 @@
 import Component from "../../core/component";
 import {AuctionQuery} from "../../model/query";
-import {QUERY_INITIAL, queryStateSelector} from "../../store/query";
+import {QUERY_INITIAL, queryStateSelector, selectCarType} from "../../store/query";
 import {CarType, getCarTypeName} from "../../model/car";
 import './querycartypegroup.css';
 
@@ -13,12 +13,24 @@ class QueryCarTypeGroup extends Component<AuctionQuery['carType']> {
         const currCarType = this.state || QUERY_INITIAL.carType;
         return `${
         Object.values(CarType).map(carType => `
-        <button class="query-car-type-group__btn
-            ${carType === currCarType ? 'query-car-type-group__btn--checked' : ''}">
+        <button data-type="${carType}" class="query-car-type-group__btn
+            ${carType === currCarType ? ' query-car-type-group__btn--checked' : ''}">
             ${getCarTypeIcon(carType)}
             <span class="query-car-type-group__btn__text">${getCarTypeName(carType)}</span>
         </button>
         `).join('')}`;
+    }
+
+    initialize() {
+        this.addEvent('click', '.query-car-type-group__btn', ({ target }) => {
+            const $button = (target as Element).closest('.query-car-type-group__btn') as HTMLElement;
+            const carType = $button.dataset.type as CarType;
+            selectCarType(carType);
+        });
+    }
+
+    onStateChanged(prevLocalState: AuctionQuery["carType"]) {
+        this.render();
     }
 }
 
