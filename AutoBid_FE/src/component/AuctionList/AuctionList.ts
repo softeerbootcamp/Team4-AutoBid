@@ -42,9 +42,9 @@ class AuctionList extends Component<AuctionQuery> {
             </button>
         </div>
         <div class="card-container">
-        ${this.auctionList?.map(() => `
+        ${this.auctionList ? this.auctionList.map(() => `
             <div data-component="AuctionCard"></div>
-        `).join('')}        
+        `).join('') : ''}        
         </div>
         <div class="pagination">
         ${[...Array(this.pages).keys()].map((_, idx) => `
