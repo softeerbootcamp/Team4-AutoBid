@@ -20,7 +20,7 @@ public class CarTestUtil {
                     AggregateReference.to(userId),
                     State.NOT_FOR_SALE,
                     Type.ETC,
-                    100l,
+                    100f,
                     "id#" + count,
                     "name#" + count,
                     "sellname#" + count,
@@ -28,9 +28,5 @@ public class CarTestUtil {
                     LocalDateTime.now()));
         }
         return cars;
-    }
-
-    public static User getNewUser() {
-        return new User("uid#1", "email#1", "name#1", "phoneNumber#1", LocalDate.now(), LocalDateTime.now(), LocalDateTime.now(), "refreshToken#1");
     }
 }

@@ -6,6 +6,7 @@ import com.codesquad.autobid.car.repository.CarRepository;
 import com.codesquad.autobid.car.util.CarTestUtil;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.repository.UserRepository;
+import com.codesquad.autobid.user.util.UserTestUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +34,7 @@ class CarControllerTest {
         this.carRepository = carRepository;
         this.userRepository = userRepository;
 
-        user = CarTestUtil.getNewUser();
+        user = UserTestUtil.getNewUser();
     }
 
     @BeforeEach
