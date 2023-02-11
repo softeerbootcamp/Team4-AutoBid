@@ -5,8 +5,8 @@ const THUMB_WIDTH = 16;
 
 class DoubleRangeSlider extends Component<any, {
         min: number, max: number, left: number, right: number,
-        onMoved: (left: number, right: number) => any,
-        onUp: (left: number, right: number) => any }> {
+        onMoved: (left: number, right: number, min: number, max: number) => any,
+        onUp: (left: number, right: number, min: number, max: number) => any }> {
 
     template(): InnerHTML["innerHTML"] {
         return `
@@ -22,16 +22,16 @@ class DoubleRangeSlider extends Component<any, {
     private $scrollingThumb: HTMLElement|null = null;
 
     initialize() {
-        const { onUp, onMoved } = this.props;
+        const { min, max, onUp, onMoved } = this.props;
 
         this.addEvent('mousedown', '.double-range-slider__thumb', ({ target }) => {
             this.$scrollingThumb = (target as Element).closest('.double-range-slider__thumb') as HTMLElement;
             this.shadowUp();
         });
-        this.addEvent('mouseup', '*', ({ target }) => {
+        this.addEvent('mouseup', '*', () => {
             this.$scrollingThumb = null;
             this.shadowDown();
-            onUp(this.getValFromTranslatedX(this.currLeftPos), this.getValFromTranslatedX(this.currRightPos));
+            onUp(this.getValFromTranslatedX(this.currLeftPos), this.getValFromTranslatedX(this.currRightPos), min, max);
         });
         this.addEvent('mousemove', '*', e => {
             if (!this.$scrollingThumb) return;
@@ -46,7 +46,7 @@ class DoubleRangeSlider extends Component<any, {
             }
             this.fitThumbs();
             this.fitRange();
-            onMoved(this.getValFromTranslatedX(this.currLeftPos), this.getValFromTranslatedX(this.currRightPos));
+            onMoved(this.getValFromTranslatedX(this.currLeftPos), this.getValFromTranslatedX(this.currRightPos), min, max);
         });
     }
 

@@ -1,0 +1,95 @@
+[data-component="QuerySidebar"] {
+    width: 350px;
+    margin-right: 32px;
+    height: fit-content;
+    text-align: center;
+    border-radius: 15px;
+    background-color: white;
+    padding: 32px;
+    box-shadow: var(--box-shadow-level-1);
+}
+
+.query-side-bar__n-sold {
+    padding: 0 0 16px;
+    margin-bottom: 32px;
+    text-align: center;
+    font-size: 20px;
+    border-bottom: 1px solid lightgray;
+}
+
+.query-side-bar__title {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 16px;
+}
+
+.query-side-bar__new-auction-btn {
+    font-size: 18px;
+    height: 40px;
+    width: 250px;
+    border-radius: 20px;
+    color: var(--color-blue);
+    background-color: var(--color-light-blue);
+    margin-bottom: 32px;
+    transition: 0.1s;
+}
+
+.query-side-bar__new-auction-btn:hover {
+    color: white;
+    background-color: var(--color-blue);
+}
+
+.query-side-bar__set-fund {
+    border-top: 1px solid lightgray;
+    padding-top: 16px;
+}
+
+.query-side-bar__set-fund b {
+    color: var(--color-blue);
+}
+
+.query-side-bar__set-fund__title {
+    font-weight: normal;
+    text-align: left;
+    margin-bottom: 16px;
+}
+
+.query-side-bar__set-fund__val {
+    text-align: left;
+    display: block;
+}
+
+.query-side-bar__set-fund__avg {
+    text-align: left;
+    display: block;
+}
+
+.query-side-bar__set-fund__hist {
+    margin-top: 16px;
+    padding-top: 8px;
+    height: 100px;
+    display: flex;
+    align-items: flex-end;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    background-color: var(--color-lightest-blue);
+}
+
+.query-side-bar__set-fund__hist__bar {
+    margin: 0 5px;
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: var(--color-light-blue);
+    transition: 0.2s;
+}
+
+.set-fund__hist__bar--selected {
+    background-color: var(--color-blue);
+}
+
+.query-side-bar__set-fund__labels {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+}

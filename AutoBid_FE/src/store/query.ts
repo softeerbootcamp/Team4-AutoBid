@@ -13,16 +13,20 @@ enum QueryActionType {
     PAGE = 'query/PAGINATE',
     STATUS = 'query/STATUS',
     TYPE = 'query/TYPE',
+    RANGE = 'query/RANGE',
 }
 
 export const selectPage = (page: number) => {
-    GlobalStore.get().dispatch({ type: QueryActionType.PAGE, page: page });
+    GlobalStore.get().dispatch({ type: QueryActionType.PAGE, page });
 }
 export const selectStatus = (auctionStatus: AuctionStatus) => {
-    GlobalStore.get().dispatch({ type: QueryActionType.STATUS, auctionStatus: auctionStatus });
+    GlobalStore.get().dispatch({ type: QueryActionType.STATUS, auctionStatus });
 }
 export const selectCarType = (carType: CarType) => {
-    GlobalStore.get().dispatch({ type: QueryActionType.TYPE, carType: carType });
+    GlobalStore.get().dispatch({ type: QueryActionType.TYPE, carType });
+}
+export const setRange = (minPrice: number, maxPrice: number) => {
+    GlobalStore.get().dispatch({ type: QueryActionType.RANGE, minPrice, maxPrice });
 }
 
 const query: Reducer<AuctionQuery> = (state = QUERY_INITIAL, action) => {
@@ -38,6 +42,11 @@ const query: Reducer<AuctionQuery> = (state = QUERY_INITIAL, action) => {
         case QueryActionType.TYPE:
             return { ...state,
                 carType: action.carType
+            };
+        case QueryActionType.RANGE:
+            return { ...state,
+                minPrice: action.minPrice,
+                maxPrice: action.maxPrice
             }
         default:
             return state;
