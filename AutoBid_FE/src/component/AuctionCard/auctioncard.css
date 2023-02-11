@@ -1,11 +1,23 @@
 @import "../../style/all.css";
 
 [data-component="AuctionCard"] {
+    position: relative;
     display: inline-block;
     box-shadow: var(--box-shadow-level-1);
     border-radius: 15px;
     width: 250px;
     transition: 0.1s;
+}
+
+[data-component="AuctionCard"] .sold-out {
+    display: flex;
+    padding: 64px;
+    pointer-events: none;
+    position: absolute;
+    width: 250px;
+    align-items: center;
+    fill: rgba(0, 0, 0, 0.3);
+    backdrop-filter: grayscale(100%);
 }
 
 [data-component="AuctionCard"]:hover {
@@ -45,10 +57,34 @@
 [data-component="AuctionCard"] .card-item__details__price {
     display: flex;
     align-items: baseline;
+    margin-bottom: 16px;
 }
 
 [data-component="AuctionCard"] .card-item__details__price b {
     margin-right: 4px;
-    color: var(--color-blue);
     font-size: 25px;
+}
+
+[data-component="AuctionCard"] .card-item__details__price em {
+    margin-right: 4px;
+    font-size: 12px;
+    font-style: oblique;
+}
+
+[data-component="AuctionCard"] .status--before b {
+    color: var(--color-blue);
+}
+
+[data-component="AuctionCard"] .status--complete b {
+    color: var(--color-semi-gray);
+}
+
+[data-component="AuctionCard"] .status--progress b {
+    color: var(--color-blue);
+}
+
+[data-component="AuctionCard"] .timer {
+    text-align: right;
+    font-style: oblique;
+    opacity: 0.6;
 }
