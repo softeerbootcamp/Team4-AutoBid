@@ -18,6 +18,8 @@ export type CarInfo = {
 
 export const getCarTypeName = (carType: CarType) => {
     switch (carType) {
+        case CarType.ALL:
+            return '전체';
         case CarType.GN:
             return '내연기관';
         case CarType.EV:
@@ -25,7 +27,7 @@ export const getCarTypeName = (carType: CarType) => {
         case CarType.HEV:
             return '하이브리드';
         case CarType.PHEV:
-            return '플러그인하이브리드';
+            return 'PHEV';
         case CarType.FCEV:
             return '수소전기';
         default:
