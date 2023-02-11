@@ -8,7 +8,7 @@
 }
 
 .double-range-slider__shadow {
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     opacity: 0;
