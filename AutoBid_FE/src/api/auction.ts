@@ -6,6 +6,7 @@ import {asyncTaskWrapper, lazyReturn} from "../core/util";
 
 
 export const requestAuctionList = asyncTaskWrapper(async (query: AuctionQuery): Promise<AuctionListDTO> => {
+    console.log(query);
     return await lazyReturn({
         auctionList: [
             {
