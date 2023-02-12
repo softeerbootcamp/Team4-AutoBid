@@ -29,7 +29,7 @@ public class AuctionScheduler {
     @Scheduled(cron = CRON_RATE)
     @SchedulerLock(name = "openPendingAuctionsLock")
     public void openPendingAuctions() {
-        log.info("openPendingAuctions");
+        log.info("open Pending Auctions");
         auctionService.openPendingAuctions(getTime());
     }
 
@@ -37,7 +37,7 @@ public class AuctionScheduler {
     @Scheduled(cron = CRON_RATE)
     @SchedulerLock(name = "closeInProgressAuctionsLock")
     public void closeInProgressAuctions() {
-        log.info("closeInProgressAuctions");
+        log.info("close InProgress Auctions");
         auctionService.closeFulfilledAuctions(getTime());
     }
 
