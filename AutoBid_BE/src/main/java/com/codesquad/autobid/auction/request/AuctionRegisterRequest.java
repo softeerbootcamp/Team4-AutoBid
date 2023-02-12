@@ -19,17 +19,17 @@ import lombok.ToString;
 public class AuctionRegisterRequest {
 	@Schema(description = "이미지 리스트")
 	private List<MultipartFile> multipartFileList;
-	@Schema(example = "5")
+	@Schema(example = "5", description = "자동차 아이디")
 	private Long carId;
-	@Schema(example = "2022-12-23 12:23")
+	@Schema(example = "2022-12-23 12:23", description = "경매 시작 시간")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime auctionStartTime;
-	@Schema(example = "2022-12-23 12:23")
+	@Schema(example = "2022-12-23 12:23", description = "경매 종료 시간")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	private LocalDateTime auctionEndTime;
-	@Schema(example = "1000")
+	@Schema(example = "1000", description = "경매 시작 가격")
 	private Long auctionStartPrice;
 
 }
