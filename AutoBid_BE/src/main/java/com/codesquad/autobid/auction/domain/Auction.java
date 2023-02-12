@@ -71,7 +71,7 @@ public class Auction {
         auctionStatus = AuctionStatus.PROGRESS;
     }
 
-    public void finishAuction() {
+    public void closeAuction() {
         auctionStatus = AuctionStatus.COMPLETED;
     }
 
