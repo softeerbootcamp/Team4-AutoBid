@@ -40,7 +40,6 @@ public class AuctionService {
         auctionRepository.save(auction);
 
         addImageList(auctionRegisterRequest.getMultipartFileList(), auction.getId());
-
     }
 
     @Transactional

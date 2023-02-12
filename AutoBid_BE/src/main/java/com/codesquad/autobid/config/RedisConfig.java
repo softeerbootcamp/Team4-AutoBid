@@ -40,17 +40,6 @@ public class RedisConfig {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager() {
-        return new DataSourceTransactionManager(datasource());
-    }
-
-    @Bean
-    @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource datasource() {
-        return DataSourceBuilder.create().build();
-    }
-
-    @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
         configuration.setHostName(host);
