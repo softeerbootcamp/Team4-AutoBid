@@ -1,12 +1,9 @@
 package com.codesquad.autobid.auction.domain;
 
-import java.time.LocalDateTime;
-
-import javax.annotation.processing.Generated;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import org.springframework.core.SpringVersion;
+import com.codesquad.autobid.car.domain.Car;
+import com.codesquad.autobid.user.domain.User;
+import lombok.Getter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,11 +11,7 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import com.codesquad.autobid.car.domain.Car;
-import com.codesquad.autobid.user.domain.User;
-
-import lombok.Getter;
-import lombok.ToString;
+import java.time.LocalDateTime;
 
 @ToString
 @Getter
