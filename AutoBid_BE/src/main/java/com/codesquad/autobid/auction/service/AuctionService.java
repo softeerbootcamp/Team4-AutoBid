@@ -79,7 +79,7 @@ public class AuctionService {
 
     @Transactional
     public void closeFulfilledAuctions(LocalDateTime closeTime) {
-        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.BEFORE, closeTime);
+        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.PROGRESS, closeTime);
         for (Auction auction : auctions) {
             Set<Bidder> bidders = closeAuction(auction);
             // todo: socket close
