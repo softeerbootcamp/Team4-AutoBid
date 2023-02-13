@@ -42,7 +42,8 @@ public class UserController {
 
     @Operation(summary = "로그인 API", description = "로그인을 합니다.")
     @PostMapping("/session")
-    public ResponseEntity<Optional<UserImpoResponse>> login(String code, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Optional<UserImpoResponse>> login(HttpServletRequest httpServletRequest) {
+        String code = httpServletRequest.getHeader("X-Auth-Code");
         OauthToken oauthToken = authService.getOauthToken(code);
         User user = userService.findUser(oauthToken); // 유저 데이터 찾기
         UserImpoResponse userImpoResponse = UserImpoResponse.create(user.getId(), user.getName(), user.getEmail(), user.getMobilenum());
@@ -54,7 +55,7 @@ public class UserController {
             httpSession.setAttribute("accessToken", oauthToken.getAccessToken());
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
         }
-        return new ResponseEntity<>(Optional.empty(), HttpStatus.OK);
+        return new ResponseEntity<>(Optional.empty(), HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/user/session")
