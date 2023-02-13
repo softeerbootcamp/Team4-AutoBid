@@ -30,7 +30,7 @@ public class TestController {
 	}
 	
 	@GetMapping("/session/test")
-	public String getSessionTest(HttpServlet Request httpServletRequest) {
+	public String getSessionTest(HttpServletRequest httpServletRequest) {
 		HttpSession httpSession = httpServletRequest.getSession();
 		return httpSession.getAttribute("test");
 	}
