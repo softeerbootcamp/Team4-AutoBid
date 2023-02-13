@@ -1,6 +1,6 @@
 import { emojisplosion } from "emojisplosion";
 
-export function asdf() {
+export function emojiExplosion() {
     emojisplosion({
         emojis: ["🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻",
             "🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻",
