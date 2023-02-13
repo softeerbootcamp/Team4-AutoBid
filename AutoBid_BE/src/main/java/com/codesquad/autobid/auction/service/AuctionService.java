@@ -10,7 +10,7 @@ import com.codesquad.autobid.image.domain.Image;
 import com.codesquad.autobid.image.repository.ImageRepository;
 import com.codesquad.autobid.image.service.S3Uploader;
 import com.codesquad.autobid.user.domain.User;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 @Service
 public class AuctionService {
 
@@ -36,10 +35,16 @@ public class AuctionService {
                 auctionRegisterRequest.getAuctionStartTime(),
                 auctionRegisterRequest.getAuctionEndTime(), auctionRegisterRequest.getAuctionStartPrice(),
                 AuctionStatus.BEFORE_END_PRICE, AuctionStatus.BEFORE);
-
         auctionRepository.save(auction);
-
         addImageList(auctionRegisterRequest.getMultipartFileList(), auction.getId());
+    }
+
+    @Autowired
+    public AuctionService(S3Uploader s3Uploader, AuctionRepository auctionRepository, AuctionRedisRepository auctionRedisRepository, ImageRepository imageRepository) {
+        this.s3Uploader = s3Uploader;
+        this.auctionRepository = auctionRepository;
+        this.auctionRedisRepository = auctionRedisRepository;
+        this.imageRepository = imageRepository;
     }
 
     @Transactional

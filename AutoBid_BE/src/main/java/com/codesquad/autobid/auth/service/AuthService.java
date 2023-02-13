@@ -22,4 +22,12 @@ public class AuthService {
     public OauthToken getOauthToken(String code) {
         return authHandler.getOauthToken(OauthType.NEW, code);
     }
+
+    public OauthToken deleteOauthToken(String accessToken) {
+        return authHandler.getOauthToken(OauthType.DELETE, accessToken);
+    }
+//
+//    public OauthToken refreshOauthToken(String refreshToken) {
+//        return authHandler.getOauthRefreshToken(OauthType.REFRESH, refreshToken);
+//    }
 }

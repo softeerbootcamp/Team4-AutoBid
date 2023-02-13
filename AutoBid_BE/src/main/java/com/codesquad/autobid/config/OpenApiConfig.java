@@ -39,10 +39,14 @@ public class OpenApiConfig {
 		Server server = new Server();
 		server.setUrl("https://www.autobid.site");
 
+		Server testServer = new Server();
+		testServer.setUrl("http://localhost:8080");
+
 		return new OpenAPI()
 			.components(components)
-			.servers(List.of(server))
+			.servers(List.of(server, testServer))
 			.info(info)
 			.addSecurityItem(securityRequirement);
 	}
+
 }
