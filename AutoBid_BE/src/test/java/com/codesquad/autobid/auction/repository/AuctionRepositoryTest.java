@@ -41,15 +41,14 @@ class AuctionRepositoryTest {
         carRepository.save(car);
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime startDate = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), now.getHour(), now.getMinute(), now.getSecond());
-        Auction auction = Auction.of(car.getId(), user.getId(), startDate, LocalDateTime.now(), 1l, 2l, AuctionStatus.BEFORE);
+        Auction auction = Auction.of(car.getId(), user.getId(),  now, now, 1l, 2l, AuctionStatus.BEFORE);
         auctionRepository.save(auction);
         // when
-        List<Auction> findAuctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.BEFORE, startDate);
+        List<Auction> findAuctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.BEFORE, now);
         // then
         assertAll(
                 () -> assertThat(findAuctions.size()).isEqualTo(1),
-                () -> assertThat(findAuctions.get(0).getId()).isEqualTo(auction.getId())
+                () -> assertThat(findAuctions.get(0)).usingRecursiveComparison().isEqualTo(auction)
         );
     }
 }
