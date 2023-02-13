@@ -25,4 +25,15 @@ public class AuctionRedis {
     public static AuctionRedis from(Auction auction) {
         return new AuctionRedis(auction.getId(), auction.getAuctionStartPrice());
     }
+
+    public static AuctionRedis of(Long auctionId, Long price, int numberOfUsers, Set<Bidder> bidders) {
+        AuctionRedis auctionRedis = new AuctionRedis(auctionId, price);
+        auctionRedis.numberOfUsers = numberOfUsers;
+        auctionRedis.bidders = bidders;
+        return auctionRedis;
+    }
+
+    public void addBidder(Bidder bidder) {
+        bidders.add(bidder);
+    }
 }
