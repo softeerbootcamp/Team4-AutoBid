@@ -41,7 +41,7 @@ public class UserController {
 //    }
 
     @Operation(summary = "로그인 API", description = "로그인을 합니다.")
-    @PostMapping("/session")
+    @PostMapping("/login")
     public ResponseEntity<Optional<UserImpoResponse>> login(HttpServletRequest httpServletRequest) {
         String code = httpServletRequest.getHeader("X-Auth-Code");
         log.info("code : {}",code);
@@ -59,15 +59,18 @@ public class UserController {
         return new ResponseEntity<>(Optional.empty(), HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/user/expire")
-    public ResponseEntity<HttpStatus> delete(String code, HttpServletRequest httpServletRequest) {
+    @DeleteMapping("/logout")
+    public ResponseEntity<HttpStatus> delete(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
-        session.invalidate(); // 세션삭제
-        OauthToken oauthToken = authService.getOauthToken(code);
-        OauthToken deleteToken = authService.deleteOauthToken(oauthToken.getAccessToken());
-        Optional<OauthToken> response = Optional.ofNullable(deleteToken);
+        String accessToken = (String) session.getAttribute(OauthToken.ACCESS_TOKEN_KEY);
+        OauthToken deleteToken = authService.deleteOauthToken(accessToken);
         log.info("deleteToken : {}",deleteToken.getAccessToken());
-        if(response.isPresent()) return new ResponseEntity<>(HttpStatus.OK);
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        session.invalidate(); // 세션삭제
+        return new ResponseEntity<>(HttpStatus.OK);
+////        OauthToken oauthToken = authService.getOauthToken(code);
+//        Optional<OauthToken> responseOauth = Optional.ofNullable(deleteToken);
+//        log.info("deleteToken : {}",deleteToken.getAccessToken());
+//        if(response.isPresent()) return new ResponseEntity<>(HttpStatus.OK);
+//        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }
