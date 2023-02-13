@@ -1,8 +1,10 @@
 package com.codesquad.autobid.auction.repository;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class Bidder {
 
     private Long userId;
@@ -10,10 +12,6 @@ public class Bidder {
 
     public Bidder(Long userId, Long price) {
         this.userId = userId;
-        this.price = price;
-    }
-
-    public void bid(Long price) {
         this.price = price;
     }
 }
