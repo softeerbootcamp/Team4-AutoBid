@@ -10,7 +10,9 @@ import AnimatedNumber from "../AnimatedNumber/AnimatedNumber";
 class QuerySidebar extends Component<any> {
     template(): InnerHTML["innerHTML"] {
         return `
-        <h4 class="query-side-bar__n-sold"></h4>
+        <div class="query-side-bar__n-sold">
+            오늘 <div data-component="AnimatedNumber"></div>대가 판매되었습니다
+        </div>
         <h4 class="query-side-bar__title">원하는 차량을 선택하세요</h4>
         <div data-component="QueryCarTypeGroup"></div>
         <button class="query-side-bar__new-auction-btn">경매 등록</button>
@@ -40,7 +42,7 @@ class QuerySidebar extends Component<any> {
             this.updateFundVal(auctionStatistic.minPrice, auctionStatistic.maxPrice);
             this.updateHistogram(auctionStatistic.histogram);
             this.mountDoubleRangeSlider(auctionStatistic.minPrice, auctionStatistic.maxPrice);
-        }).finally(AnimatedNumber);
+        });
     }
 
     markHistogramSelected(left: number, right: number, min: number, max: number) {
@@ -64,8 +66,8 @@ class QuerySidebar extends Component<any> {
     }
 
     updateNSold(nSold: number) {
-        const $nSold = this.$target.querySelector('.query-side-bar__n-sold') as HTMLElement;
-        $nSold.innerHTML = `오늘은 <b class="animated-number" value="${nSold}">0</b>대가 판매되었습니다`;
+        const $animatedNumber = this.$target.querySelector('[data-component="AnimatedNumber"]') as HTMLElement;
+        new AnimatedNumber($animatedNumber, { start: 0, destination: nSold + 1000, speed: 500 });
     }
     updateFundVal(min: number, max: number) {
         const minPriceInt = Math.floor(min);
