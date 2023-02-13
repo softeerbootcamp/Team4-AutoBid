@@ -67,8 +67,8 @@ public class AuctionService {
     public void openAuction(Auction auction) {
         // redis, mysql이 같은 transaction으로 처리되는지 확인해야 함
         auction.openAuction();
-        auctionRedisRepository.save(AuctionRedis.from(auction));
         auctionRepository.save(auction);
+        auctionRedisRepository.save(AuctionRedis.from(auction));
     }
 
     @Transactional
