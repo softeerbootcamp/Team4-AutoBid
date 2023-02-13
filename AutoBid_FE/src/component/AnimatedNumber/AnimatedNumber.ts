@@ -1,21 +1,40 @@
-const counters = document.getElementsByClassName("animated-number");
-const speed = 2000;
+import Component from "../../core/component";
+import "./animatednumber.css";
 
-export default async function AnimatedNumber() {
-    for (let c of counters) {
-        let counter = c as HTMLElement;
-        const animate = () => {
-            const value = +counter.getAttribute('value')!;
-            const data = +counter.innerText;
+class AnimatedNumber extends Component<any, { start: number, destination: number, speed: number }> {
+    template(): InnerHTML["innerHTML"] {
+        const { start } = this.props;
+        return start.toLocaleString();
+    }
 
-            const time = value / speed;
-            if (data < value) {
-                counter.innerText = Math.ceil(data + time) + '';
-                setTimeout(animate, 1);
-            } else {
-                counter.innerText = value + '';
-            }
+    mounted() {
+        this.animate();
+    }
+
+    animate() {
+        const $target = this.$target;
+        const { destination, speed } = this.props;
+        const delta = destination / speed;
+        let value = this.props.start;
+        timeoutRecursive();
+
+        function timeoutRecursive() {
+            setTimeout(() => {
+                if (!$target.isConnected) return;
+                if (value === destination) return;
+
+                if (value < destination) {
+                    value += delta;
+                } else {
+                    value -= delta;
+                }
+                value = Math.ceil(value);
+
+                $target.innerHTML = value.toLocaleString();
+                timeoutRecursive();
+            });
         }
-        await animate();
     }
 }
+
+export default AnimatedNumber;
