@@ -34,8 +34,11 @@ public class BidService {
             if (!checkBid(bidRegisterRequest.getSuggestedPrice(), bidRegisterRequest.getSuggestedPrice(), user)) {
                 return false;
             }
-            Bid bid = Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()), AggregateReference.to(user.getId()),
-                    bidRegisterRequest.getSuggestedPrice(), false);
+            Bid bid = Bid.of(
+                    AggregateReference.to(bidRegisterRequest.getAuctionId()),
+                    AggregateReference.to(user.getId()),
+                    bidRegisterRequest.getSuggestedPrice(),
+                    false);
 
             bidRepository.save(bid);
             bidRedisRepository.save(bid);

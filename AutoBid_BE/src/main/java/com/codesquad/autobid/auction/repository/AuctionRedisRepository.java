@@ -1,6 +1,7 @@
 package com.codesquad.autobid.auction.repository;
 
 import com.codesquad.autobid.auction.domain.Auction;
+import com.codesquad.autobid.auction.repository.exceptions.AuctionNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,7 +29,7 @@ public class AuctionRedisRepository {
     }
 
     public void save(AuctionRedis auctionRedis) {
-        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.getRedisKeys(auctionRedis.getId());
+        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionRedis.getId());
 
         stringOps.set(keys.get(AuctionRedisKey.PRICE), auctionRedis.getPrice());
         stringOps.set(keys.get(AuctionRedisKey.NUMBER_OF_USERS), auctionRedis.getNumberOfUsers());
@@ -46,28 +47,37 @@ public class AuctionRedisRepository {
     }
 
     public void delete(Auction auction) {
-        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.getRedisKeys(auction.getId());
+        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auction.getId());
         for (String key : keys.values()) {
             redisTemplate.delete(key);
         }
     }
 
-    public Optional<AuctionRedis> findById(Long auctionId) {
-        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.getRedisKeys(auctionId);
+    public Optional<AuctionRedis> findById(Long auctionId) throws AuctionNotFoundException {
+        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionId);
         AuctionRedis auctionRedis = null;
         try {
             Long price = Integer.toUnsignedLong((int) stringOps.get(keys.get(AuctionRedisKey.PRICE)));
             int numberOfUsers = (int) stringOps.get(keys.get(AuctionRedisKey.NUMBER_OF_USERS));
-            Set<Bidder> bidders = parseToBidderSet(keys.get(AuctionRedisKey.BIDDERS));
+            Set<Bidder> bidders = parseToBidderSet(keys.get(AuctionRedisKey.BIDDERS), 0, -1);
             auctionRedis = AuctionRedis.of(auctionId, price, numberOfUsers, bidders);
         } catch (NullPointerException e) {
-            log.debug("redis auction not found");
+            throw new AuctionNotFoundException();
         }
         return Optional.of(auctionRedis);
     }
 
-    private Set<Bidder> parseToBidderSet(String key) {
-        Set<DefaultTypedTuple> set = zSetOps.rangeWithScores(key, 0, -1);
+    private Set<Bidder> parseToBidderSet(String key, int from, int to) {
+        Set<DefaultTypedTuple> set = zSetOps.rangeWithScores(key, from, to);
         return set.stream().map((dtt) -> new Bidder(Integer.toUnsignedLong((int) dtt.getValue()), -1 * dtt.getScore().longValue())).collect(Collectors.toSet());
+    }
+
+    public Long getPrice(Long auctionId) throws AuctionNotFoundException {
+        try {
+            Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionId);
+            return (Long) stringOps.get(keys.get(AuctionRedisKey.PRICE));
+        } catch (NullPointerException e) {
+            throw new AuctionNotFoundException();
+        }
     }
 }

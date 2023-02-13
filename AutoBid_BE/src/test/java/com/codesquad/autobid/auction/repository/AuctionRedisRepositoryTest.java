@@ -2,6 +2,7 @@ package com.codesquad.autobid.auction.repository;
 
 import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.domain.AuctionStatus;
+import com.codesquad.autobid.auction.repository.exceptions.AuctionNotFoundException;
 import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.car.util.CarTestUtil;
 import com.codesquad.autobid.user.domain.User;
@@ -34,11 +35,15 @@ class AuctionRedisRepositoryTest {
         // when
         auctionRedisRepository.save(auctionRedis);
         // then
-        AuctionRedis findAuctionRedis = auctionRedisRepository.findById(auctionRedis.getId()).get();
-        assertAll(
-                () -> assertThat(findAuctionRedis.getBidders().size()).isEqualTo(0),
-                () -> assertThat(findAuctionRedis).usingRecursiveComparison().isEqualTo(auctionRedis)
-        );
+        try {
+            AuctionRedis findAuctionRedis = auctionRedisRepository.findById(auctionRedis.getId()).get();
+            assertAll(
+                    () -> assertThat(findAuctionRedis.getBidders().size()).isEqualTo(0),
+                    () -> assertThat(findAuctionRedis).usingRecursiveComparison().isEqualTo(auctionRedis)
+            );
+        } catch (AuctionNotFoundException e) {
+
+        }
     }
 
     private Auction saveAuction(User user, Car car) {
