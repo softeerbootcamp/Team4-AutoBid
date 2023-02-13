@@ -33,17 +33,18 @@ public class UserController {
         this.userService = userService;
     }
 
-
-    @Operation(summary = "회원 조회 API", description = "회원 조회")
-    @GetMapping
-    public ResponseEntity<User> findById(@Parameter(hidden = true) @AuthorizedUser User user) {
-        return  new ResponseEntity<>(user, HttpStatus.OK);
-    }
+//
+//    @Operation(summary = "회원 조회 API", description = "회원 조회")
+//    @GetMapping
+//    public ResponseEntity<User> findById(@Parameter(hidden = true) @AuthorizedUser User user) {
+//        return  new ResponseEntity<>(user, HttpStatus.OK);
+//    }
 
     @Operation(summary = "로그인 API", description = "로그인을 합니다.")
     @PostMapping("/session")
     public ResponseEntity<Optional<UserImpoResponse>> login(HttpServletRequest httpServletRequest) {
         String code = httpServletRequest.getHeader("X-Auth-Code");
+        log.info("code : {}",code);
         OauthToken oauthToken = authService.getOauthToken(code);
         User user = userService.findUser(oauthToken); // 유저 데이터 찾기
         UserImpoResponse userImpoResponse = UserImpoResponse.create(user.getId(), user.getName(), user.getEmail(), user.getMobilenum());
@@ -58,7 +59,7 @@ public class UserController {
         return new ResponseEntity<>(Optional.empty(), HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/user/session")
+    @DeleteMapping("/user/expire")
     public ResponseEntity<HttpStatus> delete(String code, HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
         session.invalidate(); // 세션삭제
