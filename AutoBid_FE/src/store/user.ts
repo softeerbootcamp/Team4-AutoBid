@@ -1,6 +1,7 @@
 import GlobalStore, { registerReducer } from "../core/store";
 import {Reducer} from "redux";
-import {requestCode, requestInvalidateSession, requestLiveSession, UserInfo} from "../api/auth";
+import {requestCode, requestCurrentUser, requestInvalidateSession, requestLiveSession} from "../api/auth";
+import {UserInfo} from "../model/user";
 
 enum UserActionType {
     LOGIN = 'user/LOGIN',
@@ -11,8 +12,8 @@ export type UserState = UserInfo & { isLogin: boolean };
 
 const initialState: UserState = {
     isLogin: false,
-    userId: -1,
-    username: "",
+    id: -1,
+    userName: "",
     email: "",
     phone: ""
 };
@@ -29,6 +30,12 @@ export const logout = async () => {
     if (!logoutResult) return;
     GlobalStore.get().dispatch({ type: UserActionType.LOGOUT });
 };
+
+export const whoIam = async () => {
+    const userInfo = await requestCurrentUser();
+    if (!userInfo) return;
+    GlobalStore.get().dispatch({ type: UserActionType.LOGIN, userInfo });
+}
 
 const user: Reducer<UserState> = (state = initialState, action) => {
     switch (action.type) {
