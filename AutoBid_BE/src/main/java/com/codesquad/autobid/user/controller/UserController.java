@@ -53,12 +53,12 @@ public class UserController {
         return new ResponseEntity<>(userImpoResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/user/session")
-    public void delete(String code, HttpServletRequest httpServletRequest) {
-        HttpSession session = httpServletRequest.getSession();
-        session.invalidate(); // 세션삭제
-        OauthToken oauthToken = authService.getOauthToken(code);
-        OauthToken deleteToken = authService.deleteOauthToken(oauthToken.getAccessToken());
-        log.info("deleteToken : {}",deleteToken.getAccessToken());
-    }
+//    @DeleteMapping("/user/session")
+//    public void delete(String code, HttpServletRequest httpServletRequest) {
+//        HttpSession session = httpServletRequest.getSession();
+//        session.invalidate(); // 세션삭제
+//        OauthToken oauthToken = authService.getOauthToken(code);
+//        OauthToken deleteToken = authService.deleteOauthToken(oauthToken.getAccessToken());
+//        log.info("deleteToken : {}",deleteToken.getAccessToken());
+//    }
 }
