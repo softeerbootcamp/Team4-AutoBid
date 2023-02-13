@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface AuctionRepository extends CrudRepository<Auction, Long> {
 
-
     List<Auction> getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus auctionStatus, LocalDateTime startTime);
 
     List<Auction> getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus auctionStatus, LocalDateTime endTime);
