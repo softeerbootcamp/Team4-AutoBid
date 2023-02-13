@@ -72,7 +72,7 @@ public class AuctionService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void openAuction(Auction auction) {
         // redis, mysql이 같은 transaction으로 처리되는지 확인해야 함
-        auction.openAuction();
+        auction.open();
         auctionRepository.save(auction);
         auctionRedisRepository.save(AuctionRedis.from(auction));
     }
@@ -82,7 +82,7 @@ public class AuctionService {
         List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.BEFORE, closeTime);
         for (Auction auction : auctions) {
             Set<Bidder> bidders = closeAuction(auction);
-            // todo: socket 연결
+            // todo: socket close
             // socketHandler.closeSocket(auction);
             // todo: kafka 적용 예정
             bidders.stream().forEach((bidder) -> {
@@ -94,14 +94,10 @@ public class AuctionService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Set<Bidder> closeAuction(Auction auction) {
-        AuctionRedis findAuction = auctionRedisRepository.findById(auction.getId());
-        updateAuction(auction, findAuction);
+        AuctionRedis auctionRedis = auctionRedisRepository.findById(auction.getId());
+        auction.update(auctionRedis);
         auctionRepository.save(auction);
         auctionRedisRepository.delete(auction);
-        return findAuction.getBidders();
-    }
-
-    private void updateAuction(Auction auction, AuctionRedis findAuction) {
-        auction.closeAuction();
+        return auctionRedis.getBidders();
     }
 }

@@ -1,5 +1,6 @@
 package com.codesquad.autobid.auction.domain;
 
+import com.codesquad.autobid.auction.repository.AuctionRedis;
 import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.user.domain.User;
 import lombok.Getter;
@@ -60,12 +61,16 @@ public class Auction {
                 auctionStatus);
     }
 
-    public void openAuction() {
+    public void open() {
         auctionStatus = AuctionStatus.PROGRESS;
     }
 
-    public void closeAuction() {
+    public void close() {
         auctionStatus = AuctionStatus.COMPLETED;
     }
 
+    public void update(AuctionRedis findAuction) {
+        auctionEndPrice = findAuction.getPrice();
+        auctionStatus = AuctionStatus.COMPLETED;
+    }
 }
