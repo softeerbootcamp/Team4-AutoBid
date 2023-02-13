@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://unpkg.com/emojisplosion/lib/global.js"></script>
+<!--<script type="module" src="emojiExplosionTest.js"></script>-->
+<script type="module">
+    import { emojiExplosion } from "./emojiExplosion.js";
+
+    emojisplosions({
+        emojis: ["🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻",
+            "🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻",
+            "🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻",
+            "🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻",
+            "😁", "😂", "🤣", "😃", "😅", "😆", "😍", "🤩", "😎", "🤖", "😻", "🙈", "🙉", "🙊", "💪", "👌", "👋", "🙌",
+            "💝", "💖", "💗", "🧡", "💛", "💚", "💙", "💜", "🚀", "⛄", "🔥", "✨", "🎉", "💯",],
+        physics: {
+            initialVelocities: {
+                rotation: {
+                    max: 14,
+                    min: -14
+                },
+            },
+            rotationDeceleration: 1.01,
+        },
+        emojiCount: 50,
+        // position should be set at outer scope.
+        position: () => ({
+            x: Math.random() * innerWidth,
+            y: Math.random() * innerHeight,
+            // x: 500,
+            // y: 500,
+        }),
+        interval: 500
+    });
+    emojiExplosion();
+</script>
+</body>
