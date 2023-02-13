@@ -6,12 +6,16 @@ import com.codesquad.autobid.handler.user.UserHandler;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.domain.UserVO;
 import com.codesquad.autobid.user.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
+@Slf4j
 @Transactional(readOnly = true)
 @Service
 public class UserService {
@@ -34,5 +38,14 @@ public class UserService {
         UserVO userVO = userHandler.userProfileAPICall(oauthToken);
         User user = userRepository.findByUid(userVO.getId()).orElseGet(() -> User.of(userVO, oauthToken.getRefreshToken()));
         return userRepository.save(user);
+    }
+
+    public Optional<User> findById(Long userId) {
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isPresent()){
+            log.info("userID : {}",user.get().getId());
+            return user;
+        }
+        return Optional.empty();
     }
 }

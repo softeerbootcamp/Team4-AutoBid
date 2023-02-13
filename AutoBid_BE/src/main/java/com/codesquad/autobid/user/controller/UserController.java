@@ -68,4 +68,13 @@ public class UserController {
         session.invalidate(); // 세션삭제
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("{userId}")
+    public ResponseEntity<UserImpoResponse> findById(@PathVariable(value = "userId") String userId, HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        UserImpoResponse userImpo = (UserImpoResponse) session.getAttribute("user");
+        Optional<User> user = userService.findById(userImpo.getId());
+        if(user.isPresent()) return new ResponseEntity<>(userImpo, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }
