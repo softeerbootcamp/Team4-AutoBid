@@ -1,4 +1,4 @@
-package com.codesquad.autobid.car.util;
+package com.codesquad.autobid.util;
 
 import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.car.domain.State;
@@ -6,6 +6,7 @@ import com.codesquad.autobid.car.domain.Type;
 import com.codesquad.autobid.user.domain.User;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,5 +29,17 @@ public class CarTestUtil {
                     LocalDateTime.now()));
         }
         return cars;
+    }
+
+    public static Car saveCar(User user) {
+        try {
+            Car car = CarTestUtil.getNewCars(user.getId(), 1).get(0);
+            Field id = car.getClass().getDeclaredField("id");
+            id.setAccessible(true);
+            id.set(car, 1l);
+            return car;
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return null;
+        }
     }
 }

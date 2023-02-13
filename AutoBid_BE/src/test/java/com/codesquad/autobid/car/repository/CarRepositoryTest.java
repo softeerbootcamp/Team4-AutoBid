@@ -1,10 +1,10 @@
 package com.codesquad.autobid.car.repository;
 
 import com.codesquad.autobid.car.domain.Car;
-import com.codesquad.autobid.car.util.CarTestUtil;
+import com.codesquad.autobid.util.CarTestUtil;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.repository.UserRepository;
-import com.codesquad.autobid.user.util.UserTestUtil;
+import com.codesquad.autobid.util.UserTestUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
