@@ -24,7 +24,6 @@ class AuctionCard extends Component<any, { auction: Auction, onClick: (arg: any)
             <h4 class="timer">계산 중</h4>
         </div>
         `;
-        AnimatedNumber();
         return inner;
     }
 
@@ -86,6 +85,7 @@ class AuctionCard extends Component<any, { auction: Auction, onClick: (arg: any)
     initialize() {
         const { onClick } = this.props;
         this.addEvent('click', '.card-item__details-container', onClick);
+        AnimatedNumber();
     }
 }
 

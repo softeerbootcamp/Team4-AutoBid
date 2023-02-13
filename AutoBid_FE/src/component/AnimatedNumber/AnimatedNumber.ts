@@ -1,7 +1,7 @@
 const counters = document.getElementsByClassName("animated-number");
-const speed = 500;
+const speed = 2000;
 
-export default function AnimatedNumber() {
+export default async function AnimatedNumber() {
     for (let c of counters) {
         let counter = c as HTMLElement;
         const animate = () => {
@@ -16,6 +16,6 @@ export default function AnimatedNumber() {
                 counter.innerText = value + '';
             }
         }
-        animate();
+        await animate();
     }
 }
