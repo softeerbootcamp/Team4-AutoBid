@@ -5,6 +5,7 @@ import {requestAuctionStatistic} from "../../api/statistic";
 import {Histogram} from "../../model/statistic";
 import {setRange} from "../../store/query";
 import "./querysidebar.css"
+import AnimatedNumber from "../AnimatedNumber/AnimatedNumber";
 
 class QuerySidebar extends Component<any> {
     template(): InnerHTML["innerHTML"] {
@@ -39,7 +40,7 @@ class QuerySidebar extends Component<any> {
             this.updateFundVal(auctionStatistic.minPrice, auctionStatistic.maxPrice);
             this.updateHistogram(auctionStatistic.histogram);
             this.mountDoubleRangeSlider(auctionStatistic.minPrice, auctionStatistic.maxPrice);
-        });
+        }).finally(AnimatedNumber);
     }
 
     markHistogramSelected(left: number, right: number, min: number, max: number) {
@@ -64,7 +65,7 @@ class QuerySidebar extends Component<any> {
 
     updateNSold(nSold: number) {
         const $nSold = this.$target.querySelector('.query-side-bar__n-sold') as HTMLElement;
-        $nSold.innerText = `오늘은 ${nSold}대가 판매되었습니다`;
+        $nSold.innerHTML = `오늘은 <b class="animated-number" value="${nSold}">0</b>대가 판매되었습니다`;
     }
     updateFundVal(min: number, max: number) {
         const minPriceInt = Math.floor(min);
