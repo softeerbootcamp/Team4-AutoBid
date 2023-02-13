@@ -3,6 +3,7 @@ import Header from "./Header/Header";
 import AuctionList from "./AuctionList/AuctionList";
 import "./app.css";
 import QuerySidebar from "./QuerySidebar/QuerySidebar";
+import {whoIam} from "../store/user";
 
 class App extends Component<any> {
     template(): InnerHTML["innerHTML"] {
@@ -24,6 +25,8 @@ class App extends Component<any> {
 
         const $querySidebar = document.querySelector('[data-component="QuerySidebar"]') as HTMLElement;
         new QuerySidebar($querySidebar, {});
+
+        whoIam().then(() => {console.log('session user initialized')});
     }
 }
 
