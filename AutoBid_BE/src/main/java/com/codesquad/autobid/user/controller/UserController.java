@@ -58,11 +58,14 @@ public class UserController {
     }
 
     @DeleteMapping("/user/session")
-    public void delete(String code, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<HttpStatus> delete(String code, HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
         session.invalidate(); // 세션삭제
         OauthToken oauthToken = authService.getOauthToken(code);
         OauthToken deleteToken = authService.deleteOauthToken(oauthToken.getAccessToken());
+        Optional<OauthToken> response = Optional.ofNullable(deleteToken);
         log.info("deleteToken : {}",deleteToken.getAccessToken());
+        if(response.isPresent()) return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }
