@@ -1,6 +1,7 @@
 package com.codesquad.autobid.handler;
 
 import com.codesquad.autobid.OauthToken;
+import com.codesquad.autobid.user.domain.UserVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -30,7 +31,6 @@ public class AuthHandler {
 
     @Value("${hyundai.auth.token_request_uri}")
     private String TOKEN_REQUEST_URI;
-
 
     public OauthToken getOauthToken(OauthType oauthType, String value) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -67,5 +67,75 @@ public class AuthHandler {
         return oauthToken;
     }
 
+//    public OauthToken getOauthDeleteToken(OauthType oauthType, String value) {
+//        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+//        params.add("grant_type", oauthType.getGrantType()); // 고정값
+//        params.add(oauthType.getTokenType(), value);
+//        params.add("redirect_uri", REDIRECT_URI);
+//
+//        // JSON 응답을 객체로 변환
+//        OauthToken oauthToken = null;
+//
+//        // HttpHeader 오브젝트 생성
+//        HttpHeaders headersForAccessToken = new HttpHeaders();
+//        headersForAccessToken.add("Content-type", "application/x-www-form-urlencoded");
+//        headersForAccessToken.add("Authorization", AUTHORIZATION_KEY);
+//
+//        // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
+//        HttpEntity<MultiValueMap<String, String>> hyundaiTokenDelete = new HttpEntity<>(params, headersForAccessToken);
+//
+//        // 실제로 요청하기
+//        // Http 요청하기 - POST 방식으로 - 그리고 response 변수에 응답을 받음.
+//        ResponseEntity<String> deleteResponse = rt.exchange(
+//                TOKEN_REQUEST_URI,
+//                HttpMethod.POST,
+//                hyundaiTokenDelete,
+//                String.class
+//        );
+//
+//        try {
+//            oauthToken = objectMapper.readValue(deleteResponse.getBody(), OauthToken.class);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return oauthToken; // 해당 토큰 삭제를 의미
+//    }
+//
+//    public OauthToken getOauthRefreshToken(OauthType oauthType, String value) {
+////        grant_type=delete&access_token={access_token}&redirect_uri={redirect_uri}
+//        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+//        params.add("grant_type", oauthType.getGrantType()); // 고정값
+//        params.add(oauthType.getTokenType(), value);
+//        params.add("redirect_uri", REDIRECT_URI);
+//
+//        // JSON 응답을 객체로 변환
+//        OauthToken oauthToken = null;
+//
+//        // HttpHeader 오브젝트 생성
+//        HttpHeaders headersForAccessToken = new HttpHeaders();
+//        headersForAccessToken.add("Content-type", "application/x-www-form-urlencoded");
+//        headersForAccessToken.add("Authorization", AUTHORIZATION_KEY);
+//
+//        // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
+//        HttpEntity<MultiValueMap<String, String>> hyundaiTokenRefresh = new HttpEntity<>(params, headersForAccessToken);
+//
+//        // 실제로 요청하기
+//        // Http 요청하기 - POST 방식으로 - 그리고 response 변수에 응답을 받음.
+//        ResponseEntity<String> refreshTokenResponse = rt.exchange(
+//                TOKEN_REQUEST_URI,
+//                HttpMethod.POST,
+//                hyundaiTokenRefresh,
+//                String.class
+//        );
+//
+//        try {
+//            oauthToken = objectMapper.readValue(refreshTokenResponse.getBody(), OauthToken.class);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return oauthToken;
+//    }
 
 }

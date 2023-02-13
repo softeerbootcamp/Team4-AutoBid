@@ -3,7 +3,8 @@ package com.codesquad.autobid.auction.service;
 import java.io.IOException;
 import java.util.List;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +19,6 @@ import com.codesquad.autobid.image.service.S3Uploader;
 import com.codesquad.autobid.user.domain.User;
 
 @Transactional(readOnly = true)
-@RequiredArgsConstructor
 @Service
 public class AuctionService {
 
@@ -26,7 +26,14 @@ public class AuctionService {
 	private final AuctionRepository auctionRepository;
 	private final ImageRepository imageRepository;
 
-    @Transactional
+	@Autowired
+	public AuctionService(S3Uploader s3Uploader, AuctionRepository auctionRepository, ImageRepository imageRepository) {
+		this.s3Uploader = s3Uploader;
+		this.auctionRepository = auctionRepository;
+		this.imageRepository = imageRepository;
+	}
+
+	@Transactional
 	public void addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
 
 		Auction auction = Auction.of(auctionRegisterRequest.getCarId(), user.getId(),

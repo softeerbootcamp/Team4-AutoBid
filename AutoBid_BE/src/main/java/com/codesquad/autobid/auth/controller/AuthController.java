@@ -26,27 +26,25 @@ public class AuthController {
      *   1. SameSite 허용 : 쿠키 허용
      *   2. 클라이언트에 user 정보 전달
      * **/
-
-    private final AuthService authService;
-    private final UserService userService;
-    private final Logger logger = LoggerFactory.getLogger(AuthController.class);
-
-    @Autowired
-    public AuthController(AuthService authService, UserService userService) {
-        this.authService = authService;
-        this.userService = userService;
-    }
-
-    @Operation(summary = "로그인 API", description = "로그인을 합니다.")
-    @GetMapping("/oauth/login")
-    public void oauth(String code, HttpServletRequest httpServletRequest) {
-        logger.info("code = {}",code);
-        OauthToken oauthToken = authService.getOauthToken(code);
-        User user = userService.findUser(oauthToken);
-
-        HttpSession httpSession = httpServletRequest.getSession();
-        httpSession.setAttribute("user", user);
-        httpSession.setAttribute("accessToken", oauthToken.getAccessToken());
-
-    }
+//
+//    private final AuthService authService;
+//    private final UserService userService;
+//    private final Logger logger = LoggerFactory.getLogger(AuthController.class);
+//
+//    @Autowired
+//    public AuthController(AuthService authService, UserService userService) {
+//        this.authService = authService;
+//        this.userService = userService;
+//    }
+//
+//    @Operation(summary = "로그인 API", description = "로그인을 합니다.")
+//    @GetMapping("/oauth/login")
+//    public void oauth(String code, HttpServletRequest httpServletRequest) {
+//        OauthToken oauthToken = authService.getOauthToken(code);
+//        User user = userService.findUser(oauthToken);
+//
+//        HttpSession httpSession = httpServletRequest.getSession();
+//        httpSession.setAttribute("user", user);
+//        httpSession.setAttribute("accessToken", oauthToken.getAccessToken());
+//    }
 }

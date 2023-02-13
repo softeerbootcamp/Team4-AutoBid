@@ -1,6 +1,7 @@
 package com.codesquad.autobid.user.service;
 
 import com.codesquad.autobid.OauthToken;
+import com.codesquad.autobid.handler.AuthHandler;
 import com.codesquad.autobid.handler.user.UserHandler;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.domain.UserVO;
@@ -18,12 +19,13 @@ public class UserService {
     private Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
-
+    private final AuthHandler authHandler;
     private final UserHandler userHandler;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserHandler userHandler) {
+    public UserService(UserRepository userRepository, AuthHandler authHandler, UserHandler userHandler) {
         this.userRepository = userRepository;
+        this.authHandler = authHandler;
         this.userHandler = userHandler;
     }
 
