@@ -37,7 +37,7 @@ public class AuctionService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
+    public Auction addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
         Auction auction = Auction.of(auctionRegisterRequest.getCarId(), user.getId(),
                 auctionRegisterRequest.getAuctionStartTime(),
                 auctionRegisterRequest.getAuctionEndTime(), auctionRegisterRequest.getAuctionStartPrice(),
@@ -47,6 +47,7 @@ public class AuctionService {
         for (MultipartFile image : images) {
             saveImage(image, auction.getId());
         }
+        return auction;
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
