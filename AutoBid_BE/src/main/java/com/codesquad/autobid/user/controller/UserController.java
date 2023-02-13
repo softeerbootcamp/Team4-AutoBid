@@ -53,7 +53,7 @@ public class UserController {
         if(userResponse.isPresent()){
             HttpSession httpSession = httpServletRequest.getSession();
             httpSession.setAttribute("user", userImpoResponse);
-            httpSession.setAttribute("accessToken", oauthToken.getAccessToken());
+            httpSession.setAttribute(OauthToken.ACCESS_TOKEN_KEY, oauthToken.getAccessToken());
             return new ResponseEntity<>(userResponse, HttpStatus.OK);
         }
         return new ResponseEntity<>(Optional.empty(), HttpStatus.NOT_FOUND);
@@ -67,10 +67,5 @@ public class UserController {
         log.info("deleteToken : {}",deleteToken.getAccessToken());
         session.invalidate(); // 세션삭제
         return new ResponseEntity<>(HttpStatus.OK);
-////        OauthToken oauthToken = authService.getOauthToken(code);
-//        Optional<OauthToken> responseOauth = Optional.ofNullable(deleteToken);
-//        log.info("deleteToken : {}",deleteToken.getAccessToken());
-//        if(response.isPresent()) return new ResponseEntity<>(HttpStatus.OK);
-//        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }
