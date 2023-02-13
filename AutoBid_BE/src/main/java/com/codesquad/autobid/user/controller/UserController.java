@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -40,17 +42,19 @@ public class UserController {
 
     @Operation(summary = "로그인 API", description = "로그인을 합니다.")
     @PostMapping("/session")
-    public ResponseEntity<UserImpoResponse> login(String code, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<Optional<UserImpoResponse>> login(String code, HttpServletRequest httpServletRequest) {
         OauthToken oauthToken = authService.getOauthToken(code);
         User user = userService.findUser(oauthToken); // 유저 데이터 찾기
         UserImpoResponse userImpoResponse = UserImpoResponse.create(user.getId(), user.getName(), user.getEmail(), user.getMobilenum());
-        // body에 전달할 데이터
+        Optional<UserImpoResponse> userResponse = Optional.of(userImpoResponse);
 
-        HttpSession httpSession = httpServletRequest.getSession();
-        httpSession.setAttribute("user", userImpoResponse);
-        httpSession.setAttribute("accessToken", oauthToken.getAccessToken());
-
-        return new ResponseEntity<>(userImpoResponse, HttpStatus.OK);
+        if(userResponse.isPresent()){
+            HttpSession httpSession = httpServletRequest.getSession();
+            httpSession.setAttribute("user", userImpoResponse);
+            httpSession.setAttribute("accessToken", oauthToken.getAccessToken());
+            return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(Optional.empty(), HttpStatus.OK);
     }
 
 //    @DeleteMapping("/user/session")
