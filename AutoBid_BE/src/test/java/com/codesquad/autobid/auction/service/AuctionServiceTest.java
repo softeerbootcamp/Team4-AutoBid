@@ -2,6 +2,8 @@ package com.codesquad.autobid.auction.service;
 
 import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.domain.AuctionStatus;
+import com.codesquad.autobid.auction.repository.AuctionRedis;
+import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
 import com.codesquad.autobid.auction.repository.AuctionRepository;
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
 import com.codesquad.autobid.car.domain.Car;
@@ -12,7 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,13 +23,14 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Transactional
 class AuctionServiceTest {
 
     @Autowired
     public AuctionService auctionService;
     @Autowired
     public AuctionRepository auctionRepository;
+    @Autowired
+    public AuctionRedisRepository auctionRedisRepository;
 
     @Test
     @DisplayName("경매 등록 성공")
@@ -79,10 +81,10 @@ class AuctionServiceTest {
         List<Car> cars = CarTestUtil.getNewCars(user.getId(), 5).stream().map(CarTestUtil::saveCar).collect(Collectors.toList());
         LocalDateTime endTime = LocalDateTime.now();
         List<Auction> progressAuctions = generateAuctions(endTime, cars, AuctionStatus.PROGRESS);
-        for (Auction progressAuction : progressAuctions) {
-            System.out.println(progressAuction);
-        }
         auctionRepository.saveAll(progressAuctions);
+        for (Auction progressAuction : progressAuctions) {
+            auctionRedisRepository.save(AuctionRedis.from(progressAuction));
+        }
         // when
         auctionService.closeFulfilledAuctions(endTime);
         // then
