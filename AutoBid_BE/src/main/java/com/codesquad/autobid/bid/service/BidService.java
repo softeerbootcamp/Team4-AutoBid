@@ -31,7 +31,7 @@ public class BidService {
     @Transactional
     public Boolean suggestBid(BidRegisterRequest bidRegisterRequest, User user) {
         try {
-            if (!checkBid(bidRegisterRequest.getSuggestedPrice(), bidRegisterRequest.getSuggestedPrice(), user)) {
+            if (!checkBid(bidRegisterRequest.getSuggestedPrice(), bidRegisterRequest.getAuctionId(), user)) {
                 return false;
             }
             Bid bid = Bid.of(
