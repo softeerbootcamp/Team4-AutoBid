@@ -5,12 +5,15 @@ import com.codesquad.autobid.auction.domain.AuctionStatus;
 import com.codesquad.autobid.auction.repository.AuctionRedis;
 import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
 import com.codesquad.autobid.auction.repository.AuctionRepository;
+import com.codesquad.autobid.auction.repository.Bidder;
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
+import com.codesquad.autobid.email.EmailService;
 import com.codesquad.autobid.image.domain.Image;
 import com.codesquad.autobid.image.repository.ImageRepository;
 import com.codesquad.autobid.image.service.S3Uploader;
 import com.codesquad.autobid.user.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.codesquad.autobid.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +22,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 @Service
 public class AuctionService {
 
@@ -28,6 +33,8 @@ public class AuctionService {
     private final AuctionRepository auctionRepository;
     private final AuctionRedisRepository auctionRedisRepository;
     private final ImageRepository imageRepository;
+    private final EmailService emailService;
+    private final UserRepository userRepository;
 
     @Transactional
     public void addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
@@ -37,14 +44,6 @@ public class AuctionService {
                 AuctionStatus.BEFORE_END_PRICE, AuctionStatus.BEFORE);
         auctionRepository.save(auction);
         addImageList(auctionRegisterRequest.getMultipartFileList(), auction.getId());
-    }
-
-    @Autowired
-    public AuctionService(S3Uploader s3Uploader, AuctionRepository auctionRepository, AuctionRedisRepository auctionRedisRepository, ImageRepository imageRepository) {
-        this.s3Uploader = s3Uploader;
-        this.auctionRepository = auctionRepository;
-        this.auctionRedisRepository = auctionRedisRepository;
-        this.imageRepository = imageRepository;
     }
 
     @Transactional
@@ -80,15 +79,27 @@ public class AuctionService {
     public void closeFulfilledAuctions(LocalDateTime closeTime) {
         List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.BEFORE, closeTime);
         for (Auction auction : auctions) {
-            closeAuction(auction);
+            Set<Bidder> bidders = closeAuction(auction);
+            // todo: socket 연결
             // socketHandler.closeSocket(auction);
+            // todo: kafka 적용 예정
+            bidders.stream().forEach((bidder) -> {
+                User bidOwner = userRepository.findById(bidder.getUserId()).get();
+                emailService.send(auction, bidOwner, bidder.getPrice());
+            });
         }
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void closeAuction(Auction auction) {
-        auction.closeAuction();
-        auctionRedisRepository.delete(auction);
+    public Set<Bidder> closeAuction(Auction auction) {
+        AuctionRedis findAuction = auctionRedisRepository.findById(auction.getId());
+        updateAuction(auction, findAuction);
         auctionRepository.save(auction);
+        auctionRedisRepository.delete(auction);
+        return findAuction.getBidders();
+    }
+
+    private void updateAuction(Auction auction, AuctionRedis findAuction) {
+        auction.closeAuction();
     }
 }
