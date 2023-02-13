@@ -31,9 +31,8 @@ public class CarTestUtil {
         return cars;
     }
 
-    public static Car saveCar(User user) {
+    public static Car saveCar(Car car) {
         try {
-            Car car = CarTestUtil.getNewCars(user.getId(), 1).get(0);
             Field id = car.getClass().getDeclaredField("id");
             id.setAccessible(true);
             id.set(car, 1l);

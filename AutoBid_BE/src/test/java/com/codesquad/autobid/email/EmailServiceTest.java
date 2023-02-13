@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static com.codesquad.autobid.util.AuctionTestUtil.*;
+import static com.codesquad.autobid.util.CarTestUtil.getNewCars;
 import static com.codesquad.autobid.util.CarTestUtil.saveCar;
 import static com.codesquad.autobid.util.UserTestUtil.*;
 
@@ -28,7 +29,7 @@ class EmailServiceTest {
         // given
         User user = saveUser(getNewUser());
         user.setEmail("g0og0o@naver.com");
-        Car car = saveCar(user);
+        Car car = saveCar(getNewCars(user.getId(), 1).get(0));
         Auction auction = saveAuction(user, car);
         // when
         boolean send = emailService.send(auction, user, 1000l);

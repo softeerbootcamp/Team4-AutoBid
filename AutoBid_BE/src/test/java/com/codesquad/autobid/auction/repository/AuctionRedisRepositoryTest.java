@@ -15,6 +15,7 @@ import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 
 import static com.codesquad.autobid.util.AuctionTestUtil.saveAuction;
+import static com.codesquad.autobid.util.CarTestUtil.getNewCars;
 import static com.codesquad.autobid.util.CarTestUtil.saveCar;
 import static com.codesquad.autobid.util.UserTestUtil.getNewUser;
 import static com.codesquad.autobid.util.UserTestUtil.saveUser;
@@ -32,7 +33,7 @@ class AuctionRedisRepositoryTest {
     void saveSuccess() {
         // given
         User user = saveUser(getNewUser());
-        Car car = saveCar(user);
+        Car car = saveCar(getNewCars(user.getId(), 1).get(0));
         Auction auction = saveAuction(user, car);
         AuctionRedis auctionRedis = AuctionRedis.from(auction);
         // when
@@ -50,7 +51,7 @@ class AuctionRedisRepositoryTest {
     void deleteSuccess() {
         // given
         User user = saveUser(getNewUser());
-        Car car = saveCar(user);
+        Car car = saveCar(getNewCars(user.getId(), 1).get(0));
         Auction auction = saveAuction(user, car);
         AuctionRedis auctionRedis = AuctionRedis.from(auction);
         // when
