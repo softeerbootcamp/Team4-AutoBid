@@ -43,18 +43,19 @@ public class AuctionService {
                 auctionRegisterRequest.getAuctionEndTime(), auctionRegisterRequest.getAuctionStartPrice(),
                 AuctionStatus.BEFORE_END_PRICE, AuctionStatus.BEFORE);
         auctionRepository.save(auction);
-        addImageList(auctionRegisterRequest.getMultipartFileList(), auction.getId());
+        List<MultipartFile> images = auctionRegisterRequest.getMultipartFileList();
+        for (MultipartFile image : images) {
+            saveImage(image, auction.getId());
+        }
     }
 
-    @Transactional
-    public void addImageList(List<MultipartFile> multipartFiles, Long auctionId) {
-        for (MultipartFile multipartFile : multipartFiles) {
-            try {
-                String imageUrl = s3Uploader.upload(multipartFile);
-                imageRepository.save(Image.of(auctionId, imageUrl));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void saveImage(MultipartFile image, Long auctionId) {
+        try {
+            String imageUrl = s3Uploader.upload(image);
+            imageRepository.save(Image.of(auctionId, imageUrl));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
