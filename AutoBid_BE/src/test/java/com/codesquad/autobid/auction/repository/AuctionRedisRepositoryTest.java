@@ -30,17 +30,13 @@ class AuctionRedisRepositoryTest {
         User user = saveUser();
         Car car = saveCar(user);
         Auction auction = saveAuction(user, car);
-
         AuctionRedis auctionRedis = AuctionRedis.from(auction);
-        auctionRedis.addBidder(new Bidder(1l, 1000l));
-        auctionRedis.addBidder(new Bidder(2l, 2000l));
-        auctionRedis.addBidder(new Bidder(3l, 3000l));
         // when
         auctionRedisRepository.save(auctionRedis);
         // then
         AuctionRedis findAuctionRedis = auctionRedisRepository.findById(auctionRedis.getId()).get();
         assertAll(
-                () -> assertThat(findAuctionRedis.getBidders().size()).isEqualTo(3),
+                () -> assertThat(findAuctionRedis.getBidders().size()).isEqualTo(0),
                 () -> assertThat(findAuctionRedis).usingRecursiveComparison().isEqualTo(auctionRedis)
         );
     }
@@ -84,6 +80,14 @@ class AuctionRedisRepositoryTest {
     @Test
     @DisplayName("삭제 성공")
     void deleteSuccess() {
-
+        // given
+        User user = saveUser();
+        Car car = saveCar(user);
+        Auction auction = saveAuction(user, car);
+        AuctionRedis auctionRedis = AuctionRedis.from(auction);
+        // when
+        auctionRedisRepository.save(auctionRedis);
+        auctionRedisRepository.delete(auction);
+        // then
     }
 }

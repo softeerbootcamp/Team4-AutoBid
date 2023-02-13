@@ -38,7 +38,11 @@ public class AuctionRedisRepository {
     }
 
     private void saveBidders(String key, Set<Bidder> bidders) {
-        zSetOps.add(key, bidders.stream().map(bidder -> ZSetOperations.TypedTuple.of(bidder.getUserId(), (double) -1 * bidder.getPrice())).collect(Collectors.toSet()));
+        zSetOps.add(
+                key,
+                bidders.stream()
+                        .map(bidder -> ZSetOperations.TypedTuple.of(bidder.getUserId(), (double) -1 * bidder.getPrice()))
+                        .collect(Collectors.toSet()));
     }
 
     public void delete(Auction auction) {
