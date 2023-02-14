@@ -2,6 +2,7 @@ package com.codesquad.autobid.auction.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import com.codesquad.autobid.auction.repository.AuctionRepository;
 import com.codesquad.autobid.auction.repository.Bidder;
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
 import com.codesquad.autobid.auction.response.AuctionInfoListResponse;
+import com.codesquad.autobid.auction.response.AuctionStatisticsResponse;
 import com.codesquad.autobid.car.repository.CarRepository;
 import com.codesquad.autobid.email.EmailService;
 import com.codesquad.autobid.image.domain.Image;
@@ -156,5 +158,42 @@ public class AuctionService {
 		});
 
 		return AuctionInfoListResponse.of(auctionInfoDtoList, totalAuctionNum);
+	}
+
+	public AuctionStatisticsResponse getAuctionStaticsResponse(String carType, String auctionStatus) {
+		List<AuctionInfoDto> auctionInfoDtoList = getAuctionInfoDtoForStatistics(carType, auctionStatus);
+		int totalSold = auctionRepository.countAllByAuctionStatus(AuctionStatus.COMPLETED);
+		Long minPrice = auctionInfoDtoList.get(0).getAuctionEndPrice();
+		Long maxPrice = auctionInfoDtoList.get(auctionInfoDtoList.size() - 1).getAuctionEndPrice();
+		long intervalPrice = (maxPrice - minPrice) / 20;
+		int[] contents = new int[20];
+		Arrays.fill(contents, 0);
+
+		auctionInfoDtoList.forEach(auctionInfoDto -> {
+			long idx = Math.floorDiv((auctionInfoDto.getAuctionEndPrice() - minPrice), intervalPrice);
+			if (idx == 20) {
+				contents[19] += 1;
+			} else {
+				contents[Math.toIntExact(idx)] += 1;
+			}
+
+		});
+		return AuctionStatisticsResponse.of(totalSold, minPrice, maxPrice, contents);
+	}
+
+	public List<AuctionInfoDto> getAuctionInfoDtoForStatistics(String carType, String auctionStatus) {
+
+		List<AuctionInfoDto> auctionInfoDtoList;
+		if (carType.equals("ALL") && auctionStatus.equals("ALL")) {
+			auctionInfoDtoList = auctionRepository.findAllForStatistics();
+		} else if (carType.equals("ALL")) {
+			auctionInfoDtoList = auctionRepository.findAllByAuctionStatus(auctionStatus);
+		} else if (auctionStatus.equals("AlL")) {
+			auctionInfoDtoList = auctionRepository.findAllByCarType(carType);
+		} else {
+			auctionInfoDtoList = auctionRepository.findAllByAuctionStatusAndCarType(auctionStatus, carType);
+		}
+
+		return auctionInfoDtoList;
 	}
 }
