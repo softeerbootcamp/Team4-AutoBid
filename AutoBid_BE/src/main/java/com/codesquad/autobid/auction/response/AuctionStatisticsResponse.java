@@ -14,31 +14,33 @@ import lombok.ToString;
 public class AuctionStatisticsResponse {
 
 	public static final Long FIXED_INTERVAL_PRICE = 500L;
-	private Long totalSold;
+	private int totalSold;
 	private Long minPrice;
 	private Long maxPrice;
 	private StatisticsHistogram statisticsHistogram;
 
-	private AuctionStatisticsResponse(Long totalSold, Long minPrice, Long maxPrice, StatisticsHistogram statisticsHistogram) {
+	private AuctionStatisticsResponse(int totalSold, Long minPrice, Long maxPrice,
+		StatisticsHistogram statisticsHistogram) {
 		this.totalSold = totalSold;
 		this.maxPrice = maxPrice;
 		this.minPrice = minPrice;
 		this.statisticsHistogram = statisticsHistogram;
 	}
 
-	public static AuctionStatisticsResponse of(Long totalSold, Long minPrice, Long maxPrice, List<Long> contents) {
+	public static AuctionStatisticsResponse of(int totalSold, Long minPrice, Long maxPrice, int[] contents) {
 		return new AuctionStatisticsResponse(totalSold, minPrice, maxPrice,
 			new StatisticsHistogram(FIXED_INTERVAL_PRICE, contents));
 	}
 }
 
+@ToString
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 class StatisticsHistogram {
 
 	private Long intervalPrice;
-	private List<Long> contents;
+	private int[] contents;
 
-	public StatisticsHistogram(Long intervalPrice, List<Long> contents) {
+	public StatisticsHistogram(Long intervalPrice, int[] contents) {
 		this.intervalPrice = intervalPrice;
 		this.contents = contents;
 	}
