@@ -19,4 +19,10 @@ public class AuctionServiceTest {
 	public void 리스트_조회() {
 		Assertions.assertThat(auctionService.getAuctions("ETC", "BEFORE", 1000L, 1000000L, 1, 5)).isNotNull();
 	}
+
+	@DisplayName("통계 조회")
+	@Test
+	public void 통계_조회() {
+		System.out.println(auctionService.getAuctionStaticsResponse("ALL", "ALL"));
+	}
 }
