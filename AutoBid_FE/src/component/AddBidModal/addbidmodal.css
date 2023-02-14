@@ -1,0 +1,134 @@
+@import "../../style/reset.css";
+@import "../../style/common.css";
+
+/* TODO: ADD HR, .VL IN COMMON CSS FILE */
+hr {
+  border-bottom: 1px solid var(--color-semi-gray);
+  border-top: 0;
+  margin: 16px 0;
+}
+
+input {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  padding: 8px;
+  width: 100%;
+  border-width: 1px;
+}
+
+.vl {
+  border-left: 1px solid var(--color-semi-gray);
+  height: inherit;
+}
+
+.add-bid {
+  background-color: #EEEEEE;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  padding: 48px;
+  width: calc(var(--container-max-width) / 2);
+}
+
+.add-bid__close-button {
+  font-size: 24px;
+  height: 24px;
+  position: absolute;
+  width: 24px;
+}
+
+.add-bid__label {
+  flex-grow: 0;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.add-bid__title {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.add-bid__add-image__container {
+  background-color: white;
+  border-radius: 8px;
+  display: flex;
+}
+
+.add-bid__swap-button-right {
+  margin-left: auto;
+}
+
+.add-bid__images-container {
+  align-items: center;
+  display: flex;
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+
+.fa-camera {
+  font-size: 30px;
+  height: 60px;
+  padding: 15px;
+}
+
+.add-bid__image-container {
+  position: relative;
+}
+
+.add-bid__image-delete {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  z-index: 100;
+  font-size: 18px;
+  color: var(--color-light-gray)
+}
+
+.add-bid__image {
+  border-radius: 8px;
+  height: 60px;
+  margin: 8px 8px 8px 0;
+  width: 60px;
+}
+
+.add-bid__car-type__car-list {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  padding: 8px;
+  width: 100%;
+}
+
+.add-bid__bid_start-time__label, .add-bid__bid-end-time__label {
+}
+
+.add-bid__bid-start-time__input {
+  margin-bottom: 24px;
+}
+
+.add-bid__bid-end-time__input {
+  margin-bottom: 16px;
+}
+
+.add-bid__bid-start-price__label {
+}
+
+.add-bid__bid-start-price__input {
+}
+
+.add-bid__bid-submit__button {
+  align-self: end;
+  background-color: var(--color-gray);
+  border-radius: 8px;
+  padding: 16px;
+  width: fit-content;
+}
+
+.add-bid__images-container > input {
+  display: none;
+}
+
+.fa-camera:hover {
+  color: var(--color-blue)
+}
