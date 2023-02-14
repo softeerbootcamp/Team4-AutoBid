@@ -23,10 +23,10 @@ hr {
 }
 
 .add-bid__close-button {
-  height: 48px;
+  font-size: 24px;
+  height: 24px;
   position: absolute;
-  width: 48px;
-  z-index: 1;
+  width: 24px;
 }
 
 .add-bid__label {
@@ -45,22 +45,11 @@ hr {
 .add-bid__add-image__container {
   background-color: white;
   border-radius: 8px;
-  display: inline-block;
-}
-
-.add-bid__images-swap-button-container {
   display: flex;
-  height: 76px;
-  justify-content: space-between;
-  opacity: 0;
-  position: absolute;
-  transition: 0.5s;
-  width: 429px;
-  z-index: 1;
 }
 
-.add-bid__images-swap-button-container:hover {
-  opacity: 0.5;
+.add-bid__swap-button-right {
+  margin-left: auto;
 }
 
 .add-bid__images-container {
@@ -71,16 +60,16 @@ hr {
 }
 
 .fa-camera {
+  font-size: 30px;
   height: 60px;
   padding: 15px;
-  font-size: 30px;
 }
 
 .add-bid__image {
   border-radius: 8px;
   height: 60px;
+  margin: 8px 8px 8px 0;
   width: 60px;
-  margin: 8px;
 }
 
 .add-bid__car-type__label {
