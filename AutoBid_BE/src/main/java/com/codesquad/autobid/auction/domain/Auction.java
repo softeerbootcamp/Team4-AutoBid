@@ -12,6 +12,7 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import com.codesquad.autobid.auction.repository.AuctionRedis;
 import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.user.domain.User;
 
