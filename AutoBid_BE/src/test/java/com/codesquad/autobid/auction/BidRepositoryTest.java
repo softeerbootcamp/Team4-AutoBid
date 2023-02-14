@@ -1,4 +1,4 @@
-package com.codesquad.autobid.car.repository;
+package com.codesquad.autobid.auction;
 
 import static org.assertj.core.api.Assertions.*;
 

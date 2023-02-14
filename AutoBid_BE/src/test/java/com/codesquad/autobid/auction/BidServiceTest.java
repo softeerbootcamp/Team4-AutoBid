@@ -1,4 +1,4 @@
-package com.codesquad.autobid.car.service;
+package com.codesquad.autobid.auction;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -23,7 +23,6 @@ public class BidServiceTest {
 
 	@DisplayName("입찰하기")
 	@Test
-	@Disabled
 	public void suggestBidTest() {
 		// given
 		BidRegisterRequest bidRegisterRequest = new BidRegisterRequest(5L, 1000L);
