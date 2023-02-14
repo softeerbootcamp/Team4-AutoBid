@@ -1,5 +1,5 @@
-@import "../css/reset.css";
-@import "../css/common.css";
+@import "../../style/reset.css";
+@import "../../style/common.css";
 
 /* TODO: ADD HR, .VL IN COMMON CSS FILE */
 hr {
@@ -123,4 +123,12 @@ input {
   border-radius: 8px;
   padding: 16px;
   width: fit-content;
+}
+
+.add-bid__images-container > input {
+  display: none;
+}
+
+.fa-camera:hover {
+  color: var(--color-blue)
 }
