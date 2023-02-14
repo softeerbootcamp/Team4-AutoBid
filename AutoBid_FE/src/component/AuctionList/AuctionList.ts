@@ -94,6 +94,8 @@ class AuctionList extends Component<AuctionQuery> {
     }
 
     updateBidList(query: AuctionQuery) {
+        if (query.minPrice > query.maxPrice)
+            return;
         requestAuctionList(query).then(({ auctionList, pages }) => {
             this.auctionList = auctionList;
             this.pages = pages;

@@ -6,7 +6,7 @@ import {CarType} from "../model/car";
 
 export const QUERY_INITIAL: AuctionQuery = {
     auctionStatus: AuctionStatus.ALL, carType: CarType.ALL,
-    minPrice: 0, maxPrice: 10000, page: 1
+    minPrice: 0, maxPrice: -1, page: 1
 };
 
 enum QueryActionType {
@@ -38,11 +38,13 @@ const query: Reducer<AuctionQuery> = (state = QUERY_INITIAL, action) => {
         case QueryActionType.STATUS:
             return { ...state,
                 page: 1,
+                maxPrice: -1,
                 auctionStatus: action.auctionStatus
             };
         case QueryActionType.TYPE:
             return { ...state,
                 page: 1,
+                maxPrice: -1,
                 carType: action.carType
             };
         case QueryActionType.RANGE:
