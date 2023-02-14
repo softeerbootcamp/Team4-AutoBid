@@ -7,6 +7,8 @@
     background-color: white;
     padding: 32px;
     box-shadow: var(--box-shadow-level-1);
+    position: sticky;
+    top: 96px
 }
 
 .query-side-bar__n-sold {
@@ -76,11 +78,12 @@
 }
 
 .query-side-bar__set-fund__hist__bar {
-    margin: 0 5px;
+    margin: 0 2px;
     width: 100%;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     background-color: var(--color-light-blue);
+    padding-bottom: 1px;
     transition: 0.2s;
 }
 
