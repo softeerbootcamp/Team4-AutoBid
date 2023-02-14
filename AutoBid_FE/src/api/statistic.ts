@@ -1,30 +1,18 @@
+import dotenv from "dotenv";
 import {AuctionStatisticDTO} from "../model/statistic";
-import {asyncTaskWrapper, lazyReturn} from "../core/util";
+import {asyncTaskWrapper} from "../core/util";
+import {AuctionStatus} from "../model/auction";
+import {CarType} from "../model/car";
 
-export const requestAuctionStatistic = asyncTaskWrapper(async () => {
-    return await lazyReturn({
-        auctionStatistic: {
-            nSold: 114,
-            minPrice: 0,
-            maxPrice: 11200,
-            histogram: {
-                binSize: 100,
-                contents: [
-                    10,
-                    22,
-                    24,
-                    15,
-                    35,
-                    55,
-                    67,
-                    58,
-                    43,
-                    21,
-                    13,
-                    11,
-                    9
-                ]
-            }
-        }
-    } as AuctionStatisticDTO, 1000);
-});
+dotenv.config();
+const API_BASE_URL = process.env.API_BASE_URL as string;
+const STATISTIC_ENDPOINT = process.env.STATISTIC_ENDPOINT as string;
+
+export const requestAuctionStatistic = asyncTaskWrapper(
+    async (auctionStatus: AuctionStatus, carType: CarType): Promise<AuctionStatisticDTO|null> => {
+        const statisticRes =
+            await fetch(`${API_BASE_URL}${STATISTIC_ENDPOINT}?carType=${carType}&auctionStatus=${auctionStatus}`);
+        if (statisticRes.ok)
+            return await statisticRes.json() as AuctionStatisticDTO;
+        return null;
+    });

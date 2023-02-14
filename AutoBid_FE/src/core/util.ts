@@ -1,6 +1,8 @@
 import '../style/pending.css';
 
 
+export const ARTICLE_PER_PAGE = 6;
+
 export type PopupOption = {url: URL, title: string, w: number, h: number};
 
 // https://stackoverflow.com/questions/4068373/center-a-popup-window-on-screen

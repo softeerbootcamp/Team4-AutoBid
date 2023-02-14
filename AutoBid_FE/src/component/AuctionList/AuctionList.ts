@@ -5,7 +5,7 @@ import {AuctionQuery} from "../../model/query";
 import {Auction, AuctionStatus} from "../../model/auction";
 import {requestAuctionList} from "../../api/auction";
 import "./auctionlist.css"
-
+import {ARTICLE_PER_PAGE} from "../../core/util";
 
 class AuctionList extends Component<AuctionQuery> {
     private auctionList: Auction[] = [];
@@ -37,7 +37,7 @@ class AuctionList extends Component<AuctionQuery> {
                 진행 전 경매
             </button>
             <button class="header-button-container__header-button bid-status-complete
-                ${query.auctionStatus === AuctionStatus.COMPLETE ? ' header-button--selected' : ''}">
+                ${query.auctionStatus === AuctionStatus.COMPLETED ? ' header-button--selected' : ''}">
                 종료된 경매
             </button>
         </div>
@@ -69,7 +69,7 @@ class AuctionList extends Component<AuctionQuery> {
         this.addEvent('click', '.bid-status-before',
             () => { selectStatus(AuctionStatus.BEFORE) });
         this.addEvent('click', '.bid-status-complete',
-            () => { selectStatus(AuctionStatus.COMPLETE) });
+            () => { selectStatus(AuctionStatus.COMPLETED) });
 
         this.addEvent('click', '.pagination__btn', this.pageButtonEvent.bind(this));
     }
@@ -94,9 +94,13 @@ class AuctionList extends Component<AuctionQuery> {
     }
 
     updateBidList(query: AuctionQuery) {
-        requestAuctionList(query).then(({ auctionList, pages }) => {
-            this.auctionList = auctionList;
-            this.pages = pages;
+        if (query.minPrice > query.maxPrice)
+            return;
+        requestAuctionList(query).then(auctionListData => {
+            if (!auctionListData) return;
+            const { auctionInfoList, totalAuctionNum } = auctionListData;
+            this.auctionList = auctionInfoList;
+            this.pages = Math.ceil(totalAuctionNum / ARTICLE_PER_PAGE);
             this.render();
         });
     }

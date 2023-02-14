@@ -1,103 +1,18 @@
+import dotenv from "dotenv";
 import {AuctionQuery} from "../model/query";
 import {AuctionListDTO} from "../model/auction";
-import {CarType} from "../model/car";
-import {asyncTaskWrapper, lazyReturn} from "../core/util";
+import {ARTICLE_PER_PAGE, asyncTaskWrapper} from "../core/util";
 
-export const requestAuctionList = asyncTaskWrapper(async (query: AuctionQuery): Promise<AuctionListDTO> => {
-    console.log(query);
-    return await lazyReturn({
-        auctionList: [
-            {
-                id: 1,
-                images: ['https://picsum.photos/500', 'https://picsum.photos/600', 'https://picsum.photos/700', 'https://picsum.photos/800', 'https://picsum.photos/900'],
-                title: '현대 아반떼MD 프리미어 1.6 GDi',
-                carInfo: {
-                    id: 1,
-                    name: '내 차',
-                    distance: 142852,
-                    type: 'GN' as CarType,
-                    sellName: 'Avante'
-                },
-                startPrice: 1090,
-                currPrice: 2040,
-                endPrice: 3010,
-                status: 1,
-                startTime: '2023-02-23 11:23',
-                endTime: '2023-02-28 11:23'
-            },
-            {
-                id: 2,
-                images: ['https://picsum.photos/500', 'https://picsum.photos/600', 'https://picsum.photos/700', 'https://picsum.photos/800', 'https://picsum.photos/900'],
-                title: '현대 아반떼MD 프리미어 1.6 GDi',
-                carInfo: {
-                    id: 2,
-                    name: '내 차',
-                    distance: 142852,
-                    type: 'GN'  as CarType,
-                    sellName: 'Avante'
-                },
-                startPrice: 1090,
-                currPrice: 2040,
-                endPrice: 3010,
-                status: 0,
-                startTime: '2022-12-23 11:23',
-                endTime: '2023-02-28 11:23'
-            },
-            {
-                id: 3,
-                images: ['https://picsum.photos/500', 'https://picsum.photos/600', 'https://picsum.photos/700', 'https://picsum.photos/800', 'https://picsum.photos/900'],
-                title: '현대 아반떼MD 프리미어 1.6 GDi',
-                carInfo: {
-                    id: 3,
-                    name: '내 차',
-                    distance: 142852,
-                    type: 'GN' as CarType,
-                    sellName: 'Avante'
-                },
-                startPrice: 1090,
-                currPrice: 2040,
-                endPrice: 3010,
-                status: 2,
-                startTime: '2022-12-23 11:23',
-                endTime: '2022-12-23 11:23',
-            },
-            {
-                id: 4,
-                images: ['https://picsum.photos/500', 'https://picsum.photos/600', 'https://picsum.photos/700', 'https://picsum.photos/800', 'https://picsum.photos/900'],
-                title: '현대 아반떼MD 프리미어 1.6 GDi',
-                carInfo: {
-                    id: 4,
-                    name: '내 차',
-                    distance: 142852,
-                    type: 'GN' as CarType,
-                    sellName: 'Avante'
-                },
-                startPrice: 1090,
-                currPrice: 2040,
-                endPrice: 3010,
-                status: 1,
-                startTime: '2023-02-23 11:23',
-                endTime: '2023-02-28 11:23'
-            },
-            {
-                id: 5,
-                images: ['https://picsum.photos/500', 'https://picsum.photos/600', 'https://picsum.photos/700', 'https://picsum.photos/800', 'https://picsum.photos/900'],
-                title: '현대 아반떼MD 프리미어 1.6 GDi',
-                carInfo: {
-                    id: 5,
-                    name: '내 차',
-                    distance: 142852,
-                    type: 'GN' as CarType,
-                    sellName: 'Avante'
-                },
-                startPrice: 1090,
-                currPrice: 2040,
-                endPrice: 3010,
-                status: 1,
-                startTime: '2023-02-23 11:23',
-                endTime: '2023-02-28 11:23'
-            }
-        ],
-        pages: 5
-    } as AuctionListDTO, 1000);
-});
+dotenv.config();
+const API_BASE_URL = process.env.API_BASE_URL as string;
+const LIST_ENDPOINT = process.env.LIST_ENDPOINT as string;
+
+export const requestAuctionList = asyncTaskWrapper(
+    async ({auctionStatus, carType, minPrice, maxPrice, page}: AuctionQuery): Promise<AuctionListDTO|null> => {
+        const auctionListRes =
+            await fetch(`${API_BASE_URL}${LIST_ENDPOINT}?carType=${carType}&auctionStatus=${auctionStatus}`
+                + `&startPrice=${minPrice}&endPrice=${maxPrice}&page=${page}&size=${ARTICLE_PER_PAGE}`);
+        if (auctionListRes.ok)
+            return await auctionListRes.json() as AuctionListDTO;
+        return null;
+    });

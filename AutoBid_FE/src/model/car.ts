@@ -12,7 +12,7 @@ export enum CarType {
 }
 
 export type CarInfo = {
-    id: number, distance: number,
+    carId: number, distance: number,
     name: string, type: CarType, sellName: string
 };
 

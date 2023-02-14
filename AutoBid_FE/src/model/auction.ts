@@ -1,17 +1,16 @@
 import {CarInfo} from "./car";
 
 export enum AuctionStatus {
-    ALL = -1,
-    PROGRESS,
-    BEFORE,
-    COMPLETE
+    ALL = 'ALL',
+    PROGRESS = 'PROGRESS',
+    BEFORE = 'BEFORE',
+    COMPLETED = 'COMPLETED'
 }
 
 export type Auction = {
-    id: number, images: string[],
+    auctionId: number, images: string[],
     title: string, carInfo: CarInfo,
     startPrice: number,
-    currPrice: number,
     endPrice: number,
     status: AuctionStatus,
     startTime: string, endTime: string
@@ -22,5 +21,5 @@ export type AuctionDTO = {
 };
 
 export type AuctionListDTO = {
-    auctionList: Auction[], pages: number
+    auctionInfoList: Auction[], totalAuctionNum: number
 };

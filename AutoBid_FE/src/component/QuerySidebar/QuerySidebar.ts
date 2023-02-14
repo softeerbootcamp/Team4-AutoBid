@@ -3,11 +3,16 @@ import QueryCarTypeGroup from "../QueryCarTypeGroup/QueryCarTypeGroup";
 import DoubleRangeSlider from "../DoubleRangeSlider/DoubleRangeSlider";
 import {requestAuctionStatistic} from "../../api/statistic";
 import {Histogram} from "../../model/statistic";
-import {setRange} from "../../store/query";
+import {queryStateSelector, setRange} from "../../store/query";
 import "./querysidebar.css"
 import AnimatedNumber from "../AnimatedNumber/AnimatedNumber";
+import {AuctionQuery} from "../../model/query";
 
-class QuerySidebar extends Component<any> {
+class QuerySidebar extends Component<AuctionQuery> {
+    stateSelector(globalState: any): AuctionQuery | undefined {
+        return globalState[queryStateSelector];
+    }
+
     template(): InnerHTML["innerHTML"] {
         return `
         <div class="query-side-bar__n-sold">
@@ -36,12 +41,23 @@ class QuerySidebar extends Component<any> {
         this.fetchStatistic();
     }
 
-    fetchStatistic() {
-        requestAuctionStatistic().then(({ auctionStatistic }) => {
-            this.updateNSold(auctionStatistic.nSold);
-            this.updateFundVal(auctionStatistic.minPrice, auctionStatistic.maxPrice);
-            this.updateHistogram(auctionStatistic.histogram);
-            this.mountDoubleRangeSlider(auctionStatistic.minPrice, auctionStatistic.maxPrice);
+    onStateChanged(prevLocalState: AuctionQuery) {
+        const { auctionStatus, carType } = this.state as AuctionQuery;
+        if (prevLocalState.auctionStatus !== auctionStatus || prevLocalState.carType !== carType) {
+            this.fetchStatistic(false);
+        }
+    }
+
+    fetchStatistic(first = true) {
+        const { auctionStatus, carType } = this.state as AuctionQuery;
+        requestAuctionStatistic(auctionStatus, carType).then(statistic => {
+            if (!statistic) return;
+            first && this.updateNSold(statistic.totalSold);
+            this.updateFundVal(statistic.minPrice, statistic.maxPrice);
+            this.updateHistogram(statistic.statisticsHistogram);
+            this.markHistogramSelected(statistic.minPrice, statistic.maxPrice, statistic.minPrice, statistic.maxPrice);
+            this.mountDoubleRangeSlider(statistic.minPrice, statistic.maxPrice, statistic.minPrice, statistic.maxPrice);
+            setRange(statistic.minPrice, statistic.maxPrice);
         });
     }
 
@@ -86,10 +102,10 @@ class QuerySidebar extends Component<any> {
             style="height: ${Math.round(value / max * 100)}%"></span>
         `).join('')}`;
     }
-    mountDoubleRangeSlider(min: number, max: number) {
+    mountDoubleRangeSlider(min: number, max: number, left: number, right: number) {
         const $doubleRangeSlider = this.$target.querySelector('[data-component="DoubleRangeSlider"]') as HTMLElement;
         new DoubleRangeSlider($doubleRangeSlider, {
-            min, max, left: min, right: max,
+            min, max, left, right,
             onUp: (left, right) => {
                 this.onSliderDetermined(left, right);
             },
