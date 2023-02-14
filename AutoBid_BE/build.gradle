@@ -17,6 +17,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.session:spring-session-data-redis:2.7.0'
 
+    // kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+
     // email
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
