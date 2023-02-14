@@ -47,6 +47,7 @@ public class AuctionService {
 	@Transactional
 	public Auction addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
 		Auction auction = Auction.of(auctionRegisterRequest.getCarId(), user.getId(),
+			auctionRegisterRequest.getAuctionTitle(),
 			auctionRegisterRequest.getAuctionStartTime(),
 			auctionRegisterRequest.getAuctionEndTime(), auctionRegisterRequest.getAuctionStartPrice(),
 			AuctionStatus.BEFORE_END_PRICE, AuctionStatus.BEFORE);
