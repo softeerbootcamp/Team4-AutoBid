@@ -8,10 +8,9 @@ export enum AuctionStatus {
 }
 
 export type Auction = {
-    id: number, images: string[],
+    auctionId: number, images: string[],
     title: string, carInfo: CarInfo,
     startPrice: number,
-    currPrice: number,
     endPrice: number,
     status: AuctionStatus,
     startTime: string, endTime: string
@@ -22,5 +21,5 @@ export type AuctionDTO = {
 };
 
 export type AuctionListDTO = {
-    auctionList: Auction[], pages: number
+    auctionInfoList: Auction[], totalAuctionNum: number
 };
