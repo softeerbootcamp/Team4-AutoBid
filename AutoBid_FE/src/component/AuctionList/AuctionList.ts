@@ -37,7 +37,7 @@ class AuctionList extends Component<AuctionQuery> {
                 진행 전 경매
             </button>
             <button class="header-button-container__header-button bid-status-complete
-                ${query.auctionStatus === AuctionStatus.COMPLETE ? ' header-button--selected' : ''}">
+                ${query.auctionStatus === AuctionStatus.COMPLETED ? ' header-button--selected' : ''}">
                 종료된 경매
             </button>
         </div>
@@ -69,7 +69,7 @@ class AuctionList extends Component<AuctionQuery> {
         this.addEvent('click', '.bid-status-before',
             () => { selectStatus(AuctionStatus.BEFORE) });
         this.addEvent('click', '.bid-status-complete',
-            () => { selectStatus(AuctionStatus.COMPLETE) });
+            () => { selectStatus(AuctionStatus.COMPLETED) });
 
         this.addEvent('click', '.pagination__btn', this.pageButtonEvent.bind(this));
     }
