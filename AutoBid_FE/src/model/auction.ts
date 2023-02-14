@@ -1,10 +1,10 @@
 import {CarInfo} from "./car";
 
 export enum AuctionStatus {
-    ALL = -1,
-    PROGRESS,
-    BEFORE,
-    COMPLETE
+    ALL = 'ALL',
+    PROGRESS = 'PROGRESS',
+    BEFORE = 'BEFORE',
+    COMPLETED = 'COMPLETED'
 }
 
 export type Auction = {
