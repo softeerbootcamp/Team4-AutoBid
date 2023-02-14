@@ -21,6 +21,8 @@ public class AuctionRegisterRequest {
 	private List<MultipartFile> multipartFileList;
 	@Schema(example = "5", description = "자동차 아이디")
 	private Long carId;
+	@Schema(example = "현대 아반떼 1.6", description = "경매 제목")
+	private String auctionTitle;
 	@Schema(example = "2022-12-23 12:23", description = "경매 시작 시간")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME, pattern = "yyyy-MM-dd HH:mm")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
