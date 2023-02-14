@@ -48,4 +48,10 @@ public class UserService {
         }
         return Optional.empty();
     }
+
+    public void remove(OauthToken oauthToken) {
+        UserVO userVO = userHandler.userProfileAPICall(oauthToken);
+        Optional<User> user = userRepository.findByUid(userVO.getId());
+        if(user.isPresent()) userRepository.delete(user.get());
+    }
 }
