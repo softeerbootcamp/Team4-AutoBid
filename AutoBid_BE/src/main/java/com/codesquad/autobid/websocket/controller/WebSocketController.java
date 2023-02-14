@@ -35,7 +35,12 @@ public class WebSocketController {
     /**
      * TODO
      *  - webSocket#1, sessionID 의 형태로 레디스에 저장
+     *      - 기능1 : 세션을 통해 웹 소켓 연결 끊기는 이벤트를 확인
+     *      - 기능2 : 연결이 끊기면 현재 방 인원의 수를 줄임
      *  - subscribe로 현재 방 인원, BidList를 담아서줌
+     *      - 현재 방 인원: AuctionRedis의 numberOfUsers 가져와야함
+     *      - 입찰 목록 : AuctionRedis의 bidders를 가져와야함
+     *
      * **/
 
     @MessageMapping("/websocket/{auctionId}")
