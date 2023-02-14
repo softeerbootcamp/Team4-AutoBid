@@ -5,6 +5,7 @@ import {AuctionQuery} from "../../model/query";
 import {Auction, AuctionStatus} from "../../model/auction";
 import {requestAuctionList} from "../../api/auction";
 import "./auctionlist.css"
+import {popShowingAuctionModal} from "../../store/modal";
 
 
 class AuctionList extends Component<AuctionQuery> {
@@ -86,9 +87,7 @@ class AuctionList extends Component<AuctionQuery> {
         $auctionCards.forEach(($auctionCard, idx) => {
             new AuctionCard($auctionCard as HTMLElement, {
                 auction: auctionList[idx],
-                onClick: () => {
-                    console.log(idx);
-                }
+                onClick: () => popShowingAuctionModal(auctionList[idx])
             });
         });
     }
