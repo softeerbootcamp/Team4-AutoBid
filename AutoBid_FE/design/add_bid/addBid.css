@@ -65,6 +65,19 @@ hr {
   padding: 15px;
 }
 
+.add-bid__image-container {
+  position: relative;
+}
+
+.add-bid__image-delete {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  z-index: 100;
+  font-size: 18px;
+  color: var(--color-light-gray)
+}
+
 .add-bid__image {
   border-radius: 8px;
   height: 60px;
@@ -72,20 +85,11 @@ hr {
   width: 60px;
 }
 
-.add-bid__car-type__label {
-  height: fit-content;
-  margin-right: 16px;
-}
-
 .add-bid__car-type__car-list {
   background-color: var(--color-white);
   border-radius: 8px;
   padding: 16px;
-}
-
-.add-bid__car-type__car-list > li {
-  padding: 8px;
-  text-align: start;
+  width: 100%;
 }
 
 .add-bid__bid_start-time__label, .add-bid__bid-end-time__label {
