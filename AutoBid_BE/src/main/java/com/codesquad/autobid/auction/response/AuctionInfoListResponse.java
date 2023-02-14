@@ -1,21 +1,19 @@
 package com.codesquad.autobid.auction.response;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.thymeleaf.expression.Lists;
-
 import com.codesquad.autobid.auction.domain.AuctionInfoDto;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 @ToString
-@Getter
-@Setter
+@Getter @Setter
 public class AuctionInfoListResponse {
 	private int totalAuctionNum;
 	private List<AuctionInfo> auctionInfoList;
@@ -39,7 +37,8 @@ public class AuctionInfoListResponse {
 	}
 }
 
-class AuctionInfo {
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+class AuctionInfo implements Serializable {
 	private Long auctionId;
 	private String title;
 	private List<String> images;
@@ -64,7 +63,8 @@ class AuctionInfo {
 	}
 }
 
-class CarInfo {
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+class CarInfo implements Serializable {
 	private Long carId;
 	private Long distance;
 	private String name;
