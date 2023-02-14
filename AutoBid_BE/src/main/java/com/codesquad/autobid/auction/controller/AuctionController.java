@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
 import com.codesquad.autobid.auction.response.AuctionInfoListResponse;
+import com.codesquad.autobid.auction.response.AuctionStatisticsResponse;
 import com.codesquad.autobid.auction.service.AuctionService;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.web.argumentresolver.AuthorizedUser;
@@ -58,5 +59,17 @@ public class AuctionController {
 		AuctionInfoListResponse auctionInfoListResponse = auctionService.getAuctions(carType, auctionStatus, startPrice,
 			endPrice, page, size);
 		return ResponseEntity.ok().body(auctionInfoListResponse);
+	}
+
+	@Operation(summary = "경매 통계 정보 조회 API", description = "경매 통계 정보를 불러온다")
+	@GetMapping("/statistics")
+	public ResponseEntity<?> getAuctionStatistics(
+		@Parameter(example = "ALL", description = "GN, EV, HEV, PHEV, FCEV, ALL 중에 하나") String carType,
+		@Parameter(example = "ALL", description = "PROGRESS, BEFORE, COMPLETED, ALL 중에 하나") String auctionStatus
+	) {
+		AuctionStatisticsResponse auctionStatisticsResponse = auctionService.getAuctionStaticsResponse(carType,
+			auctionStatus);
+
+		return ResponseEntity.ok().body(auctionStatisticsResponse);
 	}
 }
