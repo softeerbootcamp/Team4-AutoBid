@@ -5,7 +5,7 @@ import {AuctionQuery} from "../../model/query";
 import {Auction, AuctionStatus} from "../../model/auction";
 import {requestAuctionList} from "../../api/auction";
 import "./auctionlist.css"
-
+import {ARTICLE_PER_PAGE} from "../../core/util";
 
 class AuctionList extends Component<AuctionQuery> {
     private auctionList: Auction[] = [];
@@ -96,9 +96,11 @@ class AuctionList extends Component<AuctionQuery> {
     updateBidList(query: AuctionQuery) {
         if (query.minPrice > query.maxPrice)
             return;
-        requestAuctionList(query).then(({ auctionList, pages }) => {
-            this.auctionList = auctionList;
-            this.pages = pages;
+        requestAuctionList(query).then(auctionListData => {
+            if (!auctionListData) return;
+            const { auctionInfoList, totalAuctionNum } = auctionListData;
+            this.auctionList = auctionInfoList;
+            this.pages = Math.ceil(totalAuctionNum / ARTICLE_PER_PAGE);
             this.render();
         });
     }
