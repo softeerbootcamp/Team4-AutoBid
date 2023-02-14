@@ -1,37 +1,18 @@
+import dotenv from "dotenv";
 import {AuctionStatisticDTO} from "../model/statistic";
-import {asyncTaskWrapper, lazyReturn} from "../core/util";
+import {asyncTaskWrapper} from "../core/util";
 import {AuctionStatus} from "../model/auction";
 import {CarType} from "../model/car";
 
-export const requestAuctionStatistic = asyncTaskWrapper(async (auctionStatus: AuctionStatus, carType: CarType) => {
-    return await lazyReturn({
-        "totalSold": 14,
-        "minPrice": 0,
-        "maxPrice": 100000,
-        "statisticsHistogram": {
-            "intervalPrice": 500,
-            "contents": [
-                54,
-                0,
-                0,
-                0,
-                2,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                2
-            ]
-        }
-    } as AuctionStatisticDTO, 1000);
-});
+dotenv.config();
+const API_BASE_URL = process.env.API_BASE_URL as string;
+const STATISTIC_ENDPOINT = process.env.STATISTIC_ENDPOINT as string;
+
+export const requestAuctionStatistic = asyncTaskWrapper(
+    async (auctionStatus: AuctionStatus, carType: CarType): Promise<AuctionStatisticDTO|null> => {
+        const statisticRes =
+            await fetch(`${API_BASE_URL}${STATISTIC_ENDPOINT}?carType=${carType}&auctionStatus=${auctionStatus}`);
+        if (statisticRes.ok)
+            return await statisticRes.json() as AuctionStatisticDTO;
+        return null;
+    });
