@@ -1,11 +1,14 @@
 package com.codesquad.autobid.auction.service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,16 +28,6 @@ import com.codesquad.autobid.image.repository.ImageRepository;
 import com.codesquad.autobid.image.service.S3Uploader;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,77 +40,77 @@ public class AuctionService {
 	private final AuctionRepository auctionRepository;
 	private final ImageRepository imageRepository;
 	private final CarRepository carRepository;
-    private final S3Uploader s3Uploader;
-    private final AuctionRepository auctionRepository;
-    private final AuctionRedisRepository auctionRedisRepository;
-    private final ImageRepository imageRepository;
-    private final EmailService emailService;
-    private final UserRepository userRepository;
+	private final AuctionRedisRepository auctionRedisRepository;
+	private final EmailService emailService;
+	private final UserRepository userRepository;
 
-    @Transactional
-    public Auction addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
-        Auction auction = Auction.of(auctionRegisterRequest.getCarId(), user.getId(),
-                auctionRegisterRequest.getAuctionStartTime(),
-                auctionRegisterRequest.getAuctionEndTime(), auctionRegisterRequest.getAuctionStartPrice(),
-                AuctionStatus.BEFORE_END_PRICE, AuctionStatus.BEFORE);
-        auctionRepository.save(auction);
-        List<MultipartFile> images = auctionRegisterRequest.getMultipartFileList();
-        for (MultipartFile image : images) {
-            saveImage(image, auction.getId());
-        }
-        return auction;
-    }
+	@Transactional
+	public Auction addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
+		Auction auction = Auction.of(auctionRegisterRequest.getCarId(), user.getId(),
+			auctionRegisterRequest.getAuctionStartTime(),
+			auctionRegisterRequest.getAuctionEndTime(), auctionRegisterRequest.getAuctionStartPrice(),
+			AuctionStatus.BEFORE_END_PRICE, AuctionStatus.BEFORE);
+		auctionRepository.save(auction);
+		List<MultipartFile> images = auctionRegisterRequest.getMultipartFileList();
+		for (MultipartFile image : images) {
+			saveImage(image, auction.getId());
+		}
+		return auction;
+	}
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void saveImage(MultipartFile image, Long auctionId) {
-        try {
-            String imageUrl = s3Uploader.upload(image);
-            imageRepository.save(Image.of(auctionId, imageUrl));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void saveImage(MultipartFile image, Long auctionId) {
+		try {
+			String imageUrl = s3Uploader.upload(image);
+			imageRepository.save(Image.of(auctionId, imageUrl));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    @Transactional
-    public void openPendingAuctions(LocalDateTime openTime) {
-        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.BEFORE, openTime);
-        for (Auction auction : auctions) {
-            openAuction(auction);
-            // socketHandler.openSocket(auction);
-        }
-    }
+	@Transactional
+	public void openPendingAuctions(LocalDateTime openTime) {
+		List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.BEFORE,
+			openTime);
+		for (Auction auction : auctions) {
+			openAuction(auction);
+			// socketHandler.openSocket(auction);
+		}
+	}
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void openAuction(Auction auction) {
-        // redis, mysql이 같은 transaction으로 처리되는지 확인해야 함
-        auction.open();
-        auctionRepository.save(auction);
-        auctionRedisRepository.save(AuctionRedis.from(auction));
-    }
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void openAuction(Auction auction) {
+		// redis, mysql이 같은 transaction으로 처리되는지 확인해야 함
+		auction.open();
+		auctionRepository.save(auction);
+		auctionRedisRepository.save(AuctionRedis.from(auction));
+	}
 
-    @Transactional
-    public void closeFulfilledAuctions(LocalDateTime closeTime) {
-        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.PROGRESS, closeTime);
-        for (Auction auction : auctions) {
-            Set<Bidder> bidders = closeAuction(auction);
-            // todo: socket close
-            // socketHandler.closeSocket(auction);
-            // todo: kafka 적용 예정
-            bidders.stream().forEach((bidder) -> {
-                User bidOwner = userRepository.findById(bidder.getUserId()).get();
-                emailService.send(auction, bidOwner, bidder.getPrice());
-            });
-        }
-    }
+	@Transactional
+	public void closeFulfilledAuctions(LocalDateTime closeTime) {
+		List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.PROGRESS,
+			closeTime);
+		for (Auction auction : auctions) {
+			Set<Bidder> bidders = closeAuction(auction);
+			// todo: socket close
+			// socketHandler.closeSocket(auction);
+			// todo: kafka 적용 예정
+			bidders.stream().forEach((bidder) -> {
+				User bidOwner = userRepository.findById(bidder.getUserId()).get();
+				emailService.send(auction, bidOwner, bidder.getPrice());
+			});
+		}
+	}
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Set<Bidder> closeAuction(Auction auction) {
-        AuctionRedis auctionRedis = auctionRedisRepository.findById(auction.getId());
-        auction.update(auctionRedis);
-        auctionRepository.save(auction);
-        auctionRedisRepository.delete(auction);
-        return auctionRedis.getBidders();
-    }
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public Set<Bidder> closeAuction(Auction auction) {
+		AuctionRedis auctionRedis = auctionRedisRepository.findById(auction.getId());
+		auction.update(auctionRedis);
+		auctionRepository.save(auction);
+		auctionRedisRepository.delete(auction);
+		return auctionRedis.getBidders();
+	}
+
 	public AuctionInfoListResponse getAuctions(String carType, String auctionStatus, Long startPrice, Long endPrice,
 		int page, int size) {
 		List<AuctionInfoDto> auctionInfoDtoList = getAuctionDtoList(carType, auctionStatus, startPrice, endPrice);
