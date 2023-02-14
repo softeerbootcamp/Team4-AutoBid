@@ -14,8 +14,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @ToString
-@Getter
-@Setter
+@Getter @Setter
 public class AuctionRegisterRequest {
 	@Schema(description = "이미지 리스트")
 	private List<MultipartFile> multipartFileList;
