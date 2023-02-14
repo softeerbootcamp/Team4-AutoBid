@@ -3,9 +3,10 @@ package com.codesquad.autobid.car.service;
 import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.car.domain.CheckCarResponse;
 import com.codesquad.autobid.car.repository.CarRepository;
-import com.codesquad.autobid.car.util.CarTestUtil;
+import com.codesquad.autobid.util.CarTestUtil;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.repository.UserRepository;
+import com.codesquad.autobid.util.UserTestUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ class CarServiceTest {
     @DisplayName("갱신이 아닌 내 차 목록 조회 기능")
     void 갱신없는_요청_성공() {
         // given
-        User user = CarTestUtil.getNewUser();
+        User user = UserTestUtil.getNewUser();
         user = userRepository.save(user);
         String accessToken = "accessToken#1";
         boolean refresh = false;

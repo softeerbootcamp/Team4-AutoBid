@@ -1,4 +1,4 @@
-package com.codesquad.autobid.car.util;
+package com.codesquad.autobid.util;
 
 import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.car.domain.State;
@@ -6,6 +6,7 @@ import com.codesquad.autobid.car.domain.Type;
 import com.codesquad.autobid.user.domain.User;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class CarTestUtil {
                     AggregateReference.to(userId),
                     State.NOT_FOR_SALE,
                     Type.ETC,
-                    100l,
+                    100f,
                     "id#" + count,
                     "name#" + count,
                     "sellname#" + count,
@@ -30,7 +31,14 @@ public class CarTestUtil {
         return cars;
     }
 
-    public static User getNewUser() {
-        return new User("uid#1", "email#1", "name#1", "phoneNumber#1", LocalDate.now(), LocalDateTime.now(), LocalDateTime.now(), "refreshToken#1");
+    public static Car saveCar(Car car) {
+        try {
+            Field id = car.getClass().getDeclaredField("id");
+            id.setAccessible(true);
+            id.set(car, 1l);
+            return car;
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return null;
+        }
     }
 }

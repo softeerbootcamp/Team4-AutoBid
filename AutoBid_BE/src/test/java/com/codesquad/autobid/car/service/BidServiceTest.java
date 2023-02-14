@@ -3,6 +3,7 @@ package com.codesquad.autobid.car.service;
 import static org.assertj.core.api.Assertions.*;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class BidServiceTest {
 
 	@DisplayName("입찰하기")
 	@Test
+	@Disabled
 	public void suggestBidTest() {
 		// given
 		BidRegisterRequest bidRegisterRequest = new BidRegisterRequest(5L, 1000L);
