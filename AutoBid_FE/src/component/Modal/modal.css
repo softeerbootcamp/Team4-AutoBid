@@ -12,6 +12,7 @@
     transition: 0.5s;
     pointer-events: none;
     opacity: 0;
+    z-index: 1;
 }
 
 [data-component="Modal"].modal--pop {
@@ -27,5 +28,5 @@
 
 [data-component="Modal"] .modal__content {
     position: absolute;
-    z-index: 1;
+    background-color: var(--color-white);
 }
