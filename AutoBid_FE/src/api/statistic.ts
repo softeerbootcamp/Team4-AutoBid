@@ -1,7 +1,9 @@
 import {AuctionStatisticDTO} from "../model/statistic";
 import {asyncTaskWrapper, lazyReturn} from "../core/util";
+import {AuctionStatus} from "../model/auction";
+import {CarType} from "../model/car";
 
-export const requestAuctionStatistic = asyncTaskWrapper(async () => {
+export const requestAuctionStatistic = asyncTaskWrapper(async (auctionStatus: AuctionStatus, carType: CarType) => {
     return await lazyReturn({
         "totalSold": 14,
         "minPrice": 0,
