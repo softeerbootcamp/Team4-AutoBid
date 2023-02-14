@@ -117,7 +117,6 @@ public class AuctionService {
 	public AuctionInfoListResponse getAuctions(String carType, String auctionStatus, Long startPrice, Long endPrice,
 		int page, int size) {
 		List<AuctionInfoDto> auctionInfoDtoList = getAuctionDtoList(carType, auctionStatus, startPrice, endPrice);
-		System.out.println(auctionInfoDtoList);
 		return getAuctionInfoListResponse(auctionInfoDtoList, page, size);
 	}
 
@@ -146,11 +145,14 @@ public class AuctionService {
 	public AuctionInfoListResponse getAuctionInfoListResponse(List<AuctionInfoDto> auctionInfoDtoList, int page,
 		int size) {
 		int totalAuctionNum = auctionInfoDtoList.size();
-		if (totalAuctionNum < page * size - 1) {
-			auctionInfoDtoList.subList((size - 1) * page, totalAuctionNum - 1);
-		} else {
-			auctionInfoDtoList.subList((size - 1) * page, (size) * page - 1);
-		}
+		subAuctionDtoList(auctionInfoDtoList, page, size, totalAuctionNum);
+
+		return auctionInfoDtoListToAuctionInfoListResponse(
+			auctionInfoDtoList, totalAuctionNum);
+	}
+
+	public AuctionInfoListResponse auctionInfoDtoListToAuctionInfoListResponse(List<AuctionInfoDto> auctionInfoDtoList,
+		int totalAuctionNum) {
 		auctionInfoDtoList.forEach(auctionInfoDto -> {
 			List<Image> images = imageRepository.findAllByAuctionId(
 				AggregateReference.to(auctionInfoDto.getAuctionId()));
@@ -158,6 +160,14 @@ public class AuctionService {
 		});
 
 		return AuctionInfoListResponse.of(auctionInfoDtoList, totalAuctionNum);
+	}
+
+	public void subAuctionDtoList(List<AuctionInfoDto> auctionInfoDtoList, int page, int size, int totalAuctionNum) {
+		if (totalAuctionNum < page * size - 1) {
+			auctionInfoDtoList.subList((size - 1) * page, totalAuctionNum - 1);
+		} else {
+			auctionInfoDtoList.subList((size - 1) * page, size * page - 1);
+		}
 	}
 
 	public AuctionStatisticsResponse getAuctionStaticsResponse(String carType, String auctionStatus) {
@@ -195,5 +205,11 @@ public class AuctionService {
 		}
 
 		return auctionInfoDtoList;
+	}
+
+	public AuctionInfoListResponse getMyAuctions(User user) {
+		List<AuctionInfoDto> auctionInfoDtoList = auctionRepository.findAllByUserId(user.getId());
+		return auctionInfoDtoListToAuctionInfoListResponse(
+			auctionInfoDtoList, auctionInfoDtoList.size());
 	}
 }

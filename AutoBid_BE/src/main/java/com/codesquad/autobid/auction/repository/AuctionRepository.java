@@ -46,4 +46,7 @@ public interface AuctionRepository extends CrudRepository<Auction, Long> {
 	public List<AuctionInfoDto> findAllForStatistics();
 
 	public int countAllByAuctionStatus(AuctionStatus auctionStatus);
+
+	@Query("select * from auction a join car c on a.car_id = c.car_id where a.user_id = :userId order by a.auction_end_price asc")
+	public List<AuctionInfoDto> findAllByUserId(Long userId);
 }
