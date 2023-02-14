@@ -27,6 +27,5 @@
 
 [data-component="Modal"] .modal__content {
     position: absolute;
-    background-color: #007AFF;
     z-index: 1;
 }

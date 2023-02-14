@@ -1,6 +1,7 @@
 import Component from "../../core/component";
 import {closeModal, MODAL_INITIAL, ModalState, modalStateSelector, ModalView} from "../../store/modal";
 import "./modal.css";
+import AuctionDetail from "../AuctionDetail/AuctionDetail";
 
 class Modal extends Component<ModalState> {
     stateSelector(globalState: any): ModalState | undefined {
@@ -24,7 +25,11 @@ class Modal extends Component<ModalState> {
     }
 
     mountContent() {
-
+        const $auctionDetail = this.$target.querySelector('[data-component="AuctionDetail"]');
+        const { auction } = this.state || MODAL_INITIAL;
+        if ($auctionDetail && auction) {
+            new AuctionDetail($auctionDetail as HTMLElement, auction);
+        }
     }
 
     getDisplayComponentName() {
@@ -35,7 +40,7 @@ class Modal extends Component<ModalState> {
             case ModalView.POSTING:
                 return 'PostingAuction';
             case ModalView.SHOWING:
-                return 'ShowingAuction';
+                return 'AuctionDetail';
         }
     }
 
