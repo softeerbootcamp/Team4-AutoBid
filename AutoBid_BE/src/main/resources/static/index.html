@@ -11,6 +11,30 @@
 <a href="https://prd.kr-ccapi.hyundai.com/api/v1/user/oauth2/authorize?response_type=code&client_id=d25eef68-043d-4601-b1c6-1101bb4313f5&redirect_uri=http://localhost:8080/user/login">(성준)로그인</a>
 <a href="http://localhost:8080/user-cars">get Car List From Hyundai</a>
 <a href="http://localhost:8080/user-cars?refresh=false">get Car List From DB</a>
+
+<div class="input-container">
+    <input id="input" placeholder="방 찾기" />
+    <button id="add-button" >방입력</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+<script>
+    const btn = document.querySelector('#add-button');
+    const socket = new SockJS("/auction-room");
+    const stompClient = Stomp.over(socket);
+
+    btn.addEventListener('click', ()=>{
+        const input = document.querySelector('#input');
+        const text = input.value.trim();
+
+        stompClient.send("/publish/websocket/"+text, {}, text);
+        stompClient.subscribe('/subscribe/websocket/'+text,function (message){
+            console.log(message);
+        });
+    })
+</script>
 </body>
 </html>
 

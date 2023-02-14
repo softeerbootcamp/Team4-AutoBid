@@ -32,6 +32,12 @@ public class WebSocketController {
     @Autowired
     public WebSocketService webSocketService;
 
+    /**
+     * TODO
+     *  - webSocket#1, sessionID 의 형태로 레디스에 저장
+     *  - subscribe로 현재 방 인원, BidList를 담아서줌
+     * **/
+
     @MessageMapping("/websocket/{auctionId}")
     public void onClientEntered(
             @DestinationVariable(value = "auctionId") Long auctionId,
@@ -41,7 +47,7 @@ public class WebSocketController {
         final String sessionId = headerAccessor.getSessionId();
         log.info("entered auctionId: {}, " + sessionId, auctionId);
         log.info(body);
-        headerAccessor.getSessionAttributes().put("username", body); // 웹 소켓 연결 종료에 대한 이벤트를 만들기 위한 메서드
-        messagingTemplate.convertAndSend("/subscribe/enter/" + auctionId, body);
+        headerAccessor.getSessionAttributes().put("session", sessionId); // 웹 소켓 연결 종료에 대한 이벤트를 만들기 위한 메서드
+        messagingTemplate.convertAndSend("/subscribe/websocket/" + auctionId, body);
     }
 }
