@@ -51,6 +51,7 @@ class QuerySidebar extends Component<AuctionQuery> {
     fetchStatistic(first = true) {
         const { auctionStatus, carType } = this.state as AuctionQuery;
         requestAuctionStatistic(auctionStatus, carType).then(statistic => {
+            if (!statistic) return;
             first && this.updateNSold(statistic.totalSold);
             this.updateFundVal(statistic.minPrice, statistic.maxPrice);
             this.updateHistogram(statistic.statisticsHistogram);
