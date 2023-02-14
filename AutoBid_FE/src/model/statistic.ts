@@ -1,12 +1,10 @@
 export type AuctionStatistic = {
-    nSold: number, minPrice: number, maxPrice: number, histogram: Histogram
+    totalSold: number, minPrice: number, maxPrice: number, statisticsHistogram: Histogram
 };
 
 export type Histogram = {
-    binSize: number,
+    intervalPrice: number,
     contents: number[]
 }
 
-export type AuctionStatisticDTO = {
-    auctionStatistic: AuctionStatistic
-}
+export type AuctionStatisticDTO = AuctionStatistic;

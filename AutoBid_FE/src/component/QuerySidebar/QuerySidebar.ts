@@ -37,11 +37,11 @@ class QuerySidebar extends Component<any> {
     }
 
     fetchStatistic() {
-        requestAuctionStatistic().then(({ auctionStatistic }) => {
-            this.updateNSold(auctionStatistic.nSold);
-            this.updateFundVal(auctionStatistic.minPrice, auctionStatistic.maxPrice);
-            this.updateHistogram(auctionStatistic.histogram);
-            this.mountDoubleRangeSlider(auctionStatistic.minPrice, auctionStatistic.maxPrice);
+        requestAuctionStatistic().then(({ totalSold, minPrice, maxPrice, statisticsHistogram }) => {
+            this.updateNSold(totalSold);
+            this.updateFundVal(minPrice, maxPrice);
+            this.updateHistogram(statisticsHistogram);
+            this.mountDoubleRangeSlider(minPrice, maxPrice);
         });
     }
 
