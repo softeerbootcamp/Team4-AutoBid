@@ -8,6 +8,14 @@ hr {
   margin: 16px 0;
 }
 
+input {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  padding: 8px;
+  width: 100%;
+  border-width: 1px;
+}
+
 .vl {
   border-left: 1px solid var(--color-semi-gray);
   height: inherit;
@@ -88,7 +96,7 @@ hr {
 .add-bid__car-type__car-list {
   background-color: var(--color-white);
   border-radius: 8px;
-  padding: 16px;
+  padding: 8px;
   width: 100%;
 }
 
