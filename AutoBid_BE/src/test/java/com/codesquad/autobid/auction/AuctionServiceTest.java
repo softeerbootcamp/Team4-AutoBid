@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codesquad.autobid.auction.service.AuctionService;
+import com.codesquad.autobid.user.repository.UserRepository;
 
 @SpringBootTest
 public class AuctionServiceTest {
 
 	@Autowired
 	private AuctionService auctionService;
+	@Autowired
+	private UserRepository userRepository;
 
 	@DisplayName("리스트 조회")
 	@Test
@@ -23,6 +26,13 @@ public class AuctionServiceTest {
 	@DisplayName("통계 조회")
 	@Test
 	public void 통계_조회() {
-		System.out.println(auctionService.getAuctionStaticsResponse("ALL", "ALL"));
+		Assertions.assertThat(auctionService.getAuctionStaticsResponse("ALL", "ALL")).isNotNull();
 	}
+
+	@DisplayName("내가 등록한 경매 조회")
+	@Test
+	public void 내가_등록한_경매_조회() {
+		Assertions.assertThat(auctionService.getMyAuctions(userRepository.findById(1L).get())).isNotNull();
+	}
+
 }
