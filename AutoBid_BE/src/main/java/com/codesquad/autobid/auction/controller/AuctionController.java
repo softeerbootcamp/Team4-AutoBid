@@ -47,7 +47,7 @@ public class AuctionController {
 	// totalItemNum -> 72
 	//
 	@Operation(summary = "경매 리스트 조회 API", description = "경매 리스트를 불러온다")
-	@GetMapping()
+	@GetMapping("/list")
 	public ResponseEntity<?> getAuctions(
 		@Parameter(example = "ALL", description = "GN, EV, HEV, PHEV, FCEV, ALL 중에 하나") String carType,
 		@Parameter(example = "ALL", description = "PROGRESS, BEFORE, COMPLETED, ALL 중에 하나") String auctionStatus,
