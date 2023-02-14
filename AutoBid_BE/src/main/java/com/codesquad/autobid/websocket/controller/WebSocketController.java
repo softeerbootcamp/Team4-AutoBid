@@ -40,12 +40,12 @@ public class WebSocketController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/enter/{roomId}")
+    @PostMapping("/websocket/{roomId}")
     public void post(@PathVariable(value = "roomId") Long roomId) {
         messagingTemplate.convertAndSend("/subscribe/new/" + roomId, "asss");
     }
 
-    @MessageMapping("/enter/{roomId}")
+    @MessageMapping("/websocket/{roomId}")
     public void onClientEntered(
             @DestinationVariable(value = "roomId") Long roomId,
             @Payload String body,

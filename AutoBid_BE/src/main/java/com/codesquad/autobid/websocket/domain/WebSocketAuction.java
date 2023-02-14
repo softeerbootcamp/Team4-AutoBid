@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EnterDto {
+public class WebSocketAuction {
     String session;
     String roomId;
 }
