@@ -32,29 +32,16 @@ public class WebSocketController {
     @Autowired
     public WebSocketService webSocketService;
 
-    @GetMapping("/enter/{auctionNum}")
-    public HttpEntity<HttpStatus> enterRoom(HttpServletRequest httpServletRequest) {
-        HttpSession session = httpServletRequest.getSession();
-        Optional<User> user = (Optional<User>) session.getAttribute("user");
-        if (user.isPresent()) return new ResponseEntity<>(HttpStatus.OK);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @PostMapping("/websocket/{roomId}")
-    public void post(@PathVariable(value = "roomId") Long roomId) {
-        messagingTemplate.convertAndSend("/subscribe/new/" + roomId, "asss");
-    }
-
-    @MessageMapping("/websocket/{roomId}")
+    @MessageMapping("/websocket/{auctionId}")
     public void onClientEntered(
-            @DestinationVariable(value = "roomId") Long roomId,
+            @DestinationVariable(value = "auctionId") Long auctionId,
             @Payload String body,
             SimpMessageHeaderAccessor headerAccessor
     ) {
         final String sessionId = headerAccessor.getSessionId();
-        log.info("entered roomId: {}, " + sessionId, roomId);
+        log.info("entered auctionId: {}, " + sessionId, auctionId);
         log.info(body);
         headerAccessor.getSessionAttributes().put("username", body); // 웹 소켓 연결 종료에 대한 이벤트를 만들기 위한 메서드
-        messagingTemplate.convertAndSend("/subscribe/enter/" + roomId, body);
+        messagingTemplate.convertAndSend("/subscribe/enter/" + auctionId, body);
     }
 }
