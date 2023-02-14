@@ -11,12 +11,10 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final AuthHandler authHandler;
-    private final UserHandler userHandler;
 
     @Autowired
-    public AuthService(AuthHandler authHandler, UserHandler userHandler) {
+    public AuthService(AuthHandler authHandler) {
         this.authHandler = authHandler;
-        this.userHandler = userHandler;
     }
 
     public OauthToken getOauthToken(String code) {
@@ -26,8 +24,7 @@ public class AuthService {
     public OauthToken deleteOauthToken(String accessToken) {
         return authHandler.getOauthToken(OauthType.DELETE, accessToken);
     }
-//
-//    public OauthToken refreshOauthToken(String refreshToken) {
-//        return authHandler.getOauthRefreshToken(OauthType.REFRESH, refreshToken);
-//    }
+    public OauthToken refreshOauthToken(String refreshToken) {
+        return authHandler.getOauthToken(OauthType.REFRESH, refreshToken);
+    }
 }
