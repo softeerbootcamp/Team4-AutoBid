@@ -1,0 +1,32 @@
+@import "../../style/all.css";
+
+[data-component="Modal"] {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    transition: 0.5s;
+    pointer-events: none;
+    opacity: 0;
+}
+
+[data-component="Modal"].modal--pop {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+[data-component="Modal"] .modal__background {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+
+[data-component="Modal"] .modal__content {
+    position: absolute;
+    background-color: #007AFF;
+    z-index: 1;
+}
