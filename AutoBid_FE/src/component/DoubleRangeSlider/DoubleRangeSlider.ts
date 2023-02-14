@@ -69,7 +69,7 @@ class DoubleRangeSlider extends Component<any, {
     getTranslatedXFromVal(val: number) {
         const { min, max } = this.props;
         const fullRange = this.$target.clientWidth - THUMB_WIDTH;
-        const ratio = (val / (max - min));
+        const ratio = ((val - min) / (max - min));
         return fullRange * ratio;
     }
 
