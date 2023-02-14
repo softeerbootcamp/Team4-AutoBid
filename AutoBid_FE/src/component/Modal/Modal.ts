@@ -46,7 +46,7 @@ class Modal extends Component<ModalState> {
 
     onStateChanged(prevLocalState: ModalState) {
         const { view, auction } = this.state || MODAL_INITIAL;
-        if (view !== prevLocalState.view || auction !== auction) {
+        if (view !== prevLocalState.view || auction !== prevLocalState.auction) {
             this.render();
             return;
         }

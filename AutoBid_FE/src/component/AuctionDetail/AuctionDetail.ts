@@ -10,7 +10,7 @@ const getInfoStr = ({ distance, type, sellName }: CarInfo) =>
 
 class AuctionDetail extends Component<any, Auction> {
     template(): InnerHTML["innerHTML"] {
-        const { title, carInfo, endPrice } = this.props;
+        const { status, title, carInfo, endPrice } = this.props;
         return `
         <div class="container--left">
             <div data-component="ImageSlider"></div>
@@ -19,17 +19,19 @@ class AuctionDetail extends Component<any, Auction> {
         <div class="container--right">
             <h1 class="auction-detail__title">${title}</h1>
             <h2 class="auction-detail__car-info">${getInfoStr(carInfo)}</h2>
-            <h1 class="auction-detail__price price--live">KRW ${(endPrice * 10000).toLocaleString()}</h1>
+            <h1 class="auction-detail__price ${status === AuctionStatus.PROGRESS ? 'price--live' : ''}">
+                KRW ${(endPrice * 10000).toLocaleString()}
+            </h1>
             <div class="auction-detail__live-bids-container">
-                <pre class="auction-detail__live-bids-container__live-bids">$ 안내 : 시작을 기다리는 중...</pre>
+                <pre class="auction-detail__live-bids-container__live-bids">$ 안내 : 접속 중...</pre>
             </div>
-            <button class="auction-detail__bid-btn" disabled>경매 시작을 기다리는 중...</button>
+            <button class="auction-detail__bid-btn" disabled>갱신 중...</button>
         </div>
         `;
     }
 
     mounted() {
-        const { images } = this.props;
+        const { images, status } = this.props;
         const $imageSlider = this.$target.querySelector('[data-component="ImageSlider"]') as HTMLElement;
         new ImageSlider($imageSlider, { imageUrls: images, width: 500, height: 280 });
 
@@ -39,10 +41,14 @@ class AuctionDetail extends Component<any, Auction> {
     timeoutRecursive() {
         setTimeout(() => {
             if (!this.$target.isConnected) return;
-            const $timer = this.$target.querySelector('.auction-detail__timer') as HTMLElement;
-            $timer.innerHTML = this.timerInfo();
+            this.refreshTimer();
             this.timeoutRecursive();
         }, 1000);
+    }
+
+    refreshTimer() {
+        const $timer = this.$target.querySelector('.auction-detail__timer') as HTMLElement;
+        $timer.innerHTML = this.timerInfo();
     }
 
     timerInfo() {
