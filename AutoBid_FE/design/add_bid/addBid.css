@@ -70,6 +70,12 @@ hr {
   scroll-behavior: smooth;
 }
 
+.fa-camera {
+  height: 60px;
+  padding: 15px;
+  font-size: 30px;
+}
+
 .add-bid__image {
   border-radius: 8px;
   height: 60px;
