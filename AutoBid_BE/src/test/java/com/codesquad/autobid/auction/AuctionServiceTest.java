@@ -35,4 +35,11 @@ public class AuctionServiceTest {
 		Assertions.assertThat(auctionService.getMyAuctions(userRepository.findById(1L).get())).isNotNull();
 	}
 
+	@DisplayName("내가 참여한 경매 조회")
+	@Test
+	public void 내가_참여한_경매_조회() {
+		System.out.println(auctionService.getMyParticipatingAuctions(userRepository.findById(10L).get()));
+		Assertions.assertThat(auctionService.getMyParticipatingAuctions(userRepository.findById(1L).get())).isNotNull();
+	}
+
 }
