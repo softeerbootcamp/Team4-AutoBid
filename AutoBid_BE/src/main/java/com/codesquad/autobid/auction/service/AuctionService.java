@@ -172,12 +172,18 @@ public class AuctionService {
 
 	public AuctionStatisticsResponse getAuctionStaticsResponse(String carType, String auctionStatus) {
 		List<AuctionInfoDto> auctionInfoDtoList = getAuctionInfoDtoForStatistics(carType, auctionStatus);
+
+		int[] contents = new int[20];
+		Arrays.fill(contents, 0);
+
 		int totalSold = auctionRepository.countAllByAuctionStatus(AuctionStatus.COMPLETED);
+		if (auctionInfoDtoList.size() == 0) {
+			return AuctionStatisticsResponse.of(0, 0L, 0L, contents);
+		}
 		Long minPrice = auctionInfoDtoList.get(0).getAuctionEndPrice();
 		Long maxPrice = auctionInfoDtoList.get(auctionInfoDtoList.size() - 1).getAuctionEndPrice();
 		long intervalPrice = (maxPrice - minPrice) / 20;
-		int[] contents = new int[20];
-		Arrays.fill(contents, 0);
+
 
 		auctionInfoDtoList.forEach(auctionInfoDto -> {
 			long idx = Math.floorDiv((auctionInfoDto.getAuctionEndPrice() - minPrice), intervalPrice);
