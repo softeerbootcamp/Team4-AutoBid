@@ -10,7 +10,9 @@ class Modal extends Component<ModalState> {
 
     template(): InnerHTML["innerHTML"] {
         return `
-        <div class="modal__content" data-component="${this.getDisplayComponentName()}"></div>
+        <div class="modal__content">
+            <div data-component="${this.getDisplayComponentName()}">></div>
+        </div>
         <div class="modal__background"></div>
         `
     }
@@ -21,7 +23,7 @@ class Modal extends Component<ModalState> {
 
     mounted() {
         this.mountContent();
-        this.displayModal();
+        setTimeout(() => this.displayModal());
     }
 
     mountContent() {
