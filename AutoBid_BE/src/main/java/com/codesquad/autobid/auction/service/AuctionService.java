@@ -168,9 +168,9 @@ public class AuctionService {
 		}
 
 		if (totalAuctionNum < page * size - 1) {
-			auctionInfoDtoList.subList((size - 1) * page, totalAuctionNum - 1);
+			auctionInfoDtoList.subList((size - 1) * (page - 1), totalAuctionNum - 1);
 		} else {
-			auctionInfoDtoList.subList((size - 1) * page, size * page - 1);
+			auctionInfoDtoList.subList((size - 1) * (page - 1), size * page - 1);
 		}
 	}
 
