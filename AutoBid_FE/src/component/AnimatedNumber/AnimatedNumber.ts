@@ -3,7 +3,7 @@ import "./animatednumber.css";
 
 class AnimatedNumber extends Component<any, { start: number, destination: number, speed: number }> {
     template(): InnerHTML["innerHTML"] {
-        const { start } = this.props;
+        const {start} = this.props;
         return start.toLocaleString();
     }
 
@@ -13,21 +13,23 @@ class AnimatedNumber extends Component<any, { start: number, destination: number
 
     animate() {
         const $target = this.$target;
-        const { destination, speed } = this.props;
-        const delta = destination / speed;
-        let value = this.props.start;
+        const {start, destination, speed} = this.props;
+        const delta = Math.abs(start - destination) / speed;
+        let value = start;
         timeoutRecursive();
 
         function timeoutRecursive() {
             setTimeout(() => {
                 if (!$target.isConnected) return;
                 if (value === destination) return;
-
-                if (value < destination) {
+                if (Math.abs(value - destination) < delta) {
+                    value = destination;
+                } else if (value < destination) {
                     value += delta;
                 } else {
                     value -= delta;
                 }
+
                 value = Math.ceil(value);
 
                 $target.innerHTML = value.toLocaleString();
