@@ -55,17 +55,39 @@ hr {
   flex-direction: column;
   margin-bottom: 64px;
   margin-left: 16px;
+  width: 925px;
   padding: var(--container-padding);
 }
 
-.my-page__main__card-list > h3 {
+.my-page__main__section-holder > h3 {
   font-size: 24px;
   font-weight: bold;
 }
 
-/* Below code is from body.css (card part) */
+.fa-chevron-left {
+  margin-right: 16px;
+  font-size: 24px;
+}
 
-.my-page__main__card-list {
+.my-page__main__card-slider {
+  display: flex;
+}
+
+.my-page__card-list__holder {
+  align-items: center;
+  display: flex;
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+
+.fa-chevron-right {
+  margin-left: 16px;
+  font-size: 24px;
+}
+
+  /* Below code is from body.css (card part) */
+
+.my-page__main__section-holder {
   display: flex;
   flex-direction: column;
   padding-top: 32px;
