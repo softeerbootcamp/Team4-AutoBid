@@ -41,11 +41,11 @@ class AuctionList extends Component<AuctionQuery> {
                 종료된 경매
             </button>
         </div>
-        <div class="card-container">
-        ${this.auctionList ? this.auctionList.map(() => `
-            <div data-component="AuctionCard"></div>
-        `).join('') : ''}        
-        </div>
+        ${this.auctionList && this.auctionList.length ? 
+        `<div class="card-container">
+            ${this.auctionList.map(() => `<div data-component="AuctionCard"></div>`).join('')}
+        </div>`
+        : '<div class="no-content">조회된 경매 없음</div>'}
         <div class="pagination">
         ${[...Array(this.pages).keys()].map((_, idx) => `
             <button class="pagination__btn 
@@ -97,10 +97,14 @@ class AuctionList extends Component<AuctionQuery> {
         if (query.minPrice > query.maxPrice)
             return;
         requestAuctionList(query).then(auctionListData => {
-            if (!auctionListData) return;
-            const { auctionInfoList, totalAuctionNum } = auctionListData;
-            this.auctionList = auctionInfoList;
-            this.pages = Math.ceil(totalAuctionNum / ARTICLE_PER_PAGE);
+            if (auctionListData) {
+                const { auctionInfoList, totalAuctionNum } = auctionListData;
+                this.auctionList = auctionInfoList;
+                this.pages = Math.ceil(totalAuctionNum / ARTICLE_PER_PAGE);
+            } else {
+                this.auctionList = [];
+                this.pages = 0;
+            }
             this.render();
         });
     }
