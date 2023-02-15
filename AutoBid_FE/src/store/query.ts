@@ -14,6 +14,7 @@ enum QueryActionType {
     STATUS = 'query/STATUS',
     TYPE = 'query/TYPE',
     RANGE = 'query/RANGE',
+    INIT = 'query/INIT'
 }
 
 export const selectPage = (page: number) => {
@@ -27,6 +28,9 @@ export const selectCarType = (carType: CarType) => {
 }
 export const setRange = (minPrice: number, maxPrice: number) => {
     GlobalStore.get().dispatch({ type: QueryActionType.RANGE, minPrice, maxPrice });
+}
+export const initializeQuery = () => {
+    GlobalStore.get().dispatch({ type: QueryActionType.INIT });
 }
 
 const query: Reducer<AuctionQuery> = (state = QUERY_INITIAL, action) => {
@@ -53,6 +57,8 @@ const query: Reducer<AuctionQuery> = (state = QUERY_INITIAL, action) => {
                 minPrice: action.minPrice,
                 maxPrice: action.maxPrice
             }
+        case QueryActionType.INIT:
+            return QUERY_INITIAL;
         default:
             return state;
     }
