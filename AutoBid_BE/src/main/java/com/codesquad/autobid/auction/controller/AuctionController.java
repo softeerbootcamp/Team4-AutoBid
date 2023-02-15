@@ -1,6 +1,7 @@
 package com.codesquad.autobid.auction.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -58,6 +59,9 @@ public class AuctionController {
 		@Parameter(example = "5", description = "한 페이지 크기, page: 1, size: 5일 경우 0,1,2,3,4번의 경매가 주어짐") int size) {
 		AuctionInfoListResponse auctionInfoListResponse = auctionService.getAuctions(carType, auctionStatus, startPrice,
 			endPrice, page, size);
+		if (auctionInfoListResponse.getTotalAuctionNum() == 0) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("fail");
+		}
 		return ResponseEntity.ok().body(auctionInfoListResponse);
 	}
 
@@ -69,6 +73,9 @@ public class AuctionController {
 	) {
 		AuctionStatisticsResponse auctionStatisticsResponse = auctionService.getAuctionStaticsResponse(carType,
 			auctionStatus);
+		if (auctionStatisticsResponse.getTotalSold() == 0) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("fail");
+		}
 
 		return ResponseEntity.ok().body(auctionStatisticsResponse);
 	}
@@ -77,7 +84,9 @@ public class AuctionController {
 	@GetMapping("/my")
 	public ResponseEntity<?> getMyAuctions(@Parameter(hidden = true) @AuthorizedUser User user) {
 		AuctionInfoListResponse auctionInfoListResponse = auctionService.getMyAuctions(user);
-
+		if (auctionInfoListResponse.getTotalAuctionNum() == 0) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("fail");
+		}
 		return ResponseEntity.ok().body(auctionInfoListResponse);
 	}
 
@@ -85,7 +94,9 @@ public class AuctionController {
 	@GetMapping("/my/participation")
 	public ResponseEntity<?> getMyParticipationAuctions(@Parameter(hidden = true) @AuthorizedUser User user) {
 		AuctionInfoListResponse auctionInfoListResponse = auctionService.getMyParticipatingAuctions(user);
-
+		if (auctionInfoListResponse.getTotalAuctionNum() == 0) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("fail");
+		}
 		return ResponseEntity.ok().body(auctionInfoListResponse);
 	}
 
