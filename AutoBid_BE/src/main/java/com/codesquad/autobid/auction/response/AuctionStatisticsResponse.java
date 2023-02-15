@@ -29,7 +29,7 @@ public class AuctionStatisticsResponse {
 
 	public static AuctionStatisticsResponse of(int totalSold, Long minPrice, Long maxPrice, int[] contents) {
 		return new AuctionStatisticsResponse(totalSold, minPrice, maxPrice,
-			new StatisticsHistogram(FIXED_INTERVAL_PRICE, contents));
+			new StatisticsHistogram((maxPrice - minPrice) / 20, contents));
 	}
 }
 
