@@ -163,6 +163,10 @@ public class AuctionService {
 	}
 
 	public void subAuctionDtoList(List<AuctionInfoDto> auctionInfoDtoList, int page, int size, int totalAuctionNum) {
+		if (totalAuctionNum == 0) {
+			return;
+		}
+
 		if (totalAuctionNum < page * size - 1) {
 			auctionInfoDtoList.subList((size - 1) * page, totalAuctionNum - 1);
 		} else {
