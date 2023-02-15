@@ -80,4 +80,13 @@ public class AuctionController {
 
 		return ResponseEntity.ok().body(auctionInfoListResponse);
 	}
+
+	@Operation(summary = "내가 참여한 경매 리스트 조회 API", description = "내가 참여한 경매 리스트를 조회한다.")
+	@GetMapping("/my/participation")
+	public ResponseEntity<?> getMyParticipationAuctions(@Parameter(hidden = true) @AuthorizedUser User user) {
+		AuctionInfoListResponse auctionInfoListResponse = auctionService.getMyParticipatingAuctions(user);
+
+		return ResponseEntity.ok().body(auctionInfoListResponse);
+	}
+
 }
