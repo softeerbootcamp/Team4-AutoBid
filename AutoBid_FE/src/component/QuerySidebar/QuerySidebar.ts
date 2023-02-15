@@ -26,7 +26,7 @@ class QuerySidebar extends Component<AuctionQuery> {
             <span class="query-side-bar__set-fund__val"></span>
             <span class="query-side-bar__set-fund__avg"></span>
             <div class="query-side-bar__set-fund__hist"></div>
-            <div data-component="DoubleRangeSlider"></div>
+            <div class="query-side-bar__double-range-slider-holder"></div>
             <div class="query-side-bar__set-fund__labels">
                 <span class="set-fund__labels--left">0원</span>
                 <span class="set-fund__labels--right">1억원</span>
@@ -107,7 +107,10 @@ class QuerySidebar extends Component<AuctionQuery> {
         `).join('')}`;
     }
     mountDoubleRangeSlider(min: number, max: number, left: number, right: number) {
-        const $doubleRangeSlider = this.$target.querySelector('[data-component="DoubleRangeSlider"]') as HTMLElement;
+        const $holder = this.$target.querySelector('.query-side-bar__double-range-slider-holder') as HTMLElement;
+        $holder.innerHTML = '<div data-component="DoubleRangeSlider"></div>';
+
+        const $doubleRangeSlider = $holder.querySelector('[data-component="DoubleRangeSlider"]') as HTMLElement;
         new DoubleRangeSlider($doubleRangeSlider, {
             min, max, left, right,
             onUp: (left, right) => {
