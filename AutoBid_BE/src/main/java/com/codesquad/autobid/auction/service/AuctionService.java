@@ -184,7 +184,6 @@ public class AuctionService {
 		Long maxPrice = auctionInfoDtoList.get(auctionInfoDtoList.size() - 1).getAuctionEndPrice();
 		long intervalPrice = (maxPrice - minPrice) / 20;
 
-
 		auctionInfoDtoList.forEach(auctionInfoDto -> {
 			long idx = Math.floorDiv((auctionInfoDto.getAuctionEndPrice() - minPrice), intervalPrice);
 			if (idx == 20) {
@@ -218,4 +217,10 @@ public class AuctionService {
 		return auctionInfoDtoListToAuctionInfoListResponse(
 			auctionInfoDtoList, auctionInfoDtoList.size());
 	}
+
+	public AuctionInfoListResponse getMyParticipatingAuctions(User user) {
+		List<AuctionInfoDto> auctionInfoDtoList = auctionRepository.findAllParticipatingAuctions(user.getId());
+		return auctionInfoDtoListToAuctionInfoListResponse(auctionInfoDtoList, auctionInfoDtoList.size());
+	}
 }
+
