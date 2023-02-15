@@ -3,7 +3,7 @@ import QueryCarTypeGroup from "../QueryCarTypeGroup/QueryCarTypeGroup";
 import DoubleRangeSlider from "../DoubleRangeSlider/DoubleRangeSlider";
 import {requestAuctionStatistic} from "../../api/statistic";
 import {Histogram} from "../../model/statistic";
-import {queryStateSelector, setRange} from "../../store/query";
+import {initializeQuery, queryStateSelector, setRange} from "../../store/query";
 import "./querysidebar.css"
 import AnimatedNumber from "../AnimatedNumber/AnimatedNumber";
 import {AuctionQuery} from "../../model/query";
@@ -51,7 +51,11 @@ class QuerySidebar extends Component<AuctionQuery> {
     fetchStatistic(first = true) {
         const { auctionStatus, carType } = this.state as AuctionQuery;
         requestAuctionStatistic(auctionStatus, carType).then(statistic => {
-            if (!statistic) return;
+            if (!statistic || statistic.maxPrice === 0) {
+                alert('조회할 데이터 없음');
+                initializeQuery();
+                return;
+            }
             first && this.updateNSold(statistic.totalSold);
             this.updateFundVal(statistic.minPrice, statistic.maxPrice);
             this.updateHistogram(statistic.statisticsHistogram);
