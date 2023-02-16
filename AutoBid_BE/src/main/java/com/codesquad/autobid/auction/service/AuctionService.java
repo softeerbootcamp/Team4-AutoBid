@@ -48,11 +48,19 @@ public class AuctionService {
 
 	@Transactional
 	public Auction addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
+		AuctionStatus status;
+		if (auctionRegisterRequest.getAuctionStartTime().isBefore(LocalDateTime.now()) && auctionRegisterRequest.getAuctionEndTime().isBefore(LocalDateTime.now())) {
+			status = AuctionStatus.COMPLETED;
+		} else if (auctionRegisterRequest.getAuctionStartTime().isBefore(LocalDateTime.now()) && auctionRegisterRequest.getAuctionEndTime().isAfter(LocalDateTime.now())) {
+			status = AuctionStatus.PROGRESS;
+		} else {
+			status = AuctionStatus.BEFORE;
+		}
 		Auction auction = Auction.of(auctionRegisterRequest.getCarId(), user.getId(),
 			auctionRegisterRequest.getAuctionTitle(),
 			auctionRegisterRequest.getAuctionStartTime(),
 			auctionRegisterRequest.getAuctionEndTime(), auctionRegisterRequest.getAuctionStartPrice(),
-			AuctionStatus.BEFORE_END_PRICE, AuctionStatus.BEFORE);
+			auctionRegisterRequest.getAuctionStartPrice(), AuctionStatus.BEFORE);
 		auctionRepository.save(auction);
 		List<MultipartFile> images = auctionRegisterRequest.getMultipartFileList();
 		for (MultipartFile image : images) {
