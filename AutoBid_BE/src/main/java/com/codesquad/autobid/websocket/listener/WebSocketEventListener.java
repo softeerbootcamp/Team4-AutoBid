@@ -1,5 +1,7 @@
 package com.codesquad.autobid.websocket.listener;
 
+import com.codesquad.autobid.websocket.domain.AuctionWebSocket;
+import com.codesquad.autobid.websocket.service.WebSocketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -13,8 +15,14 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 @Component
 public class WebSocketEventListener {
 
+    private final SimpMessageSendingOperations messagingTemplate;
+    private final WebSocketService webSocketService;
+
     @Autowired
-    private SimpMessageSendingOperations messagingTemplate;
+    public WebSocketEventListener(SimpMessageSendingOperations messagingTemplate, WebSocketService webSocketService) {
+        this.messagingTemplate = messagingTemplate;
+        this.webSocketService = webSocketService;
+    }
 
 
     @EventListener
@@ -24,18 +32,9 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-
-        String session = (String) headerAccessor.getSessionAttributes().get("session");
-        if(session != null) {
-            log.info("User Disconnected : " + session);
-            /**
-             *  TODO
-             *   - 웹 소켓 종료 이벤트에 대한 메서드 작성
-             * **/
-
-//           messagingTemplate.convertAndSend("/topic/group/" + enterUserDto.getRoomId(), enterUserDto);
-        }
+//        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
+//        String sessionId = headerAccessor.getSessionId();
+        log.info("Close sessionID: {}",event.getMessage());
     }
 }
 

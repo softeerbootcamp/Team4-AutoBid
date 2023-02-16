@@ -69,8 +69,8 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("{userId}")
-    public ResponseEntity<UserImpoResponse> findById(@PathVariable(value = "userId") String userId, HttpServletRequest httpServletRequest) {
+    @GetMapping()
+    public ResponseEntity<UserImpoResponse> findByUser(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
         UserImpoResponse userImpo = (UserImpoResponse) session.getAttribute("user");
         Optional<User> user = userService.findById(userImpo.getId());

@@ -12,28 +12,51 @@
 <a href="http://localhost:8080/user-cars">get Car List From Hyundai</a>
 <a href="http://localhost:8080/user-cars?refresh=false">get Car List From DB</a>
 
-<div class="input-container">
-    <input id="input" placeholder="방 찾기" />
-    <button id="add-button" >방입력</button>
+<div class="form-group">
+    <input type="text" class="room-id">
+    <button class="enter-btn">방입장하기</button>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script type="importmap">
+  {
+    "imports": {
+      "@stomp/stompjs": "https://ga.jspm.io/npm:@stomp/stompjs@7.0.0/esm6/index.js"
+    }
+  }
+</script>
+<script
+        async
+        src="https://ga.jspm.io/npm:es-module-shims@1.5.1/dist/es-module-shims.js"
+        crossorigin="anonymous"
+></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
-<script>
-    const btn = document.querySelector('#add-button');
-    const socket = new SockJS("/auction-room");
-    const stompClient = Stomp.over(socket);
-
-    btn.addEventListener('click', ()=>{
-        const input = document.querySelector('#input');
-        const text = input.value.trim();
-
-        stompClient.send("/publish/websocket/"+text, {}, text);
-        stompClient.subscribe('/subscribe/websocket/'+text,function (message){
+<script type="module">
+    import { Stomp } from '@stomp/stompjs';
+    const $button = document.querySelector('.enter-btn');
+    const $roomIdInput = document.querySelector('.room-id');
+    const socket = new SockJS('/auction-room');
+    const client = Stomp.over(socket);
+    client.connect({}, () => {
+        client.subscribe('/enter', (message) => {
             console.log(message);
         });
-    })
+    });
+
+    $button.addEventListener('click', () => {
+        const roomId = $roomIdInput.value;
+        // publish : 주소, 헤더, 메세지
+        client.publish({ destination: `/publish/websocket/${roomId}`, body: 'i am entered' });
+        client.subscribe(`/subscribe/websocket/${roomId}`, message => {
+            console.log(message);
+        });
+        // fetch(`/auction/post/${roomId}`);
+        // client.subscribe(`/subscribe/websocket/${roomId}`, message => {
+        //     console.log(message);
+        // });
+    });
+
+    Window.client = client;
 </script>
 </body>
 </html>
