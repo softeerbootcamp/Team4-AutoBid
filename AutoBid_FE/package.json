@@ -10,13 +10,17 @@
     "test": "parcel test/test.html --open"
   },
   "dependencies": {
+    "@stomp/stompjs": "^7.0.0",
     "dotenv": "^16.0.3",
     "emojisplosion": "^2.6.1",
     "redux": "4.0.0",
-    "src": "^1.1.2"
+    "sockjs-client": "^1.6.1",
+    "src": "^1.1.2",
+    "ws": "^8.12.1"
   },
   "devDependencies": {
     "@types/node": "^18.11.19",
+    "@types/sockjs-client": "^1.5.1",
     "express": "^4.18.2",
     "json-server": "^0.17.1",
     "node-fetch": "^2.6.8",
