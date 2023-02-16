@@ -1,6 +1,7 @@
 package com.codesquad.autobid.auction.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
 import com.codesquad.autobid.auction.response.AuctionInfoListResponse;
+import com.codesquad.autobid.auction.response.AuctionStatisticsResponse;
 import com.codesquad.autobid.auction.service.AuctionService;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.web.argumentresolver.AuthorizedUser;
@@ -57,6 +59,45 @@ public class AuctionController {
 		@Parameter(example = "5", description = "한 페이지 크기, page: 1, size: 5일 경우 0,1,2,3,4번의 경매가 주어짐") int size) {
 		AuctionInfoListResponse auctionInfoListResponse = auctionService.getAuctions(carType, auctionStatus, startPrice,
 			endPrice, page, size);
+		if (auctionInfoListResponse.getTotalAuctionNum() == 0) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("fail");
+		}
 		return ResponseEntity.ok().body(auctionInfoListResponse);
 	}
+
+	@Operation(summary = "경매 통계 정보 조회 API", description = "경매 통계 정보를 불러온다")
+	@GetMapping("/statistics")
+	public ResponseEntity<?> getAuctionStatistics(
+		@Parameter(example = "ALL", description = "GN, EV, HEV, PHEV, FCEV, ALL 중에 하나") String carType,
+		@Parameter(example = "ALL", description = "PROGRESS, BEFORE, COMPLETED, ALL 중에 하나") String auctionStatus
+	) {
+		AuctionStatisticsResponse auctionStatisticsResponse = auctionService.getAuctionStaticsResponse(carType,
+			auctionStatus);
+		if (auctionStatisticsResponse.getTotalSold() == 0) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("fail");
+		}
+
+		return ResponseEntity.ok().body(auctionStatisticsResponse);
+	}
+
+	@Operation(summary = "내가 등록한 경매 리스트 조회 API", description = "내가 등록한 경매 리스트를 조회한다.")
+	@GetMapping("/my")
+	public ResponseEntity<?> getMyAuctions(@Parameter(hidden = true) @AuthorizedUser User user) {
+		AuctionInfoListResponse auctionInfoListResponse = auctionService.getMyAuctions(user);
+		if (auctionInfoListResponse.getTotalAuctionNum() == 0) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("fail");
+		}
+		return ResponseEntity.ok().body(auctionInfoListResponse);
+	}
+
+	@Operation(summary = "내가 참여한 경매 리스트 조회 API", description = "내가 참여한 경매 리스트를 조회한다.")
+	@GetMapping("/my/participation")
+	public ResponseEntity<?> getMyParticipationAuctions(@Parameter(hidden = true) @AuthorizedUser User user) {
+		AuctionInfoListResponse auctionInfoListResponse = auctionService.getMyParticipatingAuctions(user);
+		if (auctionInfoListResponse.getTotalAuctionNum() == 0) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("fail");
+		}
+		return ResponseEntity.ok().body(auctionInfoListResponse);
+	}
+
 }

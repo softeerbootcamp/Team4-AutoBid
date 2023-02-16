@@ -37,6 +37,7 @@ public class AuctionInfoListResponse {
 	}
 }
 
+@ToString
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 class AuctionInfo implements Serializable {
 	private Long auctionId;
@@ -63,6 +64,7 @@ class AuctionInfo implements Serializable {
 	}
 }
 
+@ToString
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 class CarInfo implements Serializable {
 	private Long carId;

@@ -11,6 +11,53 @@
 <a href="https://prd.kr-ccapi.hyundai.com/api/v1/user/oauth2/authorize?response_type=code&client_id=d25eef68-043d-4601-b1c6-1101bb4313f5&redirect_uri=http://localhost:8080/user/login">(성준)로그인</a>
 <a href="http://localhost:8080/user-cars">get Car List From Hyundai</a>
 <a href="http://localhost:8080/user-cars?refresh=false">get Car List From DB</a>
+
+<div class="form-group">
+    <input type="text" class="room-id">
+    <button class="enter-btn">방입장하기</button>
+</div>
+
+<script type="importmap">
+  {
+    "imports": {
+      "@stomp/stompjs": "https://ga.jspm.io/npm:@stomp/stompjs@7.0.0/esm6/index.js"
+    }
+  }
+</script>
+<script
+        async
+        src="https://ga.jspm.io/npm:es-module-shims@1.5.1/dist/es-module-shims.js"
+        crossorigin="anonymous"
+></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+<script type="module">
+    import { Stomp } from '@stomp/stompjs';
+    const $button = document.querySelector('.enter-btn');
+    const $roomIdInput = document.querySelector('.room-id');
+    const socket = new SockJS('/auction-room');
+    const client = Stomp.over(socket);
+    client.connect({}, () => {
+        client.subscribe('/enter', (message) => {
+            console.log(message);
+        });
+    });
+
+    $button.addEventListener('click', () => {
+        const roomId = $roomIdInput.value;
+        // publish : 주소, 헤더, 메세지
+        client.publish({ destination: `/publish/websocket/${roomId}`, body: 'i am entered' });
+        client.subscribe(`/subscribe/websocket/${roomId}`, message => {
+            console.log(message);
+        });
+        // fetch(`/auction/post/${roomId}`);
+        // client.subscribe(`/subscribe/websocket/${roomId}`, message => {
+        //     console.log(message);
+        // });
+    });
+
+    Window.client = client;
+</script>
 </body>
 </html>
 

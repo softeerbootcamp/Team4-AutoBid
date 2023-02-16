@@ -66,11 +66,12 @@ public class UserController {
         OauthToken deleteToken = authService.deleteOauthToken(accessToken);
         log.info("deleteToken : {}",deleteToken.getAccessToken());
         session.invalidate(); // 세션삭제
+        userService.remove(deleteToken); // 레디스에서 토큰 삭제
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("{userId}")
-    public ResponseEntity<UserImpoResponse> findById(@PathVariable(value = "userId") String userId, HttpServletRequest httpServletRequest) {
+    @GetMapping()
+    public ResponseEntity<UserImpoResponse> findByUser(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
         UserImpoResponse userImpo = (UserImpoResponse) session.getAttribute("user");
         Optional<User> user = userService.findById(userImpo.getId());
