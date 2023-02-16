@@ -18,12 +18,11 @@ public class AuctionDataCloseAdapter {
     @Value("${spring.kafka.topic.auction-send}")
     private String AUCTION_SEND_TOPIC_NAME;
 
-
     private final KafkaTemplate kafkaTemplate;
     private final AuctionRedisRepository auctionRedisRepository;
     private final AuctionRepository auctionRepository;
 
-    @KafkaListener(topics = "auction-close")
+    @KafkaListener(topics = "auction-close", groupId = "auction-close-consumer")
     public void consume(Auction auction) {
         // todo : auctionRedis 정리가 구체적으로 어떤 작업인가?
 
