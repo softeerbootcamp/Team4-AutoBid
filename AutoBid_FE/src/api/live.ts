@@ -101,7 +101,7 @@ export const requestSocketSession = (auctionId: number, test = false) => {
 
 export const disconnectSocketSession = (test = false) => {
     if (test) return;
-    if (stompClient) {
+    if (stompClient && stompClient.connected) {
         stompClient.disconnect();
     }
     stompClient = null;
