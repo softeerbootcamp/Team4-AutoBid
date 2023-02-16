@@ -187,6 +187,9 @@ public class AuctionService {
 		}
 		Long minPrice = auctionInfoDtoList.get(0).getAuctionEndPrice();
 		Long maxPrice = auctionInfoDtoList.get(auctionInfoDtoList.size() - 1).getAuctionEndPrice();
+		if (maxPrice - minPrice <= 30) {
+			maxPrice = minPrice + 100;
+		}
 		long intervalPrice = (maxPrice - minPrice) / 20;
 
 		auctionInfoDtoList.forEach(auctionInfoDto -> {
