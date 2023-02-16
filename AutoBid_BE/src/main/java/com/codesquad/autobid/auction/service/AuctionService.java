@@ -3,17 +3,15 @@ package com.codesquad.autobid.auction.service;
 import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.domain.AuctionInfoDto;
 import com.codesquad.autobid.auction.domain.AuctionStatus;
-import com.codesquad.autobid.auction.repository.AuctionRedis;
 import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
 import com.codesquad.autobid.auction.repository.AuctionRepository;
-import com.codesquad.autobid.auction.repository.Bidder;
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
 import com.codesquad.autobid.auction.response.AuctionInfoListResponse;
 import com.codesquad.autobid.email.EmailService;
 import com.codesquad.autobid.image.domain.Image;
 import com.codesquad.autobid.image.repository.ImageRepository;
 import com.codesquad.autobid.image.service.S3Uploader;
-import com.codesquad.autobid.kafka.adapter.AuctionSaveAdapter;
+import com.codesquad.autobid.kafka.producer.AuctionCloseProducer;
 import com.codesquad.autobid.kafka.producer.AuctionOpenProducer;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.repository.UserRepository;
@@ -27,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
@@ -42,7 +39,7 @@ public class AuctionService {
     private final EmailService emailService;
     private final UserRepository userRepository;
     private final AuctionOpenProducer auctionOpenProducer;
-    private final AuctionSaveAdapter auctionSaveAdapter;
+    private final AuctionCloseProducer auctionCloseProducer;
 
 
     @Transactional
@@ -80,26 +77,7 @@ public class AuctionService {
     public void closeFulfilledAuctions(LocalDateTime closeTime) {
         List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.PROGRESS,
             closeTime);
-        emailProducer.produceMessage();
-        for (Auction auction : auctions) {
-            Set<Bidder> bidders = closeAuction(auction);
-            // todo: socket close
-            // socketHandler.closeSocket(auction);
-            // todo: kafka 적용 예정
-            bidders.stream().forEach((bidder) -> {
-                User bidOwner = userRepository.findById(bidder.getUserId()).get();
-                emailService.send(auction, bidOwner, bidder.getPrice());
-            });
-        }
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public Set<Bidder> closeAuction(Auction auction) {
-        AuctionRedis auctionRedis = auctionRedisRepository.findById(auction.getId());
-        auction.update(auctionRedis);
-        auctionRepository.save(auction);
-        auctionRedisRepository.delete(auction);
-        return auctionRedis.getBidders();
+        auctionCloseProducer.produce(auctions);
     }
 
     public AuctionInfoListResponse getAuctions(String carType, String auctionStatus, Long startPrice, Long endPrice,
