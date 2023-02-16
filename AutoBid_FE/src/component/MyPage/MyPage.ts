@@ -1,7 +1,7 @@
 import Component from "../../core/component";
 import {requestParticipationList, requestMyList, requestUserCarList} from "../../api/mypage";
 import {Auction} from "../../model/auction";
-import AuctionList from "../AuctionList/AuctionList";
+import "./mypage.css";
 
 class MyPage extends Component<any> {
     private participationList: Auction[] = [];
@@ -39,7 +39,7 @@ class MyPage extends Component<any> {
     }
 
     updateUserCarList() {
-        requestMyList().then(auctionListData => {
+        requestUserCarList().then(auctionListData => {
             if (auctionListData) {
                 const {auctionInfoList} = auctionListData;
                 this.userCarList = auctionInfoList;
@@ -101,3 +101,5 @@ class MyPage extends Component<any> {
         super.mounted();
     }
 }
+
+export default MyPage;

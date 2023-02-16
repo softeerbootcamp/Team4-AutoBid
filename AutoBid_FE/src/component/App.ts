@@ -4,14 +4,16 @@ import AuctionList from "./AuctionList/AuctionList";
 import "./app.css";
 import QuerySidebar from "./QuerySidebar/QuerySidebar";
 import {whoIam} from "../store/user";
+import MyPage from "./MyPage/MyPage";
 
 class App extends Component<any> {
     template(): InnerHTML["innerHTML"] {
         return `
         <header data-component="Header"></header>
         <div class="main-container">
-            <div data-component="QuerySidebar"></div>
-            <div data-component="AuctionList"></div>
+            <div data-component="QuerySidebar" hidden></div>
+            <div data-component="AuctionList" hidden></div>
+            <div data-component="MyPage"></div>
         </div>
         `;
     }
@@ -25,6 +27,9 @@ class App extends Component<any> {
 
         const $querySidebar = document.querySelector('[data-component="QuerySidebar"]') as HTMLElement;
         new QuerySidebar($querySidebar, {});
+
+        const $myPage = document.querySelector('[data-component="MyPage"]') as HTMLElement;
+        new MyPage($myPage, {});
 
         whoIam().then(() => {console.log('session user initialized')});
     }
