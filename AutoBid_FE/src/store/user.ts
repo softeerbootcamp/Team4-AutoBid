@@ -20,21 +20,25 @@ const initialState: UserState = {
 
 export const login = async () => {
     const code = await requestCode();
+    if (!code) return null;
     const userInfo = await requestLiveSession(code);
-    if (!userInfo) return;
+    if (!userInfo) return null;
     GlobalStore.get().dispatch({ type: UserActionType.LOGIN, userInfo });
+    return userInfo;
 };
 
 export const logout = async () => {
     const logoutResult = await requestInvalidateSession();
-    if (!logoutResult) return;
+    if (!logoutResult) return false;
     GlobalStore.get().dispatch({ type: UserActionType.LOGOUT });
+    return true;
 };
 
 export const whoIam = async () => {
     const userInfo = await requestCurrentUser();
-    if (!userInfo) return;
+    if (!userInfo) return null;
     GlobalStore.get().dispatch({ type: UserActionType.LOGIN, userInfo });
+    return userInfo;
 }
 
 const user: Reducer<UserState> = (state = initialState, action) => {
