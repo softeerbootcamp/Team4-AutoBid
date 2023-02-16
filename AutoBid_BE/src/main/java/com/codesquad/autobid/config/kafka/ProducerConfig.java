@@ -1,6 +1,5 @@
-package com.codesquad.autobid.config;
+package com.codesquad.autobid.config.kafka;
 
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,9 +12,11 @@ import org.springframework.kafka.core.ProducerFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.apache.kafka.clients.producer.ProducerConfig.*;
+
 @Configuration
 @EnableKafka
-public class KafkaProducerConfig {
+public class ProducerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String BOOTSTRAP_SERVERS;
@@ -28,9 +29,9 @@ public class KafkaProducerConfig {
     @Bean
     public Map<String, Object> config() {
         Map<String, Object> props = new HashMap<>();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        props.put(BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+        props.put(KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        props.put(VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         return props;
     }
 
