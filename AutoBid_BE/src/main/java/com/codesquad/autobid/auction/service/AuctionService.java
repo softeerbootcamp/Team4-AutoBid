@@ -238,5 +238,8 @@ public class AuctionService {
 		List<AuctionInfoDto> auctionInfoDtoList = auctionRepository.findAllParticipatingAuctions(user.getId());
 		return auctionInfoDtoListToAuctionInfoListResponse(auctionInfoDtoList, auctionInfoDtoList.size());
 	}
+	public AuctionRedis getAuction(Long auctionId) {
+		return auctionRedisRepository.findById(auctionId);
+	}
 }
 
