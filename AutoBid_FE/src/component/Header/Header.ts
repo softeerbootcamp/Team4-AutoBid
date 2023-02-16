@@ -11,7 +11,10 @@ class Header extends Component<UserState> {
         const { isLogin, userName } = this.state || { isLogin: false, userName: "" };
         return `
         <div class="header__container">
-            <h2 class="header__container__title">AutoBid</h2>
+<!--            <h2 class="header__container__title">AutoBid</h2>-->
+            <img src="https://see.fontimg.com/api/renderfont4/ZVomZ/eyJyIjoiZnMiLCJoIjoxNzIsInciOjIwMDAsImZzIjo4NiwiZmdjIjoiIzA0NzlGRiIsImJnYyI6IiNGRkZGRkYiLCJ0IjoxfQ/YXV0b2JpZA/everbrightsans-regular.png" 
+            alt=""
+            style="width: 160px; height: 24px;">
             <div class="header__container__menu">
                 <button class="header__container__content header__container__content--btn my-page-btn">내 차 목록</button>
                 <button class="header__container__content header__container__content--btn my-page-btn">경매 목록</button>
