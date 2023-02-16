@@ -8,13 +8,17 @@ import AnimatedNumber from "../AnimatedNumber/AnimatedNumber";
 import {
     disconnectSocketSession,
     LiveDTO,
-    LiveUser,
+    LiveUser, requestBid,
     requestSocketSession,
     setOnBid,
     setOnEnd,
     setOnStart
 } from "../../api/live";
 import AnimatedText from "../AnimatedText/AnimatedText";
+import {login, whoIam} from "../../store/user";
+import Toast from "../../core/toast";
+
+const BID_UNIT = 5;
 
 const getInfoStr = ({ distance, type, sellName }: CarInfo) =>
     `${sellName} | ${distance.toLocaleString()}km | ${getCarTypeName(type)}`;
@@ -45,22 +49,40 @@ class AuctionDetail extends Component<any, Auction> {
 
     private lastPrice = 0;
 
+    initialize() {
+        const { id } = this.props;
+        this.addEvent('click', '.auction-detail__bid-btn', async () => {
+            const suggestedPrice = this.lastPrice + BID_UNIT;
+            const userInfo = await whoIam() || await login();
+            if (!userInfo) {
+                Toast.show('로그인 없이 이용할 수 없습니다', 1000);
+                return;
+            }
+            const res = await requestBid(id, suggestedPrice);
+            if (res) {
+                Toast.show(`호가 ${suggestedPrice.toLocaleString()}만원, 입찰 경쟁에 실패했습니다.`, 1000);
+            } else {
+                Toast.show(`호가 ${suggestedPrice.toLocaleString()}만원, 입찰 성공.`, 1000);
+            }
+        });
+    }
+
     onStart({ price, users }: LiveDTO) {
         this.isProgress = () => true;
-        this.setPrice(this.lastPrice, (price * 10000), 300);
-        this.lastPrice = (price * 10000);
-        this.setBidButton(true, `호가 ${(price + 5).toLocaleString()}만원 입찰`);
+        this.setPrice((this.lastPrice * 10000), (price * 10000), 300);
+        this.lastPrice = price;
+        this.setBidButton(true, `호가 ${(price + BID_UNIT).toLocaleString()}만원 입찰`);
         this.fetchUsers(users, '경매가 시작되었습니다.');
     }
     onBid({ price, users }: LiveDTO) {
-        this.setPrice(this.lastPrice, (price * 10000), 300);
-        this.lastPrice = (price * 10000);
-        this.setBidButton(true, `호가 ${(price + 5).toLocaleString()}만원 입찰`);
+        this.setPrice((this.lastPrice * 10000), (price * 10000), 300);
+        this.lastPrice = price;
+        this.setBidButton(true, `호가 ${(price + BID_UNIT).toLocaleString()}만원 입찰`);
         this.fetchUsers(users, '새로운 입찰. 호가가 갱신되었습니다.');
     }
     onEnd({ price, users }: LiveDTO) {
         this.isEnded = () => true;
-        this.setPrice(this.lastPrice, (price * 10000), 300);
+        this.setPrice((this.lastPrice * 10000), (price * 10000), 300);
         this.lastPrice = price;
         this.setBidButton(false, `경매가 종료되었습니다.`);
         this.fetchUsers(users, '경매가 종료되었습니다.');

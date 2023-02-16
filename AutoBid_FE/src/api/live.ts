@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import {CompatClient, Stomp} from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import {asyncTaskWrapper} from "../core/util";
 dotenv.config();
 
 export type LiveUser = {
@@ -23,6 +24,7 @@ export const setOnBid = (handler: (live: LiveDTO) => any) => onBid = handler;
 
 const API_BASE_URL = process.env.API_BASE_URL || 'https://www.autobid.site';
 const LIVE_ENDPOINT = process.env.LIVE_ENDPOINT || '/auction-room';
+const BID_ENDPOINT = process.env.BID_ENDPOINT || '/auction/bid'
 const ENTER_ROUTE = process.env.ENTER_ROUTE || '/enter';
 const START_ROUTE = process.env.START_ROUTE || '/start';
 const END_ROUTE = process.env.END_ROUTE || '/end';
@@ -30,7 +32,7 @@ const BID_ROUTE = process.env.BID_ROUTE || '/bid';
 
 export const requestSocketSession = (auctionId: number, test = false) => {
     if (test) return;
-    const socket = SockJS(`${API_BASE_URL}${LIVE_ENDPOINT}`);
+    const socket = new SockJS(`${API_BASE_URL}${LIVE_ENDPOINT}`);
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, () => {
@@ -104,6 +106,16 @@ export const disconnectSocketSession = (test = false) => {
     }
     stompClient = null;
 }
+
+export const requestBid = asyncTaskWrapper(async (auctionId: number, suggestedPrice: number) => {
+    const bidRes = await fetch(`${API_BASE_URL}${BID_ENDPOINT}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ auctionId, suggestedPrice })
+    });
+    return bidRes.ok;
+});
 
 declare global {
     interface Window { __LIVE_TEST__: any }
