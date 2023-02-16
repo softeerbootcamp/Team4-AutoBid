@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class EmailProducer {
 
-    @Value("${spring.kafka.email.topic}")
+    @Value("${spring.kafka.topic.auction-email}")
     private String EMAIL_TOPIC;
 
     private final KafkaTemplate kafkaTemplate;

@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuctionCloseProducer {
 
-    @Value("${spring.kafak.topic.auction-close}")
+    @Value("${spring.kafka.topic.auction-close}")
     private String AUCTION_CLOSE_TOPIC_NAME;
     private final KafkaTemplate kafkaTemplate;
 
