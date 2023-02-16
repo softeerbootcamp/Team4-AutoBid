@@ -1,6 +1,7 @@
 package com.codesquad.autobid.config.kafka;
 
 import com.codesquad.autobid.config.kafka.deserializer.AuctionKafkaDTODeserializer;
+import com.codesquad.autobid.kafka.producer.dto.AuctionKafkaDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,7 @@ import java.util.Map;
 public class KafkaConsumerConfig {
 
     @Bean
-    public ConsumerFactory<Integer, String> consumerFactory() {
+    public ConsumerFactory<String, AuctionKafkaDTO> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerProps());
     }
 
@@ -28,7 +29,6 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, AuctionKafkaDTODeserializer.class);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        // ...
         return props;
     }
 }
