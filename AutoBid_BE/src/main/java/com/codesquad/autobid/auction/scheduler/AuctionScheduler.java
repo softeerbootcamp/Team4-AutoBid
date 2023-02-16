@@ -29,7 +29,7 @@ public class AuctionScheduler {
     @SchedulerLock(name = "openPendingAuctionsLock")
     public void openPendingAuctions() {
         log.info("open Pending Auctions");
-        auctionService.openPendingAuctions(getTime());
+        auctionService.openPendingAuctions(getPresentTime());
     }
 
     @Async
@@ -37,10 +37,10 @@ public class AuctionScheduler {
     @SchedulerLock(name = "closeInProgressAuctionsLock")
     public void closeInProgressAuctions() {
         log.info("close InProgress Auctions");
-        auctionService.closeFulfilledAuctions(getTime());
+        auctionService.closeFulfilledAuctions(getPresentTime());
     }
 
-    private LocalDateTime getTime() {
+    private LocalDateTime getPresentTime() {
         LocalDateTime now = LocalDateTime.now();
         return LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), now.getHour(), now.getMinute());
     }
