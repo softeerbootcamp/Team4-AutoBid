@@ -15,7 +15,7 @@ public class EmailConsumer {
 
     private final EmailService emailService;
 
-    @KafkaListener(topics = "auction-email")
+    @KafkaListener(topics = "auction-email", groupId = "auction-email-consumer")
     public void consumeMessage(Auction auction) {
         emailService.send(auction, new User(), 1000l);
     }
