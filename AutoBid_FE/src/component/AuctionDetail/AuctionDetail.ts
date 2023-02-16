@@ -64,7 +64,7 @@ class AuctionDetail extends Component<any, Auction> {
         this.lastPrice = price;
         this.setBidButton(false, `경매가 종료되었습니다.`);
         this.fetchUsers(users, '경매가 종료되었습니다.');
-        disconnectSocketSession(true); // TODO test 제거
+        disconnectSocketSession();
     }
 
     setBidButton(enable: boolean, msg: string) {
@@ -122,7 +122,7 @@ class AuctionDetail extends Component<any, Auction> {
             setOnStart(this.onStart.bind(this));
             setOnBid(this.onBid.bind(this));
             setOnEnd(this.onEnd.bind(this));
-            requestSocketSession(id, true);  // TODO test 제거
+            requestSocketSession(id);
         }
     }
 

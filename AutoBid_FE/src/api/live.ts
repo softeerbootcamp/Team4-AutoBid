@@ -1,5 +1,7 @@
+import dotenv from "dotenv";
 import {CompatClient, Stomp} from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+dotenv.config();
 
 export type LiveUser = {
     userId: number, username: string, phoneNumber: string, price: number
@@ -19,12 +21,12 @@ export const setOnStart = (handler: (live: LiveDTO) => any) => onStart = handler
 export const setOnEnd = (handler: (live: LiveDTO) => any) => onEnd = handler;
 export const setOnBid = (handler: (live: LiveDTO) => any) => onBid = handler;
 
-const API_BASE_URL = process.env.API_BASE_URL;
-const LIVE_ENDPOINT = '/auction-room';
-const ENTER_ROUTE = '/enter';
-const START_ROUTE = '/start';
-const END_ROUTE = '/end';
-const BID_ROUTE = '/bid';
+const API_BASE_URL = process.env.API_BASE_URL || 'https://www.autobid.site';
+const LIVE_ENDPOINT = process.env.LIVE_ENDPOINT || '/auction-room';
+const ENTER_ROUTE = process.env.ENTER_ROUTE || '/enter';
+const START_ROUTE = process.env.START_ROUTE || '/start';
+const END_ROUTE = process.env.END_ROUTE || '/end';
+const BID_ROUTE = process.env.BID_ROUTE || '/bid';
 
 export const requestSocketSession = (auctionId: number, test = false) => {
     if (test) return;
