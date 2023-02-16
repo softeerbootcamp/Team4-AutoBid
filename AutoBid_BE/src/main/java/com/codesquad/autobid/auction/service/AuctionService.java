@@ -13,7 +13,8 @@ import com.codesquad.autobid.email.EmailService;
 import com.codesquad.autobid.image.domain.Image;
 import com.codesquad.autobid.image.repository.ImageRepository;
 import com.codesquad.autobid.image.service.S3Uploader;
-import com.codesquad.autobid.kafka.producer.EmailProducer;
+import com.codesquad.autobid.kafka.adapter.AuctionSaveAdapter;
+import com.codesquad.autobid.kafka.producer.AuctionOpenProducer;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,9 @@ public class AuctionService {
     private final AuctionRedisRepository auctionRedisRepository;
     private final EmailService emailService;
     private final UserRepository userRepository;
-    private final EmailProducer emailProducer;
+    private final AuctionOpenProducer auctionOpenProducer;
+    private final AuctionSaveAdapter auctionSaveAdapter;
+
 
     @Transactional
     public Auction addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
@@ -67,22 +70,10 @@ public class AuctionService {
         }
     }
 
-    @Transactional
     public void openPendingAuctions(LocalDateTime openTime) {
         List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.BEFORE,
             openTime);
-        for (Auction auction : auctions) {
-            openAuction(auction);
-            // socketHandler.openSocket(auction);
-        }
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void openAuction(Auction auction) {
-        // redis, mysql이 같은 transaction으로 처리되는지 확인해야 함
-        auction.open();
-        auctionRepository.save(auction);
-        auctionRedisRepository.save(AuctionRedis.from(auction));
+        auctionOpenProducer.produce(auctions);  // -> topic name: upload-auction-redis
     }
 
     @Transactional
