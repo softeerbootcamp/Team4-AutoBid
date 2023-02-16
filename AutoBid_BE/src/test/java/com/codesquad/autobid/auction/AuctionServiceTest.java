@@ -20,6 +20,7 @@ public class AuctionServiceTest {
 	@DisplayName("리스트 조회")
 	@Test
 	public void 리스트_조회() {
+		System.out.println(auctionService.getAuctions("EV", "BEFORE", 0L, 1000000L, 1, 5));
 		Assertions.assertThat(auctionService.getAuctions("ETC", "BEFORE", 1000L, 1000000L, 1, 5)).isNotNull();
 	}
 
