@@ -17,13 +17,22 @@ import {
 import AnimatedText from "../AnimatedText/AnimatedText";
 import {login, whoIam} from "../../store/user";
 import Toast from "../../core/toast";
+import {ModalState, modalStateSelector} from "../../store/modal";
 
 const BID_UNIT = 5;
 
 const getInfoStr = ({ distance, type, sellName }: CarInfo) =>
     `${sellName} | ${distance.toLocaleString()}km | ${getCarTypeName(type)}`;
 
-class AuctionDetail extends Component<any, Auction> {
+class AuctionDetail extends Component<ModalState, Auction> {
+    stateSelector(globalState: any): ModalState | undefined {
+        return globalState[modalStateSelector];
+    }
+    onStateChanged(prevLocalState: ModalState) {
+        if (!this.state?.pop)
+            disconnectSocketSession();
+    }
+
     template(): InnerHTML["innerHTML"] {
         const { title, carInfo } = this.props;
         return `
