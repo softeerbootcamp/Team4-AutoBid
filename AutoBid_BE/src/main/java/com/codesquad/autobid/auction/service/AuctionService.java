@@ -210,7 +210,6 @@ public class AuctionService {
 			auctionInfoDtoList = auctionRepository.findAllByAuctionStatus(auctionStatus);
 		} else if (auctionStatus.equals("ALL")) {
 			auctionInfoDtoList = auctionRepository.findAllByCarType(carType);
-			System.out.println(auctionInfoDtoList);
 		} else {
 			auctionInfoDtoList = auctionRepository.findAllByAuctionStatusAndCarType(auctionStatus, carType);
 		}
