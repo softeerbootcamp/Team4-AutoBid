@@ -13,6 +13,7 @@ import com.codesquad.autobid.image.repository.ImageRepository;
 import com.codesquad.autobid.image.service.S3Uploader;
 import com.codesquad.autobid.kafka.producer.AuctionCloseProducer;
 import com.codesquad.autobid.kafka.producer.AuctionOpenProducer;
+import com.codesquad.autobid.kafka.producer.dto.AuctionKafkaDTO;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +71,13 @@ public class AuctionService {
     public void openPendingAuctions(LocalDateTime openTime) {
         List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.BEFORE,
             openTime);
-        auctionOpenProducer.produce(auctions);  // -> topic name: upload-auction-redis
+        auctionOpenProducer.produce(parseToAuctionKafkaDTO(auctions));
+    }
+
+    private List<AuctionKafkaDTO> parseToAuctionKafkaDTO(List<Auction> auctions) {
+        return auctions.stream()
+            .map(AuctionKafkaDTO::from)
+            .collect(Collectors.toList());
     }
 
     @Transactional
