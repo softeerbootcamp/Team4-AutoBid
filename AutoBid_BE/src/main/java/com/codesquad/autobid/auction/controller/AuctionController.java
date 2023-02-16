@@ -71,8 +71,7 @@ public class AuctionController {
 		@Parameter(example = "ALL", description = "GN, EV, HEV, PHEV, FCEV, ALL 중에 하나") String carType,
 		@Parameter(example = "ALL", description = "PROGRESS, BEFORE, COMPLETED, ALL 중에 하나") String auctionStatus
 	) {
-		AuctionStatisticsResponse auctionStatisticsResponse = auctionService.getAuctionStaticsResponse(carType,
-			auctionStatus);
+		AuctionStatisticsResponse auctionStatisticsResponse = auctionService.getAuctionStaticsResponse(carType, auctionStatus);
 		if (auctionStatisticsResponse.getTotalSold() == 0) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("fail");
 		}
