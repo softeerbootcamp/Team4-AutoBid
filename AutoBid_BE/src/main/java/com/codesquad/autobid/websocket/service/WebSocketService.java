@@ -1,36 +1,38 @@
 package com.codesquad.autobid.websocket.service;
 
-import com.codesquad.autobid.websocket.domain.AuctionWebSocket;
-import com.codesquad.autobid.websocket.repository.WebSocketRedisRepository;
+import com.codesquad.autobid.websocket.domain.AuctionUserWebSocket;
+import com.codesquad.autobid.websocket.repository.WebSocketAuctionUserRedisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
 
 @Service
 public class WebSocketService {
 
-    private final WebSocketRedisRepository webSocketRedisRepository;
+    private final WebSocketAuctionUserRedisRepository webSocketAuctionUserRedisRepository;
 
     @Autowired
-    public WebSocketService(WebSocketRedisRepository webSocketRedisRepository) {
-        this.webSocketRedisRepository = webSocketRedisRepository;
+    public WebSocketService(WebSocketAuctionUserRedisRepository webSocketAuctionUserRedisRepository) {
+        this.webSocketAuctionUserRedisRepository = webSocketAuctionUserRedisRepository;
     }
 
-    public AuctionWebSocket auctionUserSave(Long auctionId, String session) {
-        AuctionWebSocket auctionWebSocket = AuctionWebSocket.of(auctionId, session);
-        webSocketRedisRepository.saveAuctionUser(auctionId, session);
-        return auctionWebSocket;
+    public AuctionUserWebSocket auctionUserSave(Long auctionId, String session) {
+        AuctionUserWebSocket auctionUserWebSocket = AuctionUserWebSocket.of(auctionId, session);
+        webSocketAuctionUserRedisRepository.saveAuctionUser(auctionId, session);
+        return auctionUserWebSocket;
     }
 
     public Long sizeAuctionUsers(Long auctionId) {
-        return webSocketRedisRepository.countAuctionUsers(auctionId);
+        return webSocketAuctionUserRedisRepository.countAuctionUsers(auctionId);
     }
 
-    public AuctionWebSocket deleteAuctionInSession(Long auctionId, String session) {
-        AuctionWebSocket auctionWebSocket = AuctionWebSocket.of(auctionId, session);
-        webSocketRedisRepository.deleteAuctionUser(auctionId, session);
-        return auctionWebSocket;
+    public AuctionUserWebSocket deleteAuctionInSession(Long auctionId, String session) {
+        AuctionUserWebSocket auctionUserWebSocket = AuctionUserWebSocket.of(auctionId, session);
+        webSocketAuctionUserRedisRepository.deleteAuctionUser(auctionId, session);
+        return auctionUserWebSocket;
+    }
+
+    public void deleteAuctionAll(Long auctionId) {
+        webSocketAuctionUserRedisRepository.deleteAuctionUserAll(auctionId);
     }
 
 }

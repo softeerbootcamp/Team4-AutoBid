@@ -30,7 +30,6 @@ public class AuctionRedisRepository {
         Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionRedis.getId());
 
         stringOps.set(keys.get(AuctionRedisKey.PRICE), auctionRedis.getPrice());
-        stringOps.set(keys.get(AuctionRedisKey.NUMBER_OF_USERS), auctionRedis.getNumberOfUsers());
         if (auctionRedis.getBidders().size() != 0) {
             saveBidders(keys.get(AuctionRedisKey.BIDDERS), auctionRedis.getBidders());
         }
@@ -55,9 +54,8 @@ public class AuctionRedisRepository {
         Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionId);
         try {
             Long price = Integer.toUnsignedLong((int) stringOps.get(keys.get(AuctionRedisKey.PRICE)));
-            int numberOfUsers = (int) stringOps.get(keys.get(AuctionRedisKey.NUMBER_OF_USERS));
             Set<Bidder> bidders = parseToBidderSet(keys.get(AuctionRedisKey.BIDDERS), 0, -1);
-            return AuctionRedis.of(auctionId, price, numberOfUsers, bidders);
+            return AuctionRedis.of(auctionId, price, bidders);
         } catch (NullPointerException e) {
             return null;
         }
