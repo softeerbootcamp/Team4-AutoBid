@@ -145,7 +145,7 @@ public class AuctionService {
 	public AuctionInfoListResponse getAuctionInfoListResponse(List<AuctionInfoDto> auctionInfoDtoList, int page,
 		int size) {
 		int totalAuctionNum = auctionInfoDtoList.size();
-		subAuctionDtoList(auctionInfoDtoList, page, size, totalAuctionNum);
+		auctionInfoDtoList = subAuctionDtoList(auctionInfoDtoList, page, size, totalAuctionNum);
 
 		return auctionInfoDtoListToAuctionInfoListResponse(
 			auctionInfoDtoList, totalAuctionNum);
@@ -162,16 +162,18 @@ public class AuctionService {
 		return AuctionInfoListResponse.of(auctionInfoDtoList, totalAuctionNum);
 	}
 
-	public void subAuctionDtoList(List<AuctionInfoDto> auctionInfoDtoList, int page, int size, int totalAuctionNum) {
+	public List<AuctionInfoDto> subAuctionDtoList(List<AuctionInfoDto> auctionInfoDtoList, int page, int size, int totalAuctionNum) {
 		if (totalAuctionNum == 0) {
-			return;
+			return auctionInfoDtoList;
 		}
 
 		if (totalAuctionNum < page * size - 1) {
-			auctionInfoDtoList.subList((size - 1) * (page - 1), totalAuctionNum - 1);
+			auctionInfoDtoList = auctionInfoDtoList.subList((size - 1) * (page - 1), totalAuctionNum - 1);
 		} else {
-			auctionInfoDtoList.subList((size - 1) * (page - 1), size * page - 1);
+			auctionInfoDtoList = auctionInfoDtoList.subList((size - 1) * (page - 1), size * page - 1);
 		}
+
+		return auctionInfoDtoList;
 	}
 
 	public AuctionStatisticsResponse getAuctionStaticsResponse(String carType, String auctionStatus) {
