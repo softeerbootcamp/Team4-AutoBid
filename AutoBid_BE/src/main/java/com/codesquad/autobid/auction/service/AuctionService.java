@@ -157,4 +157,8 @@ public class AuctionService {
 
 		return AuctionInfoListResponse.of(auctionInfoDtoList, totalAuctionNum);
 	}
+
+	public AuctionRedis getAuction(Long auctionId) {
+		return auctionRedisRepository.findById(auctionId);
+	}
 }
