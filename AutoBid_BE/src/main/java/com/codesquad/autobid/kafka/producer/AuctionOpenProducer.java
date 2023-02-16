@@ -1,24 +1,27 @@
 package com.codesquad.autobid.kafka.producer;
 
-import com.codesquad.autobid.auction.domain.Auction;
+import com.codesquad.autobid.kafka.producer.dto.AuctionKafkaDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
+@Slf4j
 @RequiredArgsConstructor
 public class AuctionOpenProducer {
+
     @Value("${spring.kafka.topic.auction-open}")
     private String AUCTION_OPEN_TOPIC_NAME;
 
     private final KafkaTemplate kafkaTemplate;
 
-    public void produce(List<Auction> auctions) {
+    public void produce(List<AuctionKafkaDTO> auctions) {
         // todo: 예외 처리
-        for (Auction auction : auctions) {
+        for (AuctionKafkaDTO auction : auctions) {
             kafkaTemplate.send(AUCTION_OPEN_TOPIC_NAME, auction);
         }
     }
