@@ -178,7 +178,6 @@ public class AuctionService {
 
 	public AuctionStatisticsResponse getAuctionStaticsResponse(String carType, String auctionStatus) {
 		List<AuctionInfoDto> auctionInfoDtoList = getAuctionInfoDtoForStatistics(carType, auctionStatus);
-
 		int[] contents = new int[20];
 		Arrays.fill(contents, 0);
 
@@ -209,8 +208,9 @@ public class AuctionService {
 			auctionInfoDtoList = auctionRepository.findAllForStatistics();
 		} else if (carType.equals("ALL")) {
 			auctionInfoDtoList = auctionRepository.findAllByAuctionStatus(auctionStatus);
-		} else if (auctionStatus.equals("AlL")) {
+		} else if (auctionStatus.equals("ALL")) {
 			auctionInfoDtoList = auctionRepository.findAllByCarType(carType);
+			System.out.println(auctionInfoDtoList);
 		} else {
 			auctionInfoDtoList = auctionRepository.findAllByAuctionStatusAndCarType(auctionStatus, carType);
 		}
