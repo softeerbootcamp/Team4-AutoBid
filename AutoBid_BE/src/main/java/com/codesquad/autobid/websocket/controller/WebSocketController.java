@@ -1,11 +1,6 @@
 package com.codesquad.autobid.websocket.controller;
 
-import com.codesquad.autobid.auction.repository.AuctionRedis;
-import com.codesquad.autobid.auction.repository.Bidder;
 import com.codesquad.autobid.auction.service.AuctionService;
-import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
-import com.codesquad.autobid.websocket.domain.AuctionUserWebSocket;
-import com.codesquad.autobid.websocket.domain.BidderDto;
 import com.codesquad.autobid.websocket.service.WebSocketService;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.support.annotation.Nullable;
@@ -13,15 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessageType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @RestController
