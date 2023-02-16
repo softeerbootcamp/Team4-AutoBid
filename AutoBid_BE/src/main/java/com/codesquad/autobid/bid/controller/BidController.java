@@ -17,9 +17,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 @RestController
 public class BidController {
 
-	@Autowired
-	private SimpMessageSendingOperations messagingTemplate;
-
 	private final BidService bidService;
 
 	@Autowired
@@ -31,7 +28,10 @@ public class BidController {
 	public ResponseEntity<Boolean> bidRegister(@Parameter BidRegisterRequest bidRegisterRequest, @Parameter(hidden = true) @AuthorizedUser User user) {
 		boolean result = bidService.suggestBid(bidRegisterRequest, user);
 
-		messagingTemplate.convertAndSend("/subscribe/new/" + bidRegisterRequest.getAuctionId(), "bid");
-		return ResponseEntity.status(HttpStatus.OK).body(result);
+		if (!result) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(true);
 	}
 }
