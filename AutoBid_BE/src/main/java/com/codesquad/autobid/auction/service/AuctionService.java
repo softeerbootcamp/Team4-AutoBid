@@ -22,7 +22,6 @@ import com.codesquad.autobid.auction.repository.AuctionRepository;
 import com.codesquad.autobid.auction.repository.Bidder;
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
 import com.codesquad.autobid.auction.response.AuctionInfoListResponse;
-import com.codesquad.autobid.auction.response.AuctionStatisticsResponse;
 import com.codesquad.autobid.car.repository.CarRepository;
 import com.codesquad.autobid.email.EmailService;
 import com.codesquad.autobid.image.domain.Image;
@@ -237,6 +236,10 @@ public class AuctionService {
 	public AuctionInfoListResponse getMyParticipatingAuctions(User user) {
 		List<AuctionInfoDto> auctionInfoDtoList = auctionRepository.findAllParticipatingAuctions(user.getId());
 		return auctionInfoDtoListToAuctionInfoListResponse(auctionInfoDtoList, auctionInfoDtoList.size());
+	}
+
+	public AuctionRedis getAuction(Long auctionId) {
+		return auctionRedisRepository.findById(auctionId);
 	}
 }
 
