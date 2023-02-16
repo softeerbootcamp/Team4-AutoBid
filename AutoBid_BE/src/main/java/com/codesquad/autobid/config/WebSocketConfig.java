@@ -1,5 +1,6 @@
 package com.codesquad.autobid.config;
 
+import com.codesquad.autobid.websocket.service.CustomHandshakeHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -15,12 +16,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/auction-room").withSockJS();
+        registry.addEndpoint("/auction-room").setHandshakeHandler(new CustomHandshakeHandler()).withSockJS();
+//        registry.addEndpoint("/auction-room").withSockJS();
+
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/publish");
-        registry.enableSimpleBroker("/subscribe");
+        registry.setApplicationDestinationPrefixes("/ws");
+        registry.enableSimpleBroker("/ws");
     }
 }
