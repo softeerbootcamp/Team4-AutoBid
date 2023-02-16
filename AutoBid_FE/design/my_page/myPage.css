@@ -12,85 +12,45 @@ hr {
 }
 
 .my-page {
-  display: flex;
-}
-
-/* Sidebar */
-.my-page__sidebar {
   background-color: var(--color-white);
   border-radius: 16px;
   display: flex;
   flex-direction: column;
   margin-bottom: 64px;
   margin-left: 16px;
-  margin-right: 16px;
-  max-width: var(--container-max-width);
-  min-width: 300px;
   padding: var(--container-padding);
+  width: var(--container-max-width);
 }
 
-.my-page__sidebar__title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-top: 32px;
-}
-
-.my-page__sidebar__info-holder > li {
-  padding-top: 8px;
-}
-
-.my-page__sidebar__greeting {
-  text-align: center;
-}
-
-.my-page__sidebar__phone-number {
-  margin-top: 16px;
-}
-
-/* Main */
-.my-page__main__ul {
-  background-color: var(--color-white);
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 64px;
-  margin-left: 16px;
-  width: 925px;
-  padding: var(--container-padding);
-}
-
-.my-page__main__section-holder > h3 {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.fa-chevron-left {
-  margin-right: 16px;
-  font-size: 24px;
-}
-
-.my-page__main__card-slider {
-  display: flex;
-}
-
-.my-page__card-list__holder {
-  align-items: center;
-  display: flex;
-  overflow: scroll;
-  scroll-behavior: smooth;
-}
-
-.fa-chevron-right {
-  margin-left: 16px;
-  font-size: 24px;
-}
-
-  /* Below code is from body.css (card part) */
-
-.my-page__main__section-holder {
+.my-page__section-holder {
   display: flex;
   flex-direction: column;
   padding-top: 32px;
+}
+
+.my-page__section-holder > h3 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.my-page__card-slider {
+  display: flex;
+}
+
+.fa-chevron-left {
+  font-size: 24px;
+  margin-right: 16px;
+}
+
+/* Card item start */
+
+.my-page__card-list__holder {
+  align-items: center;
+  width: 100%;
+  display: flex;
+  overflow: scroll;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
 }
 
 .card-container__card-item {
@@ -104,20 +64,6 @@ hr {
 
 .card-container__card-item:hover {
   transform: scale(1.02);
-}
-
-.card-item__img-container {
-  align-items: center;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  display: flex;
-  height: 140px;
-  overflow: scroll;
-  scroll-behavior: smooth;
-}
-
-.card-item__img {
-  width: 250px;
 }
 
 .card-item__swap-button-container {
@@ -135,9 +81,18 @@ hr {
   opacity: 0.5;
 }
 
-.grid__item__img-swap-btn-group__btn {
-  color: white;
-  margin: 5px
+.card-item__img-container {
+  align-items: center;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  display: flex;
+  height: 140px;
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+
+.card-item__img {
+  width: 250px;
 }
 
 .card-item__details-container {
@@ -174,4 +129,11 @@ hr {
   color: var(--color-blue);
   font-size: 25px;
   margin-right: 4px;
+}
+
+/* Card item end */
+
+.fa-chevron-right {
+  font-size: 24px;
+  margin-left: 16px;
 }

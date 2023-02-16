@@ -1,4 +1,4 @@
-const slideContainer = document.getElementsByClassName("my-page__main__card-slider")!;
+const slideContainer = document.getElementsByClassName("my-page__card-slider")!;
 const cardHolders = document.getElementsByClassName("my-page__card-list__holder");
 const leftButton = document.getElementsByClassName("my-page__swap-button-left") as HTMLCollectionOf<Element>;
 const rightButton = document.getElementsByClassName("my-page__swap-button-right") as HTMLCollectionOf<Element>;
