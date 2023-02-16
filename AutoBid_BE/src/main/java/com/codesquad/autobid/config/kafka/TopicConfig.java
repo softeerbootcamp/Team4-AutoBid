@@ -16,6 +16,8 @@ import java.util.Map;
 @EnableKafka
 public class TopicConfig {
 
+    @Value("${spring.kafka.bootstrap-servers}")
+    private String BOOTSTRAP_SERVERS;
     @Value("${spring.kafka.topic.auction-open}")
     private String AUCTION_OPEN_TOPIC_NAME;
     @Value("${spring.kafka.topic.auction-send}")
@@ -25,11 +27,10 @@ public class TopicConfig {
     @Value("${spring.kafka.topic.auction-email}")
     private String AUCTION_EMAIL_TOPIC_NAME;
 
-
     @Bean
     public KafkaAdmin admin() {
         Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
         return new KafkaAdmin(configs);
     }
 
