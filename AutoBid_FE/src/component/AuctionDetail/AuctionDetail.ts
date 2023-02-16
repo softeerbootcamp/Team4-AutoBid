@@ -59,7 +59,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
     private lastPrice = 0;
 
     initialize() {
-        const { id } = this.props;
+        const { auctionId } = this.props;
         this.addEvent('click', '.auction-detail__bid-btn', async () => {
             const suggestedPrice = this.lastPrice + BID_UNIT;
             const userInfo = await whoIam() || await login();
@@ -67,7 +67,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
                 Toast.show('로그인 없이 이용할 수 없습니다', 1000);
                 return;
             }
-            const res = await requestBid(id, suggestedPrice);
+            const res = await requestBid(auctionId, suggestedPrice);
             if (res) {
                 Toast.show(`호가 ${suggestedPrice.toLocaleString()}만원, 입찰 경쟁에 실패했습니다.`, 1000);
             } else {
@@ -139,7 +139,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
     }
 
     mounted() {
-        const { id, images, endPrice } = this.props;
+        const { auctionId, images, endPrice } = this.props;
         const $imageSlider = this.$target.querySelector('[data-component="ImageSlider"]') as HTMLElement;
         new ImageSlider($imageSlider, { imageUrls: images, width: 500, height: 280 });
 
@@ -153,7 +153,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
             setOnStart(this.onStart.bind(this));
             setOnBid(this.onBid.bind(this));
             setOnEnd(this.onEnd.bind(this));
-            requestSocketSession(id);
+            requestSocketSession(auctionId);
         }
     }
 

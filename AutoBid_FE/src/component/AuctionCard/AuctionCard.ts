@@ -5,13 +5,14 @@ import {Auction} from "../../model/auction";
 import {deltaTimeToString} from "../../core/util";
 import AnimatedNumber from "../AnimatedNumber/AnimatedNumber";
 import "./auctioncard.css";
+import {popShowingAuctionModal} from "../../store/modal";
 
 
 const getInfoStr = ({distance, type, sellName}: CarInfo) =>
     `${sellName} | ${distance.toLocaleString()}km | ${getCarTypeName(type)}`;
 
 
-class AuctionCard extends Component<any, { auction: Auction, onClick: (arg: any) => any }> {
+class AuctionCard extends Component<any, { auction: Auction }> {
     template(): InnerHTML["innerHTML"] {
         const {title, carInfo, startTime, endTime} = this.props.auction;
         const $startTime = new Date(startTime).getTime();
@@ -53,12 +54,6 @@ class AuctionCard extends Component<any, { auction: Auction, onClick: (arg: any)
         const $startTime = new Date(startTime).getTime();
         const $endTime = new Date(endTime).getTime();
         const now = Date.now();
-
-        // console.log(`
-        // start: ${$startTime},
-        // now: ${Date.now()},
-        // end: ${$endTime},
-        // `);
 
         if (now <= $startTime) {
             return `시작 <b>${deltaTimeToString($startTime - now)}</b>전`;
@@ -107,8 +102,10 @@ class AuctionCard extends Component<any, { auction: Auction, onClick: (arg: any)
     }
 
     initialize() {
-        const {onClick} = this.props;
-        this.addEvent('click', '.card-item__details-container', onClick);
+        const { auction } = this.props;
+        this.addEvent('click', '.card-item__details-container', () => {
+            popShowingAuctionModal(auction);
+        });
     }
 }
 

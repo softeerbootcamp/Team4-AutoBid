@@ -84,12 +84,7 @@ class AuctionList extends Component<AuctionQuery> {
         const auctionList = this.auctionList;
         const $auctionCards = this.$target.querySelectorAll('[data-component="AuctionCard"]');
         $auctionCards.forEach(($auctionCard, idx) => {
-            new AuctionCard($auctionCard as HTMLElement, {
-                auction: auctionList[idx],
-                onClick: () => {
-                    console.log(idx);
-                }
-            });
+            new AuctionCard($auctionCard as HTMLElement, { auction: auctionList[idx] });
         });
     }
 
