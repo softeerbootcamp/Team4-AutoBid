@@ -11,43 +11,6 @@ hr {
   margin: 16px 0;
 }
 
-.my-page {
-  display: flex;
-}
-
-/* Sidebar */
-.my-page__sidebar {
-  background-color: var(--color-white);
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 64px;
-  margin-left: 16px;
-  margin-right: 16px;
-  max-width: var(--container-max-width);
-  min-width: 300px;
-  padding: var(--container-padding);
-}
-
-.my-page__sidebar__title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-top: 32px;
-}
-
-.my-page__sidebar__info-holder > li {
-  padding-top: 8px;
-}
-
-.my-page__sidebar__greeting {
-  text-align: center;
-}
-
-.my-page__sidebar__phone-number {
-  margin-top: 16px;
-}
-
-/* Main */
 .my-page__main__ul {
   background-color: var(--color-white);
   border-radius: 16px;
@@ -55,7 +18,7 @@ hr {
   flex-direction: column;
   margin-bottom: 64px;
   margin-left: 16px;
-  width: 925px;
+  width: var(--container-max-width);
   padding: var(--container-padding);
 }
 
