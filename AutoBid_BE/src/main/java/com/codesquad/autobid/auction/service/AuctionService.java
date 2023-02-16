@@ -1,5 +1,19 @@
 package com.codesquad.autobid.auction.service;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import com.codesquad.autobid.auction.response.AuctionStatisticsResponse;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.domain.AuctionInfoDto;
 import com.codesquad.autobid.auction.domain.AuctionStatus;

@@ -7,6 +7,7 @@ import com.codesquad.autobid.websocket.domain.AuctionUserWebSocket;
 import com.codesquad.autobid.websocket.domain.BidderDto;
 import com.codesquad.autobid.websocket.repository.WebSocketAuctionUserRedisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,33 +17,28 @@ import java.util.Set;
 
 @Service
 public class WebSocketService {
-
+    private final SimpMessageSendingOperations messagingTemplate;
     private final UserService userService;
     private final WebSocketAuctionUserRedisRepository webSocketAuctionUserRedisRepository;
 
     @Autowired
-    public WebSocketService(UserService userService, WebSocketAuctionUserRedisRepository webSocketAuctionUserRedisRepository) {
+    public WebSocketService(SimpMessageSendingOperations messagingTemplate, UserService userService, WebSocketAuctionUserRedisRepository webSocketAuctionUserRedisRepository) {
+        this.messagingTemplate = messagingTemplate;
         this.userService = userService;
         this.webSocketAuctionUserRedisRepository = webSocketAuctionUserRedisRepository;
     }
 
-    public AuctionUserWebSocket auctionUserSave(Long auctionId, String session) {
+    public AuctionUserWebSocket auctionUserSave(Long auctionId, String session) { // 저장
         AuctionUserWebSocket auctionUserWebSocket = AuctionUserWebSocket.of(auctionId, session);
         webSocketAuctionUserRedisRepository.saveAuctionUser(auctionId, session);
         return auctionUserWebSocket;
     }
 
-    public Long auctionBidUsersSize(Long auctionId) {
+    public Long auctionBidUsersSize(Long auctionId) { // 유저 수
         return webSocketAuctionUserRedisRepository.countAuctionUsers(auctionId);
     }
 
-    public AuctionUserWebSocket deleteAuctionInSession(Long auctionId, String session) {
-        AuctionUserWebSocket auctionUserWebSocket = AuctionUserWebSocket.of(auctionId, session);
-        webSocketAuctionUserRedisRepository.deleteAuctionUser(auctionId, session);
-        return auctionUserWebSocket;
-    }
-
-    public void deleteAuctionAll(Long auctionId) {
+    public void deleteAuctionAll(Long auctionId) { // 유저 모두 삭제
         webSocketAuctionUserRedisRepository.deleteAuctionUserAll(auctionId);
     }
 
@@ -61,6 +57,10 @@ public class WebSocketService {
         }
         bidderDtoList.add(bidderDto);
         return bidderDtoList;
+    }
+
+    public void exitAuctionWebsocketMessage() {
+//        messagingTemplate
     }
 
 }
