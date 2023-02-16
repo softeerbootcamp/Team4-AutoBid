@@ -27,6 +27,9 @@ class Modal extends Component<ModalState> {
     }
 
     mountContent() {
+        const $holder = this.$target.querySelector('.modal__content') as HTMLElement;
+        $holder.innerHTML = `<div data-component="${this.getDisplayComponentName()}">></div>`;
+
         const $auctionDetail = this.$target.querySelector('[data-component="AuctionDetail"]');
         const { auction } = this.state || MODAL_INITIAL;
         if ($auctionDetail && auction) {

@@ -38,7 +38,9 @@ const modal: Reducer<ModalState> = (state = MODAL_INITIAL, action) => {
     switch (action.type) {
         case ModalActionType.CLOSE:
             return { ...state,
-                pop: false
+                pop: false,
+                view: ModalView.NONE,
+                auction: undefined
             };
         case ModalActionType.POP_SHOWING:
             return { ...state,
