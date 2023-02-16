@@ -11,7 +11,7 @@ public class AuctionSendConsumer {
 
     // private final SocketController socketController;
 
-    @KafkaListener(topics = "send-auction-socket")
+    @KafkaListener(topics = "auction-send")
     public void consume(Auction auction) {
         // todo: socketController 연결
         // socketController.send(auction);

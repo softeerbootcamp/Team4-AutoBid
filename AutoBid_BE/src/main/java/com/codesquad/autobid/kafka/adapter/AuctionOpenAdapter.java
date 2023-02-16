@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuctionSaveAdapter {
+public class AuctionOpenAdapter {
 
     @Value("${spring.kafka.topic.auction-send}")
     private String AUCTION_SEND_TOPIC_NAME;
@@ -22,7 +22,7 @@ public class AuctionSaveAdapter {
     private final AuctionRepository auctionRepository;
 
 
-    @KafkaListener(topics = "upload-auction-redis")
+    @KafkaListener(topics = "auction-open")
     public void consume(Auction auction) {
         // todo: check deserialize
         auction.open();
