@@ -13,14 +13,8 @@ import java.util.List;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    List<Integer> testaAuctionRoomId = new ArrayList<>();
-
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        testaAuctionRoomId.add(1);
-        testaAuctionRoomId.add(2);
-        testaAuctionRoomId.add(3);
-        testaAuctionRoomId.add(4);
         registry.addEndpoint("/auction-room").withSockJS();
     }
 
