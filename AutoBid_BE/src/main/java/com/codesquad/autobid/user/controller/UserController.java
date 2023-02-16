@@ -66,6 +66,7 @@ public class UserController {
         OauthToken deleteToken = authService.deleteOauthToken(accessToken);
         log.info("deleteToken : {}",deleteToken.getAccessToken());
         session.invalidate(); // 세션삭제
+        userService.remove(deleteToken); // 레디스에서 토큰 삭제
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
