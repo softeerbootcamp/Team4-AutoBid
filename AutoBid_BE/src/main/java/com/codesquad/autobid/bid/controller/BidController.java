@@ -1,5 +1,10 @@
 package com.codesquad.autobid.bid.controller;
 
+import com.codesquad.autobid.auction.repository.AuctionRedis;
+import com.codesquad.autobid.auction.service.AuctionService;
+import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
+import com.codesquad.autobid.websocket.domain.BidderDto;
+import com.codesquad.autobid.websocket.service.WebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +20,25 @@ import com.codesquad.autobid.web.argumentresolver.AuthorizedUser;
 
 import io.swagger.v3.oas.annotations.Parameter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 public class BidController {
-
+	private final SimpMessageSendingOperations messagingTemplate;
 	private final BidService bidService;
+	private final AuctionService auctionService;
+	private final WebSocketService webSocketService;
 
 	@Autowired
-	public BidController(BidService bidService) {
+	public BidController(SimpMessageSendingOperations messagingTemplate,
+						 BidService bidService,
+						 AuctionService auctionService,
+						 WebSocketService webSocketService) {
+		this.messagingTemplate = messagingTemplate;
 		this.bidService = bidService;
+		this.auctionService = auctionService;
+		this.webSocketService = webSocketService;
 	}
 
 	@PostMapping("/auction/bid")

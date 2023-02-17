@@ -37,7 +37,7 @@ public class WebSocketController {
         this.auctionService = auctionService;
     }
 
-    @MessageMapping("/enter/all/{auctionId}")
+    @MessageMapping("/enter/{auctionId}")
     public void onAllEntered(
             @DestinationVariable(value = "auctionId") Long auctionId
     ) { // convertAndSend
@@ -56,7 +56,6 @@ public class WebSocketController {
         } catch (NullPointerException e) {
 
         }
-
         messagingTemplate.convertAndSend("/ws/start/" + auctionId, auctionDtoWebSocket);
     }
 
@@ -83,8 +82,8 @@ public class WebSocketController {
 
         }
         messagingTemplate.convertAndSendToUser(principal.getName(),"/ws/start/" + auctionId, auctionDtoWebSocket);
-
     }
+
     private MessageHeaders createHeaders(@Nullable String sessionId) {
         SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
         if (sessionId != null) headerAccessor.setSessionId(sessionId);
