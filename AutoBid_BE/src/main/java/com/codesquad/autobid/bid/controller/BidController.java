@@ -45,7 +45,7 @@ public class BidController {
 	}
 
 	@PostMapping("/auction/bid")
-	public ResponseEntity<Boolean> bidRegister(@Parameter BidRegisterRequest bidRegisterRequest,
+	public ResponseEntity<Boolean> bidRegister(@Parameter @RequestBody BidRegisterRequest bidRegisterRequest,
 											   @Parameter(hidden = true)
 											   @AuthorizedUser User user) {
 		boolean result = bidService.suggestBid(bidRegisterRequest, user);
