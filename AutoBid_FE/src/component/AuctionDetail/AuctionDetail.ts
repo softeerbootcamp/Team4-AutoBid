@@ -143,7 +143,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
         const $imageSlider = this.$target.querySelector('[data-component="ImageSlider"]') as HTMLElement;
         new ImageSlider($imageSlider, { imageUrls: images, width: 500, height: 280 });
 
-        this.setPrice(0, endPrice, 1);
+        this.setPrice(0, endPrice * 10000, 1);
         this.lastPrice = endPrice * 10000;
 
         this.fetchUsers([], `${this.isEnded() ? '경매가 종료되었습니다.' : '경매 시작을 대기 하고 있습니다.'}`);
