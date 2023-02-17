@@ -68,7 +68,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
                 return;
             }
             const res = await requestBid(auctionId, suggestedPrice);
-            if (res) {
+            if (!res) {
                 Toast.show(`호가 ${suggestedPrice.toLocaleString()}만원, 입찰 경쟁에 실패했습니다.`, 1000);
             } else {
                 Toast.show(`호가 ${suggestedPrice.toLocaleString()}만원, 입찰 성공.`, 1000);
