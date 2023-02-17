@@ -1,8 +1,11 @@
 package com.codesquad.autobid.websocket.service;
 
+import com.codesquad.autobid.auction.repository.AuctionRedis;
 import com.codesquad.autobid.auction.repository.Bidder;
+import com.codesquad.autobid.auction.service.AuctionService;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.service.UserService;
+import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
 import com.codesquad.autobid.websocket.domain.AuctionUserWebSocket;
 import com.codesquad.autobid.websocket.domain.BidderDto;
 import com.codesquad.autobid.websocket.repository.WebSocketAuctionUserRedisRepository;
@@ -19,12 +22,16 @@ import java.util.Set;
 public class WebSocketService {
     private final SimpMessageSendingOperations messagingTemplate;
     private final UserService userService;
+    private final AuctionService auctionService;
+    private final WebSocketService webSocketService;
     private final WebSocketAuctionUserRedisRepository webSocketAuctionUserRedisRepository;
 
     @Autowired
-    public WebSocketService(SimpMessageSendingOperations messagingTemplate, UserService userService, WebSocketAuctionUserRedisRepository webSocketAuctionUserRedisRepository) {
+    public WebSocketService(SimpMessageSendingOperations messagingTemplate, UserService userService, AuctionService auctionService, WebSocketService webSocketService, WebSocketAuctionUserRedisRepository webSocketAuctionUserRedisRepository) {
         this.messagingTemplate = messagingTemplate;
         this.userService = userService;
+        this.auctionService = auctionService;
+        this.webSocketService = webSocketService;
         this.webSocketAuctionUserRedisRepository = webSocketAuctionUserRedisRepository;
     }
 
@@ -59,8 +66,23 @@ public class WebSocketService {
         return bidderDtoList;
     }
 
-    public void exitAuctionWebsocketMessage() {
-//        messagingTemplate
-    }
+    public AuctionDtoWebSocket parsingDto(Long auctionId) {
+        AuctionDtoWebSocket auctionDtoWebSocket = new AuctionDtoWebSocket();
+        AuctionRedis auction = auctionService.getAuction(auctionId);
+        List<BidderDto> bidderDtoList = new ArrayList<>();
 
+        try {
+            if (auction.getBidders().isEmpty()) {
+                auctionDtoWebSocket = AuctionDtoWebSocket.of(0L, bidderDtoList); // 현재 입찰가, 입찰자들, 참여자 수
+            }
+            else if (!auction.getBidders().isEmpty()) {
+                bidderDtoList = webSocketService.bidderToBidderDto(auction.getBidders()); // bidder -> bidderDto
+                auctionDtoWebSocket = AuctionDtoWebSocket.of(auction.getPrice(), bidderDtoList); // 현재 입찰가, 입찰자들, 참여자 수
+            }
+        } catch (NullPointerException e) {
+
+        }
+
+        return auctionDtoWebSocket;
+    }
 }
