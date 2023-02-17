@@ -5,6 +5,7 @@ import com.codesquad.autobid.bid.request.BidRegisterRequest;
 import com.codesquad.autobid.bid.service.BidService;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.web.argumentresolver.AuthorizedUser;
+import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
 import com.codesquad.autobid.websocket.service.WebSocketService;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
@@ -37,23 +38,16 @@ public class BidController {
 
 	@PostMapping("/auction/bid")
 	public ResponseEntity<Boolean> bidRegister(@Parameter @RequestBody BidRegisterRequest bidRegisterRequest, @Parameter(hidden = true) @AuthorizedUser User user) {
-<<<<<<< HEAD
-		System.out.println(bidRegisterRequest);
-		// boolean result = bidService.suggestBid(bidRegisterRequest, user);
-		//
-		// if (!result) {
-		// 	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-		// }
-=======
 		 boolean result = bidService.suggestBid(bidRegisterRequest, user);
 
-		 if (!result) {
+		if (!result) {
 		 	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 		 }
 
+		Long auctionId = bidRegisterRequest.getAuctionId();
+		AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionId);
 
-
->>>>>>> be-dev
+		messagingTemplate.convertAndSend("/ws/start/" + auctionId, auctionDtoWebSocket);
 		return ResponseEntity.status(HttpStatus.OK).body(true);
 	}
 }
