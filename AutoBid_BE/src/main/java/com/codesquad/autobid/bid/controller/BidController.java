@@ -48,8 +48,9 @@ public class BidController {
 	public ResponseEntity<Boolean> bidRegister(@Parameter @RequestBody BidRegisterRequest bidRegisterRequest,
 											   @Parameter(hidden = true)
 											   @AuthorizedUser User user) {
+//		bidRegisterRequest.setAuctionId(1L);
+//		bidRegisterRequest.setSuggestedPrice(10000L);
 		boolean result = bidService.suggestBid(bidRegisterRequest, user);
-
 		if (!result) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 		}
