@@ -7,6 +7,7 @@ import {initializeQuery, queryStateSelector, setRange} from "../../store/query";
 import "./querysidebar.css"
 import AnimatedNumber from "../AnimatedNumber/AnimatedNumber";
 import {AuctionQuery} from "../../model/query";
+import {popErrorModal} from "../../store/modal";
 
 class QuerySidebar extends Component<AuctionQuery> {
     stateSelector(globalState: any): AuctionQuery | undefined {
@@ -52,7 +53,7 @@ class QuerySidebar extends Component<AuctionQuery> {
         const { auctionStatus, carType } = this.state as AuctionQuery;
         requestAuctionStatistic(auctionStatus, carType).then(statistic => {
             if (!statistic || statistic.maxPrice === 0) {
-                alert('조회할 데이터 없음');
+                popErrorModal({ title: '조회할 데이터가 없습니다', message: '기본 조건으로 검색합니다' });
                 initializeQuery();
                 return;
             }
