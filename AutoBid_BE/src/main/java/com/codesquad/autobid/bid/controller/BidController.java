@@ -53,8 +53,8 @@ public class BidController {
 		if (!result) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 		}
-		log.info("bid : {}",bidRegisterRequest.getAuctionId());
-		log.info("price : {}",bidRegisterRequest.getSuggestedPrice());
+//		log.info("bid : {}",bidRegisterRequest.getAuctionId());
+//		log.info("price : {}",bidRegisterRequest.getSuggestedPrice());
 
 //		Long auctionId = bidRegisterRequest.getAuctionId();
 //		Long price = bidRegisterRequest.getSuggestedPrice();
