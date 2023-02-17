@@ -12,7 +12,7 @@ public class AuctionTestUtil {
 
     public static Auction saveAuction(User user, Car car) {
         try {
-            Auction auction = Auction.of(car.getId(), user.getId(), LocalDateTime.now(), LocalDateTime.now(), 1l, 2l, AuctionStatus.PROGRESS);
+            Auction auction = Auction.of(car.getId(), user.getId(), "test", LocalDateTime.now(), LocalDateTime.now(),1l, 2l, AuctionStatus.PROGRESS);
             Field id = auction.getClass().getDeclaredField("id");
             id.setAccessible(true);
             id.set(auction, 1l);

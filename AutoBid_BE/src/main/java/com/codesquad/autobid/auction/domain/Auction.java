@@ -61,9 +61,14 @@ public class Auction {
 		this.auctionStatus = auctionStatus;
 	}
 
-	public static Auction of(Long carId, Long userId, String auctionTitle, LocalDateTime auctionStartTime,
-		LocalDateTime auctionEndTime,
-		Long auctionStartPrice, Long auctionEndPrice, AuctionStatus auctionStatus) {
+	public static Auction of(Long carId,
+							 Long userId,
+							 String auctionTitle,
+							 LocalDateTime auctionStartTime,
+							 LocalDateTime auctionEndTime,
+							 Long auctionStartPrice,
+							 Long auctionEndPrice,
+							 AuctionStatus auctionStatus) {
 		return new Auction(carId, userId, auctionTitle, auctionStartTime, auctionEndTime, auctionStartPrice,
 			auctionEndPrice,
 			auctionStatus);
