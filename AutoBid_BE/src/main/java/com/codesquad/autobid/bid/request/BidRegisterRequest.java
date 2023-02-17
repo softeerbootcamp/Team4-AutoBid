@@ -4,10 +4,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Schema(description = "입찰 RequestBody")
 public class BidRegisterRequest {
 	@Schema(description = "경매 ID", example = "5")
