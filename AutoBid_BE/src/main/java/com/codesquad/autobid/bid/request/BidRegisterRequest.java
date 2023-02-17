@@ -1,15 +1,13 @@
 package com.codesquad.autobid.bid.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @AllArgsConstructor
 @Getter
 @Setter
 @Schema(description = "입찰 RequestBody")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BidRegisterRequest {
 	@Schema(description = "경매 ID", example = "5")
 	private Long auctionId;
