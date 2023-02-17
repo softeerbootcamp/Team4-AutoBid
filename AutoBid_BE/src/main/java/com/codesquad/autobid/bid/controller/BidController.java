@@ -55,7 +55,6 @@ public class BidController {
 		}
 		log.info("bid : {}",bidRegisterRequest.getAuctionId());
 		log.info("price : {}",bidRegisterRequest.getSuggestedPrice());
-		ObjectMapper objectMapper = new ObjectMapper();
 
 //		Long auctionId = bidRegisterRequest.getAuctionId();
 //		Long price = bidRegisterRequest.getSuggestedPrice();
