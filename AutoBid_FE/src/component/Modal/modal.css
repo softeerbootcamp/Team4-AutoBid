@@ -32,7 +32,6 @@
 [data-component="Modal"] .modal__content {
     transition: opacity 0.5s;
     position: absolute;
-    background-color: var(--color-white);
     opacity: 0;
     z-index: 2;
 }

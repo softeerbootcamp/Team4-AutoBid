@@ -9,6 +9,7 @@
     width: 1000px;
     gap: 32px;
     align-items: end;
+    background-color: var(--color-white);
 }
 
 .auction-detail__timer {

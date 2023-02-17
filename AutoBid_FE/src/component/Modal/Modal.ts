@@ -2,6 +2,7 @@ import Component from "../../core/component";
 import {closeModal, MODAL_INITIAL, ModalState, modalStateSelector, ModalView} from "../../store/modal";
 import "./modal.css";
 import AuctionDetail from "../AuctionDetail/AuctionDetail";
+import ErrorView from "../ErrorView/ErrorView";
 
 class Modal extends Component<ModalState> {
     stateSelector(globalState: any): ModalState | undefined {
@@ -35,6 +36,12 @@ class Modal extends Component<ModalState> {
         if ($auctionDetail && auction) {
             new AuctionDetail($auctionDetail as HTMLElement, auction);
         }
+
+        const $errorView = this.$target.querySelector('[data-component="ErrorView"]');
+        const { error } = this.state || MODAL_INITIAL;
+        if ($errorView && error) {
+            new ErrorView($errorView as HTMLElement, error);
+        }
     }
 
     getDisplayComponentName() {
@@ -46,12 +53,14 @@ class Modal extends Component<ModalState> {
                 return 'PostingAuction';
             case ModalView.SHOWING:
                 return 'AuctionDetail';
+            case ModalView.ERROR:
+                return 'ErrorView';
         }
     }
 
     onStateChanged(prevLocalState: ModalState) {
-        const { view, auction } = this.state || MODAL_INITIAL;
-        if (view !== prevLocalState.view || auction !== prevLocalState.auction) {
+        const { error, auction } = this.state || MODAL_INITIAL;
+        if (error !== prevLocalState.error || auction !== prevLocalState.auction) {
             this.render();
             return;
         }
