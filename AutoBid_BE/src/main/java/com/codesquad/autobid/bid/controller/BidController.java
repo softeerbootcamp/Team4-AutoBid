@@ -27,12 +27,13 @@ public class BidController {
 
 	@PostMapping("/auction/bid")
 	public ResponseEntity<Boolean> bidRegister(@Parameter @RequestBody BidRegisterRequest bidRegisterRequest, @Parameter(hidden = true) @AuthorizedUser User user) {
-		System.out.println(bidRegisterRequest);
-		// boolean result = bidService.suggestBid(bidRegisterRequest, user);
-		//
-		// if (!result) {
-		// 	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-		// }
+		 boolean result = bidService.suggestBid(bidRegisterRequest, user);
+
+		 if (!result) {
+		 	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+		 }
+
+
 
 		return ResponseEntity.status(HttpStatus.OK).body(true);
 	}
