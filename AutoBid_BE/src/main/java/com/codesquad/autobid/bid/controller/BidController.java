@@ -5,6 +5,8 @@ import com.codesquad.autobid.auction.service.AuctionService;
 import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
 import com.codesquad.autobid.websocket.domain.BidderDto;
 import com.codesquad.autobid.websocket.service.WebSocketService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestController
 public class BidController {
 	private final SimpMessageSendingOperations messagingTemplate;
@@ -49,6 +52,7 @@ public class BidController {
 		// if (!result) {
 		// 	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 		// }
+
 
 		return ResponseEntity.status(HttpStatus.OK).body(true);
 	}

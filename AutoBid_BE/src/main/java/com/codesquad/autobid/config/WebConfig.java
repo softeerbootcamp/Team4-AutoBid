@@ -24,6 +24,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new AuthorizationInterceptor())
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/", "/index.html", "/user/login", "/auction-room/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/**", "/test", "/auction/list", "/auction/statistics", "/ws/**", "/ws");
+                .excludePathPatterns("/", "/index.html", "/user/login", "/auction/bid", "/auction-room/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/**", "/test", "/auction/list", "/auction/statistics", "/ws/**", "/ws");
     }
 }
