@@ -1,6 +1,5 @@
 package com.codesquad.autobid.bid.controller;
 
-import com.codesquad.autobid.auction.service.AuctionService;
 import com.codesquad.autobid.bid.request.BidRegisterRequest;
 import com.codesquad.autobid.bid.service.BidService;
 import com.codesquad.autobid.user.domain.User;
@@ -22,17 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class BidController {
 	private final SimpMessageSendingOperations messagingTemplate;
 	private final BidService bidService;
-	private final AuctionService auctionService;
 	private final WebSocketService webSocketService;
 
 	@Autowired
 	public BidController(SimpMessageSendingOperations messagingTemplate,
 						 BidService bidService,
-						 AuctionService auctionService,
 						 WebSocketService webSocketService) {
 		this.messagingTemplate = messagingTemplate;
 		this.bidService = bidService;
-		this.auctionService = auctionService;
 		this.webSocketService = webSocketService;
 	}
 

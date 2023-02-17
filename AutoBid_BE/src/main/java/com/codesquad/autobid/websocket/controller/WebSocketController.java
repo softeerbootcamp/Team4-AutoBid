@@ -1,7 +1,6 @@
 package com.codesquad.autobid.websocket.controller;
 
 import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
-import com.codesquad.autobid.websocket.domain.BidderDto;
 import com.codesquad.autobid.websocket.service.WebSocketService;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.support.annotation.Nullable;
