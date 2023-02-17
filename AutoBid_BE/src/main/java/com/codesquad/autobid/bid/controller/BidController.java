@@ -43,8 +43,6 @@ public class BidController {
 		// if (!result) {
 		// 	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 		// }
-
-
 		return ResponseEntity.status(HttpStatus.OK).body(true);
 	}
 }
