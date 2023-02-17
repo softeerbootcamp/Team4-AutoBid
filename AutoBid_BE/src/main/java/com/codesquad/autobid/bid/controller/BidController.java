@@ -54,6 +54,7 @@ public class BidController {
 		// }
 
 
+
 		return ResponseEntity.status(HttpStatus.OK).body(true);
 	}
 }
