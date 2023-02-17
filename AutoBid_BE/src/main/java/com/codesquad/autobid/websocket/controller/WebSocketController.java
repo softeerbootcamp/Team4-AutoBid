@@ -46,6 +46,17 @@ public class WebSocketController {
         messagingTemplate.convertAndSendToUser(principal.getName(),"/ws/start/" + auctionId, auctionDtoWebSocket);
     }
 
+    @MessageMapping("/end/{auctionId}")
+    public void exitAll(
+            @DestinationVariable(value = "auctionId") Long auctionId
+    ) {
+        /**
+         *  TODO
+         *   - data 삭제
+         * **/
+        messagingTemplate.convertAndSend("/ws/end/" + auctionId, "exit");
+    }
+
     private MessageHeaders createHeaders(@Nullable String sessionId) {
         SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
         if (sessionId != null) headerAccessor.setSessionId(sessionId);
