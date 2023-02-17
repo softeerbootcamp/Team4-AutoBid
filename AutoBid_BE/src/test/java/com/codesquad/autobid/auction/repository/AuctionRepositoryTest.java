@@ -41,7 +41,7 @@ class AuctionRepositoryTest {
         carRepository.save(car);
 
         LocalDateTime now = LocalDateTime.now();
-        Auction auction = Auction.of(car.getId(), user.getId(),  now, now, 1l, 2l, AuctionStatus.BEFORE);
+        Auction auction = Auction.of(car.getId(), user.getId(),  "test", now, now, 1l, 2l, AuctionStatus.BEFORE);
         auctionRepository.save(auction);
         // when
         List<Auction> findAuctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.BEFORE, now);
