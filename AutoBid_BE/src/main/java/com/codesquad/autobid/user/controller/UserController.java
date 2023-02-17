@@ -71,7 +71,7 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<UserImpoResponse> findByUser(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<UserImpoResponse> userResponse(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
         UserImpoResponse userImpo = (UserImpoResponse) session.getAttribute("user");
         Optional<User> user = userService.findById(userImpo.getId());
