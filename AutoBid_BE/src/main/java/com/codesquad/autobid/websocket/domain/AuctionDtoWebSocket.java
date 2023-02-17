@@ -23,6 +23,9 @@ public class AuctionDtoWebSocket {
         this.bidders = bidders;
     }
 
+    public AuctionDtoWebSocket() {
+    }
+
 
     public static AuctionDtoWebSocket of(Long price, List<BidderDto> bidders) {
         AuctionDtoWebSocket auctionDtoWebSocket =  new AuctionDtoWebSocket(price, bidders);
