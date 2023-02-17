@@ -47,7 +47,7 @@ public class BidController {
 		AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionId);
 		log.info("getUserNum : {}",auctionDtoWebSocket.getUserNumber());
 		log.info("getPrice : {}",auctionDtoWebSocket.getPrice());
-		messagingTemplate.convertAndSend("/ws/bid/" + auctionId, auctionDtoWebSocket);
+		messagingTemplate.convertAndSend("/ws/start/" + auctionId, auctionDtoWebSocket);
 		return ResponseEntity.status(HttpStatus.OK).body(true);
 	}
 }
