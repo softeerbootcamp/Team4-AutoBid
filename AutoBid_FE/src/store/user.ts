@@ -19,7 +19,9 @@ const initialState: UserState = {
 };
 
 export const login = async () => {
-    const code = await requestCode();
+    let code = null;
+    try { code = await requestCode(); }
+    catch (e) { console.error(e); }
     if (!code) return null;
     const userInfo = await requestLiveSession(code);
     if (!userInfo) return null;

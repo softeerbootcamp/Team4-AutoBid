@@ -59,8 +59,8 @@ class Modal extends Component<ModalState> {
     }
 
     onStateChanged(prevLocalState: ModalState) {
-        const { error, auction } = this.state || MODAL_INITIAL;
-        if (error !== prevLocalState.error || auction !== prevLocalState.auction) {
+        const { pop } = this.state || MODAL_INITIAL;
+        if (pop) {
             this.render();
             return;
         }

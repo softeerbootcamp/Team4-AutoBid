@@ -11,6 +11,13 @@
     background-color: var(--color-lightest-blue);
 }
 
+.header__container__logo {
+    width: 160px;
+    height: 24px;
+    background-size: 160px 24px;
+    background-image: url("https://see.fontimg.com/api/renderfont4/ZVomZ/eyJyIjoiZnMiLCJoIjoxNzIsInciOjIwMDAsImZzIjo4NiwiZmdjIjoiIzA0NzlGRiIsImJnYyI6IiNGRkZGRkYiLCJ0IjoxfQ/YXV0b2JpZA/everbrightsans-regular.png");
+}
+
 .header__container {
     height: 100%;
     padding: var(--container-padding);

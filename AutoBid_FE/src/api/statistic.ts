@@ -10,9 +10,14 @@ const STATISTIC_ENDPOINT = process.env.STATISTIC_ENDPOINT as string;
 
 export const requestAuctionStatistic = asyncTaskWrapper(
     async (auctionStatus: AuctionStatus, carType: CarType): Promise<AuctionStatisticDTO|null> => {
-        const statisticRes =
-            await fetch(`${API_BASE_URL}${STATISTIC_ENDPOINT}?carType=${carType}&auctionStatus=${auctionStatus}`);
-        if (statisticRes.ok)
-            return await statisticRes.json() as AuctionStatisticDTO;
-        return null;
+        try {
+            const statisticRes =
+                await fetch(`${API_BASE_URL}${STATISTIC_ENDPOINT}?carType=${carType}&auctionStatus=${auctionStatus}`);
+            if (statisticRes.ok)
+                return await statisticRes.json() as AuctionStatisticDTO;
+            return null;
+        } catch (e) {
+            console.error(e);
+            return null;
+        }
     });
