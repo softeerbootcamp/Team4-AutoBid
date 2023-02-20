@@ -1,29 +1,14 @@
 package com.codesquad.autobid.auction.service;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import com.codesquad.autobid.auction.response.AuctionStatisticsResponse;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.domain.AuctionInfoDto;
 import com.codesquad.autobid.auction.domain.AuctionStatus;
-import com.codesquad.autobid.auction.repository.AuctionRedis;
+import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
 import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
 import com.codesquad.autobid.auction.repository.AuctionRepository;
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
 import com.codesquad.autobid.auction.response.AuctionInfoListResponse;
 import com.codesquad.autobid.auction.response.AuctionStatisticsResponse;
-import com.codesquad.autobid.email.EmailService;
 import com.codesquad.autobid.image.domain.Image;
 import com.codesquad.autobid.image.repository.ImageRepository;
 import com.codesquad.autobid.image.service.S3Uploader;
@@ -32,6 +17,7 @@ import com.codesquad.autobid.kafka.producer.AuctionOpenProducer;
 import com.codesquad.autobid.kafka.producer.dto.AuctionKafkaDTO;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
@@ -54,18 +40,20 @@ public class AuctionService {
     private final AuctionRepository auctionRepository;
     private final ImageRepository imageRepository;
     private final AuctionRedisRepository auctionRedisRepository;
-    private final EmailService emailService;
-    private final UserRepository userRepository;
     private final AuctionOpenProducer auctionOpenProducer;
     private final AuctionCloseProducer auctionCloseProducer;
 
     @Transactional
     public Auction addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
-        Auction auction = Auction.of(auctionRegisterRequest.getCarId(), user.getId(),
+        Auction auction = Auction.of(
+            auctionRegisterRequest.getCarId(),
+            user.getId(),
             auctionRegisterRequest.getAuctionTitle(),
             auctionRegisterRequest.getAuctionStartTime(),
-            auctionRegisterRequest.getAuctionEndTime(), auctionRegisterRequest.getAuctionStartPrice(),
-            AuctionStatus.BEFORE_END_PRICE, AuctionStatus.BEFORE);
+            auctionRegisterRequest.getAuctionEndTime(),
+            auctionRegisterRequest.getAuctionStartPrice(),
+            AuctionStatus.BEFORE_END_PRICE,
+            AuctionStatus.BEFORE);
         auctionRepository.save(auction);
         List<MultipartFile> images = auctionRegisterRequest.getMultipartFileList();
         for (MultipartFile image : images) {
@@ -84,23 +72,22 @@ public class AuctionService {
         }
     }
 
-    public void openPendingAuctions(LocalDateTime openTime) {
+    public void openPendingAuctions(LocalDateTime openTime) throws JsonProcessingException {
         List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.BEFORE,
             openTime);
         auctionOpenProducer.produce(parseToAuctionKafkaDTO(auctions));
+    }
+
+    public void closeFulfilledAuctions(LocalDateTime closeTime) throws JsonProcessingException {
+        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.PROGRESS,
+            closeTime);
+        auctionCloseProducer.produce(parseToAuctionKafkaDTO(auctions));
     }
 
     private List<AuctionKafkaDTO> parseToAuctionKafkaDTO(List<Auction> auctions) {
         return auctions.stream()
             .map(AuctionKafkaDTO::from)
             .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void closeFulfilledAuctions(LocalDateTime closeTime) {
-        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.PROGRESS,
-            closeTime);
-        auctionCloseProducer.produce(auctions);
     }
 
     public AuctionInfoListResponse getAuctions(String carType, String auctionStatus, Long startPrice, Long endPrice,
@@ -128,100 +115,101 @@ public class AuctionService {
 
         return auctionInfoDtoList;
     }
-	// 1 0~4
-	// 2 5 ~ 9 (size-1)*page ~ size*page -1
-	// 3 10 ~ 14
-	public AuctionInfoListResponse getAuctionInfoListResponse(List<AuctionInfoDto> auctionInfoDtoList, int page,
-		int size) {
-		int totalAuctionNum = auctionInfoDtoList.size();
-		auctionInfoDtoList = subAuctionDtoList(auctionInfoDtoList, page, size, totalAuctionNum);
 
-		return auctionInfoDtoListToAuctionInfoListResponse(
-			auctionInfoDtoList, totalAuctionNum);
-	}
+    // 1 0~4
+    // 2 5 ~ 9 (size-1)*page ~ size*page -1
+    // 3 10 ~ 14
+    public AuctionInfoListResponse getAuctionInfoListResponse(List<AuctionInfoDto> auctionInfoDtoList, int page,
+                                                              int size) {
+        int totalAuctionNum = auctionInfoDtoList.size();
+        auctionInfoDtoList = subAuctionDtoList(auctionInfoDtoList, page, size, totalAuctionNum);
 
-	public AuctionInfoListResponse auctionInfoDtoListToAuctionInfoListResponse(List<AuctionInfoDto> auctionInfoDtoList,
-		int totalAuctionNum) {
-		auctionInfoDtoList.forEach(auctionInfoDto -> {
-			List<Image> images = imageRepository.findAllByAuctionId(
-				AggregateReference.to(auctionInfoDto.getAuctionId()));
-			auctionInfoDto.setImages(images.stream().map(Image::getImageUrl).collect(Collectors.toList()));
-		});
+        return auctionInfoDtoListToAuctionInfoListResponse(
+            auctionInfoDtoList, totalAuctionNum);
+    }
 
-		return AuctionInfoListResponse.of(auctionInfoDtoList, totalAuctionNum);
-	}
+    public AuctionInfoListResponse auctionInfoDtoListToAuctionInfoListResponse(List<AuctionInfoDto> auctionInfoDtoList,
+                                                                               int totalAuctionNum) {
+        auctionInfoDtoList.forEach(auctionInfoDto -> {
+            List<Image> images = imageRepository.findAllByAuctionId(
+                AggregateReference.to(auctionInfoDto.getAuctionId()));
+            auctionInfoDto.setImages(images.stream().map(Image::getImageUrl).collect(Collectors.toList()));
+        });
 
-	public List<AuctionInfoDto> subAuctionDtoList(List<AuctionInfoDto> auctionInfoDtoList, int page, int size, int totalAuctionNum) {
-		if (totalAuctionNum == 0) {
-			return auctionInfoDtoList;
-		}
+        return AuctionInfoListResponse.of(auctionInfoDtoList, totalAuctionNum);
+    }
 
-		if (totalAuctionNum < page * size) {
-			auctionInfoDtoList = auctionInfoDtoList.subList(size * (page - 1), totalAuctionNum);
-		} else {
-			auctionInfoDtoList = auctionInfoDtoList.subList(size * (page - 1), size * page);
-		}
+    public List<AuctionInfoDto> subAuctionDtoList(List<AuctionInfoDto> auctionInfoDtoList, int page, int size, int totalAuctionNum) {
+        if (totalAuctionNum == 0) {
+            return auctionInfoDtoList;
+        }
 
-		return auctionInfoDtoList;
-	}
+        if (totalAuctionNum < page * size) {
+            auctionInfoDtoList = auctionInfoDtoList.subList(size * (page - 1), totalAuctionNum);
+        } else {
+            auctionInfoDtoList = auctionInfoDtoList.subList(size * (page - 1), size * page);
+        }
 
-	public AuctionStatisticsResponse getAuctionStaticsResponse(String carType, String auctionStatus) {
-		List<AuctionInfoDto> auctionInfoDtoList = getAuctionInfoDtoForStatistics(carType, auctionStatus);
-		int[] contents = new int[20];
-		Arrays.fill(contents, 0);
+        return auctionInfoDtoList;
+    }
 
-		int totalSold = auctionRepository.countAllByAuctionStatus(AuctionStatus.COMPLETED);
-		if (auctionInfoDtoList.size() == 0) {
-			return AuctionStatisticsResponse.of(0, 0L, 0L, contents);
-		}
-		Long minPrice = auctionInfoDtoList.get(0).getAuctionEndPrice();
-		Long maxPrice = auctionInfoDtoList.get(auctionInfoDtoList.size() - 1).getAuctionEndPrice();
-		if (maxPrice - minPrice <= 30) {
-			maxPrice = minPrice + 100;
-		}
-		long intervalPrice = (maxPrice - minPrice) / 20;
+    public AuctionStatisticsResponse getAuctionStaticsResponse(String carType, String auctionStatus) {
+        List<AuctionInfoDto> auctionInfoDtoList = getAuctionInfoDtoForStatistics(carType, auctionStatus);
+        int[] contents = new int[20];
+        Arrays.fill(contents, 0);
 
-		auctionInfoDtoList.forEach(auctionInfoDto -> {
-			long idx = Math.floorDiv((auctionInfoDto.getAuctionEndPrice() - minPrice), intervalPrice);
-			if (idx == 20) {
-				contents[19] += 1;
-			} else {
-				contents[Math.toIntExact(idx)] += 1;
-			}
+        int totalSold = auctionRepository.countAllByAuctionStatus(AuctionStatus.COMPLETED);
+        if (auctionInfoDtoList.size() == 0) {
+            return AuctionStatisticsResponse.of(0, 0L, 0L, contents);
+        }
+        Long minPrice = auctionInfoDtoList.get(0).getAuctionEndPrice();
+        Long maxPrice = auctionInfoDtoList.get(auctionInfoDtoList.size() - 1).getAuctionEndPrice();
+        if (maxPrice - minPrice <= 30) {
+            maxPrice = minPrice + 100;
+        }
+        long intervalPrice = (maxPrice - minPrice) / 20;
 
-		});
-		return AuctionStatisticsResponse.of(totalSold, minPrice, maxPrice, contents);
-	}
+        auctionInfoDtoList.forEach(auctionInfoDto -> {
+            long idx = Math.floorDiv((auctionInfoDto.getAuctionEndPrice() - minPrice), intervalPrice);
+            if (idx == 20) {
+                contents[19] += 1;
+            } else {
+                contents[Math.toIntExact(idx)] += 1;
+            }
 
-	public List<AuctionInfoDto> getAuctionInfoDtoForStatistics(String carType, String auctionStatus) {
+        });
+        return AuctionStatisticsResponse.of(totalSold, minPrice, maxPrice, contents);
+    }
 
-		List<AuctionInfoDto> auctionInfoDtoList;
-		if (carType.equals("ALL") && auctionStatus.equals("ALL")) {
-			auctionInfoDtoList = auctionRepository.findAllForStatistics();
-		} else if (carType.equals("ALL")) {
-			auctionInfoDtoList = auctionRepository.findAllByAuctionStatus(auctionStatus);
-		} else if (auctionStatus.equals("ALL")) {
-			auctionInfoDtoList = auctionRepository.findAllByCarType(carType);
-		} else {
-			auctionInfoDtoList = auctionRepository.findAllByAuctionStatusAndCarType(auctionStatus, carType);
-		}
+    public List<AuctionInfoDto> getAuctionInfoDtoForStatistics(String carType, String auctionStatus) {
 
-		return auctionInfoDtoList;
-	}
+        List<AuctionInfoDto> auctionInfoDtoList;
+        if (carType.equals("ALL") && auctionStatus.equals("ALL")) {
+            auctionInfoDtoList = auctionRepository.findAllForStatistics();
+        } else if (carType.equals("ALL")) {
+            auctionInfoDtoList = auctionRepository.findAllByAuctionStatus(auctionStatus);
+        } else if (auctionStatus.equals("ALL")) {
+            auctionInfoDtoList = auctionRepository.findAllByCarType(carType);
+        } else {
+            auctionInfoDtoList = auctionRepository.findAllByAuctionStatusAndCarType(auctionStatus, carType);
+        }
 
-	public AuctionInfoListResponse getMyAuctions(User user) {
-		List<AuctionInfoDto> auctionInfoDtoList = auctionRepository.findAllByUserId(user.getId());
-		return auctionInfoDtoListToAuctionInfoListResponse(
-			auctionInfoDtoList, auctionInfoDtoList.size());
-	}
+        return auctionInfoDtoList;
+    }
 
-	public AuctionInfoListResponse getMyParticipatingAuctions(User user) {
-		List<AuctionInfoDto> auctionInfoDtoList = auctionRepository.findAllParticipatingAuctions(user.getId());
-		return auctionInfoDtoListToAuctionInfoListResponse(auctionInfoDtoList, auctionInfoDtoList.size());
-	}
+    public AuctionInfoListResponse getMyAuctions(User user) {
+        List<AuctionInfoDto> auctionInfoDtoList = auctionRepository.findAllByUserId(user.getId());
+        return auctionInfoDtoListToAuctionInfoListResponse(
+            auctionInfoDtoList, auctionInfoDtoList.size());
+    }
 
-	public AuctionRedis getAuction(Long auctionId) {
-		return auctionRedisRepository.findById(auctionId);
-	}
+    public AuctionInfoListResponse getMyParticipatingAuctions(User user) {
+        List<AuctionInfoDto> auctionInfoDtoList = auctionRepository.findAllParticipatingAuctions(user.getId());
+        return auctionInfoDtoListToAuctionInfoListResponse(auctionInfoDtoList, auctionInfoDtoList.size());
+    }
+
+    public AuctionRedisDTO getAuction(Long auctionId) {
+        return auctionRedisRepository.findById(auctionId);
+    }
 }
 

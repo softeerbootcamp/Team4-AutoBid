@@ -5,13 +5,16 @@ import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
 import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
 import com.codesquad.autobid.auction.repository.AuctionRepository;
 import com.codesquad.autobid.kafka.producer.dto.AuctionKafkaDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
@@ -24,21 +27,22 @@ public class AuctionOpenAdapter {
     private final KafkaTemplate kafkaTemplate;
     private final AuctionRedisRepository auctionRedisRepository;
     private final AuctionRepository auctionRepository;
+    private final ObjectMapper om;
 
     @KafkaListener(topics = "auction-open", groupId = "auction-open-consumer")
-    public void consume(@Payload AuctionKafkaDTO auctionKafkaDTO) {
-        log.debug("AuctionOpenAdapter: {}", auctionKafkaDTO.getAuction());
-        Auction auction = auctionKafkaDTO.getAuction();
-        // todo: check deserialize
+    public void consume(String json) throws JsonProcessingException {
+        AuctionKafkaDTO auctionKafkaDTO = om.readValue(json, AuctionKafkaDTO.class);
+        // mysql
+        Auction auction = auctionRepository.findById(auctionKafkaDTO.getAuctionId()).get();
         auction.open();
         auctionRepository.save(auction);
+        // redis
         auctionRedisRepository.save(AuctionRedisDTO.from(auction));
 
         produce(auctionKafkaDTO);
     }
 
-    private void produce(AuctionKafkaDTO auctionKafkaDTO) {
-        // todo: check serialize
-        kafkaTemplate.send(AUCTION_SEND_TOPIC_NAME, auctionKafkaDTO);
+    private void produce(AuctionKafkaDTO auctionKafkaDTO) throws JsonProcessingException {
+        kafkaTemplate.send(AUCTION_SEND_TOPIC_NAME, new String(om.writeValueAsBytes(auctionKafkaDTO)));
     }
 }
