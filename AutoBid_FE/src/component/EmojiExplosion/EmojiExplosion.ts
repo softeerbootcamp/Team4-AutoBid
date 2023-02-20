@@ -1,6 +1,6 @@
 import Component from "../../core/component";
 import {emojisplosions} from "emojisplosion";
-import {EmojiState} from "../../store/emoji";
+import {EmojiState, emojiStateSelector} from "../../store/emoji";
 
 const {cancel} = emojisplosions({
     emojis: ["🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻", "🚐", "🚘", "🚗", "🚙", "🛻",
@@ -25,16 +25,20 @@ const {cancel} = emojisplosions({
         x: Math.random() * innerWidth,
         y: Math.random() * innerHeight,
     }),
-    interval: 300
+    interval: 200
     // , uniqueness: 1
 });
 
 class EmojiExplosion extends Component<EmojiState> {
+    stateSelector(globalState: any): EmojiState | undefined {
+        return globalState[emojiStateSelector];
+    }
+
     template() {
         const {isEmojiOn} = this.state!;
         return `
             <div class="emoji-explosion">
-                ${isEmojiOn ? setTimeout(cancel, 1000): ''}
+                ${isEmojiOn ? setTimeout(cancel, 5000): ''}
             </div>
         `
     }
