@@ -1,18 +1,12 @@
 package com.codesquad.autobid.auction.repository;
 
 import com.codesquad.autobid.auction.domain.Auction;
-import com.codesquad.autobid.auction.domain.AuctionStatus;
 import com.codesquad.autobid.car.domain.Car;
-import com.codesquad.autobid.util.CarTestUtil;
 import com.codesquad.autobid.user.domain.User;
-import com.codesquad.autobid.util.UserTestUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.lang.reflect.Field;
-import java.time.LocalDateTime;
 
 import static com.codesquad.autobid.util.AuctionTestUtil.saveAuction;
 import static com.codesquad.autobid.util.CarTestUtil.getNewCars;
@@ -23,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
-class AuctionRedisRepositoryTest {
+class AuctionRedisDTORepositoryTest {
 
     @Autowired
     private AuctionRedisRepository auctionRedisRepository;
@@ -35,14 +29,14 @@ class AuctionRedisRepositoryTest {
         User user = saveUser(getNewUser());
         Car car = saveCar(getNewCars(user.getId(), 1).get(0));
         Auction auction = saveAuction(user, car);
-        AuctionRedis auctionRedis = AuctionRedis.from(auction);
+        AuctionRedisDTO auctionRedisDTO = AuctionRedisDTO.from(auction);
         // when
-        auctionRedisRepository.save(auctionRedis);
+        auctionRedisRepository.save(auctionRedisDTO);
         // then
-        AuctionRedis findAuctionRedis = auctionRedisRepository.findById(auctionRedis.getId());
+        AuctionRedisDTO findAuctionRedisDTO = auctionRedisRepository.findById(auctionRedisDTO.getAuctionId());
         assertAll(
-                () -> assertThat(findAuctionRedis.getBidders().size()).isEqualTo(0),
-                () -> assertThat(findAuctionRedis).usingRecursiveComparison().isEqualTo(auctionRedis)
+                () -> assertThat(findAuctionRedisDTO.getAuctionRedisBidderDto().size()).isEqualTo(0),
+                () -> assertThat(findAuctionRedisDTO).usingRecursiveComparison().isEqualTo(auctionRedisDTO)
         );
     }
 
@@ -53,10 +47,10 @@ class AuctionRedisRepositoryTest {
         User user = saveUser(getNewUser());
         Car car = saveCar(getNewCars(user.getId(), 1).get(0));
         Auction auction = saveAuction(user, car);
-        AuctionRedis auctionRedis = AuctionRedis.from(auction);
+        AuctionRedisDTO auctionRedisDTO = AuctionRedisDTO.from(auction);
         // when
-        auctionRedisRepository.save(auctionRedis);
-        auctionRedisRepository.delete(auction);
+        auctionRedisRepository.save(auctionRedisDTO);
+        auctionRedisRepository.delete(auction.getId());
         // then
     }
 }
