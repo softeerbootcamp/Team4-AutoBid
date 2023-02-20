@@ -2,9 +2,7 @@ package com.codesquad.autobid.auction.service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.codesquad.autobid.auction.response.AuctionStatisticsResponse;
@@ -222,6 +220,11 @@ public class AuctionService {
 
 	public AuctionRedis getAuction(Long auctionId) {
 		return auctionRedisRepository.findById(auctionId);
+	}
+
+	public Auction getDBAuction(Long auctionId) {
+		Optional<Auction> auction = auctionRepository.findById(auctionId);
+		return auction.orElse(null);
 	}
 }
 
