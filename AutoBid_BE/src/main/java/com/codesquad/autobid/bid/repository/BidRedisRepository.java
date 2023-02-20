@@ -28,7 +28,7 @@ public class BidRedisRepository {
     public void save(Bid bid) {
         Long auctionId = bid.getAuctionId().getId();
         Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionId);
-        zSetOps.add(keys.get(AuctionRedisKey.BIDDERS), bid.getUserId().getId(), bid.getPrice());
+        zSetOps.add(keys.get(AuctionRedisKey.BIDDERS), bid.getUserId().getId(), -bid.getPrice());
         stringOps.set(keys.get(AuctionRedisKey.PRICE), bid.getPrice());
     }
 }
