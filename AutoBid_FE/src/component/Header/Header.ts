@@ -1,6 +1,8 @@
 import Component from "../../core/component";
 import "./header.css";
-import {login, logout, UserState, userStateSelector} from "../../store/user";
+import {login, logout, UserState, userStateSelector, whoIam} from "../../store/user";
+import {showMain, showMy} from "../../store/page";
+import Toast from "../../core/toast";
 
 class Header extends Component<UserState> {
     stateSelector(globalState: any): UserState | undefined {
@@ -11,10 +13,7 @@ class Header extends Component<UserState> {
         const { isLogin, userName } = this.state || { isLogin: false, userName: "" };
         return `
         <div class="header__container">
-<!--            <h2 class="header__container__title">AutoBid</h2>-->
-            <img src="https://see.fontimg.com/api/renderfont4/ZVomZ/eyJyIjoiZnMiLCJoIjoxNzIsInciOjIwMDAsImZzIjo4NiwiZmdjIjoiIzA0NzlGRiIsImJnYyI6IiNGRkZGRkYiLCJ0IjoxfQ/YXV0b2JpZA/everbrightsans-regular.png" 
-            alt=""
-            style="width: 160px; height: 24px;">
+            <button class="header__container__logo"></button>
             <div class="header__container__menu">
                 <button class="header__container__content header__container__content--btn my-page-btn">내 차 목록</button>
                 <button class="header__container__content header__container__content--btn my-page-btn">경매 목록</button>
@@ -34,8 +33,16 @@ class Header extends Component<UserState> {
     }
 
     initialize() {
-        this.addEvent('click', '.my-page-btn', login);
+        this.addEvent('click', '.my-page-btn', async () => {
+            const userInfo = await whoIam() || await login();
+            if (!userInfo) {
+                Toast.show('마이페이지는 로그인 후 이용할 수 있습니다', 1000);
+                return;
+            }
+            showMy();
+        });
         this.addEvent('click', '.logout-btn', logout);
+        this.addEvent('click', '.header__container__logo', showMain);
     }
 
     onStateChanged(prevLocalState: UserState) {

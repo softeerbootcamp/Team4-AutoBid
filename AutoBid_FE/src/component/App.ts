@@ -6,15 +6,28 @@ import QuerySidebar from "./QuerySidebar/QuerySidebar";
 import {whoIam} from "../store/user";
 import MyPage from "./MyPage/MyPage";
 import Modal from "./Modal/Modal";
+import {Page, PAGE_INITIAL, PageState, pageStateSelector} from "../store/page";
 
-class App extends Component<any> {
+class App extends Component<PageState> {
+    stateSelector(globalState: any): PageState | undefined {
+        return globalState[pageStateSelector];
+    }
+
+    onStateChanged(prevLocalState: PageState) {
+        this.render();
+    }
+
     template(): InnerHTML["innerHTML"] {
+        const { page } = this.state || PAGE_INITIAL;
         return `
         <header data-component="Header"></header>
         <div class="main-container">
-            <div data-component="QuerySidebar" hidden></div>
-            <div data-component="AuctionList" hidden></div>
+        ${page === Page.MAIN ? `
+            <div data-component="QuerySidebar"></div>
+            <div data-component="AuctionList"></div>
+        ` : `
             <div data-component="MyPage"></div>
+        `}
         </div>
         <div data-component="Modal"></div>
         `;
@@ -24,14 +37,20 @@ class App extends Component<any> {
         const $header = this.$target.querySelector('[data-component="Header"]') as HTMLElement;
         new Header($header, {});
 
-        const $auctionList = this.$target.querySelector('[data-component="AuctionList"]') as HTMLElement;
-        new AuctionList($auctionList, {});
+        const $auctionList = this.$target.querySelector('[data-component="AuctionList"]');
+        if ($auctionList) {
+            new AuctionList($auctionList as HTMLElement, {});
+        }
 
-        const $querySidebar = this.$target.querySelector('[data-component="QuerySidebar"]') as HTMLElement;
-        new QuerySidebar($querySidebar, {});
+        const $querySidebar = this.$target.querySelector('[data-component="QuerySidebar"]');
+        if ($querySidebar) {
+            new QuerySidebar($querySidebar as HTMLElement, {});
+        }
 
-        const $myPage = document.querySelector('[data-component="MyPage"]') as HTMLElement;
-        new MyPage($myPage, {});
+        const $myPage = document.querySelector('[data-component="MyPage"]');
+        if ($myPage) {
+            new MyPage($myPage as HTMLElement, {});
+        }
         
         const $modal = this.$target.querySelector('[data-component="Modal"]') as HTMLElement;
         new Modal($modal, {});
