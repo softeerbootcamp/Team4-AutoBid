@@ -104,7 +104,7 @@ class QuerySidebar extends Component<AuctionQuery> {
         const max = Math.max(...contents);
         $histogram.innerHTML = `${contents.map(value => `
         <span class="query-side-bar__set-fund__hist__bar set-fund__hist__bar--selected" 
-            style="height: ${Math.round(value / max * 100)}%"></span>
+            style="height: ${Math.round(value / max * 80)}%"></span>
         `).join('')}`;
     }
     mountDoubleRangeSlider(min: number, max: number, left: number, right: number) {
