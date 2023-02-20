@@ -22,7 +22,7 @@ const getAuthUri = () => {
 export const requestCode = asyncTaskWrapper(() => {
     const authUri = getAuthUri();
     const popup = popupCenter({url: authUri, title: 'Hyundai OAuth', w: 500, h: 600});
-    return new Promise((resolve: (code: string|null) => any) => {
+    return new Promise((resolve: (code: string|null) => any, reject) => {
         const targetUrl = new URL(AUTH_REDIRECT_URI);
         const checker = setInterval(() => {
             try {
@@ -35,8 +35,7 @@ export const requestCode = asyncTaskWrapper(() => {
             } catch (e) {} finally {
                 if (!popup || popup.closed) {
                     clearInterval(checker);
-                    console.error('Authentication canceled');
-                    resolve(null);
+                    reject('Authentication canceled');
                 }
             }
         }, 100);
