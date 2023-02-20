@@ -4,6 +4,7 @@ import com.codesquad.autobid.web.argumentresolver.AccessTokenArgumentResolver;
 import com.codesquad.autobid.web.argumentresolver.AuthorizedUserArgumentResolver;
 import com.codesquad.autobid.web.interceptor.AuthorizationInterceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public ObjectMapper objectMapper() {
-        return new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        return mapper;
     }
 
     @Override
