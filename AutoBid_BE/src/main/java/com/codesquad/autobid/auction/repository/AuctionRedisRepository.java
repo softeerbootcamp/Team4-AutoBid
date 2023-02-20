@@ -26,52 +26,46 @@ public class AuctionRedisRepository {
         zSetOps = redisTemplate.opsForZSet();
     }
 
-    public void save(AuctionRedis auctionRedis) {
-        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionRedis.getId());
+    public void save(AuctionRedisDTO auctionRedisDTO) {
+        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionRedisDTO.getAuctionId());
 
-        stringOps.set(keys.get(AuctionRedisKey.PRICE), auctionRedis.getPrice());
-        if (auctionRedis.getBidders().size() != 0) {
-            saveBidders(keys.get(AuctionRedisKey.BIDDERS), auctionRedis.getBidders());
+        stringOps.set(keys.get(AuctionRedisKey.PRICE), auctionRedisDTO.getPrice());
+        if (auctionRedisDTO.getAuctionRedisBidderDto().size() != 0) {
+            saveBidders(keys.get(AuctionRedisKey.BIDDERS), auctionRedisDTO.getAuctionRedisBidderDto());
         }
     }
 
-    private void saveBidders(String key, Set<Bidder> bidders) {
+    private void saveBidders(String key, Set<AuctionRedisBidderDTO> auctionRedisBidderDTOS) {
         zSetOps.add(
-                key,
-                bidders.stream()
-                        .map(bidder -> ZSetOperations.TypedTuple.of(bidder.getUserId(), (double) -1 * bidder.getPrice()))
-                        .collect(Collectors.toSet()));
+            key,
+            auctionRedisBidderDTOS.stream()
+                .map(bidder -> ZSetOperations.TypedTuple.of(bidder.getUserId(), (double) -1 * bidder.getPrice()))
+                .collect(Collectors.toSet()));
     }
 
-    public void delete(Auction auction) {
-        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auction.getId());
+    public void delete(Long auctionId) {
+        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionId);
         for (String key : keys.values()) {
             redisTemplate.delete(key);
         }
     }
 
-    public AuctionRedis findById(Long auctionId) {
+    public AuctionRedisDTO findById(Long auctionId) {
         Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionId);
-        try {
-            Long price = Integer.toUnsignedLong((int) stringOps.get(keys.get(AuctionRedisKey.PRICE)));
-            Set<Bidder> bidders = parseToBidderSet(keys.get(AuctionRedisKey.BIDDERS), 0, -1);
-            return AuctionRedis.of(auctionId, price, bidders);
-        } catch (NullPointerException e) {
-            return null;
-        }
+        Long price = Integer.toUnsignedLong((int) stringOps.get(keys.get(AuctionRedisKey.PRICE)));
+        Set<AuctionRedisBidderDTO> auctionRedisBidderDTOS = parseToBidderSet(keys.get(AuctionRedisKey.BIDDERS), 0, -1);
+        return AuctionRedisDTO.of(auctionId, price, auctionRedisBidderDTOS);
     }
 
-    private Set<Bidder> parseToBidderSet(String key, int from, int to) {
+    private Set<AuctionRedisBidderDTO> parseToBidderSet(String key, int from, int to) {
         Set<DefaultTypedTuple> set = zSetOps.rangeWithScores(key, from, to);
-        return set.stream().map((dtt) -> new Bidder(Integer.toUnsignedLong((int) dtt.getValue()), -1 * dtt.getScore().longValue())).collect(Collectors.toSet());
+        return set.stream()
+            .map((dtt) -> AuctionRedisBidderDTO.of(Integer.toUnsignedLong((int) dtt.getValue()), -1 * dtt.getScore().longValue()))
+            .collect(Collectors.toSet());
     }
 
     public Long getPrice(Long auctionId) {
-        try {
-            Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionId);
-            return (Long) stringOps.get(keys.get(AuctionRedisKey.PRICE));
-        } catch (NullPointerException e) {
-            throw null;
-        }
+        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionId);
+        return (Long) stringOps.get(keys.get(AuctionRedisKey.PRICE));
     }
 }

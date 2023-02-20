@@ -1,29 +1,36 @@
 package com.codesquad.autobid.kafka.producer.dto;
 
 import com.codesquad.autobid.auction.domain.Auction;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuctionKafkaDTO {
-    private Auction auction;
+
+    private Long auctionId;
+    private String auctionTitle;
     private Long price;
-    private List<AuctionKafkaUserDTO> user;
-    private Long numberOfUsers;
+    private List<AuctionKafkaUserDTO> users;
+    private int numberOfUsers;
 
     public static AuctionKafkaDTO from(Auction auction) {
         AuctionKafkaDTO auctionKafkaDTO = new AuctionKafkaDTO();
-        auctionKafkaDTO.auction = auction;
+        auctionKafkaDTO.auctionId = auction.getId();
+        auctionKafkaDTO.auctionTitle = auction.getAuctionTitle();
         auctionKafkaDTO.price = auction.getAuctionStartPrice();
-        auctionKafkaDTO.user = new ArrayList<>();
-        auctionKafkaDTO.numberOfUsers = 0l;
+        auctionKafkaDTO.users = new ArrayList<>();
+        auctionKafkaDTO.numberOfUsers = 0;
         return auctionKafkaDTO;
+    }
+
+    public void update(List<AuctionKafkaUserDTO> auctionKafkaUserDTOs) {
+        this.users = auctionKafkaUserDTOs;
+        this.numberOfUsers = auctionKafkaUserDTOs.size();
     }
 }

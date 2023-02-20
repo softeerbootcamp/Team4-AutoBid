@@ -2,9 +2,9 @@ package com.codesquad.autobid.websocket.controller;
 
 import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.domain.AuctionStatus;
-import com.codesquad.autobid.auction.repository.AuctionRedis;
+import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
 import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
-import com.codesquad.autobid.auction.repository.Bidder;
+import com.codesquad.autobid.auction.repository.AuctionRedisBidderDTO;
 import com.codesquad.autobid.auction.service.AuctionService;
 import com.codesquad.autobid.bid.repository.BidRepository;
 import com.codesquad.autobid.car.domain.Car;
@@ -61,27 +61,27 @@ class WebSocketControllerTest {
         LocalDateTime now = LocalDateTime.now();
 
         // bidder
-        Bidder bidder1 = new Bidder(1L,10000L);
-        Bidder bidder2 = new Bidder(2L,20000L);
-        Bidder bidder3 = new Bidder(3L,30000L);
-        Bidder bidder4 = new Bidder(4L,40000L);
+        AuctionRedisBidderDTO auctionRedisBidderDTO1 = AuctionRedisBidderDTO.of(1L,10000L);
+        AuctionRedisBidderDTO auctionRedisBidderDTO2 = AuctionRedisBidderDTO.of(2L,20000L);
+        AuctionRedisBidderDTO auctionRedisBidderDTO3 = AuctionRedisBidderDTO.of(3L,30000L);
+        AuctionRedisBidderDTO auctionRedisBidderDTO4 = AuctionRedisBidderDTO.of(4L,40000L);
 
-        Set<Bidder> bidderSet = new HashSet<>();
-        bidderSet.add(bidder1);
-        bidderSet.add(bidder2);
-        bidderSet.add(bidder3);
-        bidderSet.add(bidder4);
+        Set<AuctionRedisBidderDTO> auctionRedisBidderDTOSet = new HashSet<>();
+        auctionRedisBidderDTOSet.add(auctionRedisBidderDTO1);
+        auctionRedisBidderDTOSet.add(auctionRedisBidderDTO2);
+        auctionRedisBidderDTOSet.add(auctionRedisBidderDTO3);
+        auctionRedisBidderDTOSet.add(auctionRedisBidderDTO4);
 
         // auction 저장
         Auction auction = Auction.of(car.getId(), user.getId(), "test", LocalDateTime.now(), LocalDateTime.now(),10000l, 50000l, AuctionStatus.PROGRESS);
         // bidder 등록
-        AuctionRedis auctionRedis = AuctionRedis.of(auction.getId(), 10000L, bidderSet);
+        AuctionRedisDTO auctionRedisDTO = AuctionRedisDTO.of(auction.getId(), 10000L, auctionRedisBidderDTOSet);
         // 레디스 저장
-        auctionRedisRepository.save(auctionRedis);
+        auctionRedisRepository.save(auctionRedisDTO);
         // 비더가져오기
-        Set<Bidder> bidders = auctionRedis.getBidders();
+        Set<AuctionRedisBidderDTO> auctionRedisBidderDTOS = auctionRedisDTO.getAuctionRedisBidderDto();
         // set -> list
-        List<BidderDto> bidderDtoList = webSocketService.bidderToBidderDto(bidders);
+        List<BidderDto> bidderDtoList = webSocketService.bidderToBidderDto(auctionRedisBidderDTOS);
 
         int bidderSize = bidderDtoList.size();
 
@@ -91,7 +91,7 @@ class WebSocketControllerTest {
             log.info("userName: {}",  i.getUsername());
         }
 
-        AuctionDtoWebSocket auctionDtoWebSocket = AuctionDtoWebSocket.of(auctionRedis.getPrice(), bidderDtoList);
+        AuctionDtoWebSocket auctionDtoWebSocket = AuctionDtoWebSocket.of(auctionRedisDTO.getPrice(), bidderDtoList);
         log.info("현재입찰가: {}",  auctionDtoWebSocket.getPrice());
         List<BidderDto> biddersResult = auctionDtoWebSocket.getUsers();
         Long userNumber = auctionDtoWebSocket.getNumberOfUsers();

@@ -2,7 +2,7 @@ package com.codesquad.autobid.websocket.controller;
 
 import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.domain.AuctionStatus;
-import com.codesquad.autobid.auction.repository.AuctionRedis;
+import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
 import com.codesquad.autobid.auction.service.AuctionService;
 import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
 import com.codesquad.autobid.websocket.service.WebSocketService;
@@ -41,7 +41,7 @@ public class WebSocketController {
         String name = principal.getName();
         log.info("name: {} ",name);
 
-        AuctionRedis auctionRedis = auctionService.getAuction(auctionId);
+        AuctionRedisDTO auctionRedis = auctionService.getAuction(auctionId);
         if (auctionRedis != null) { // 시작된 경우
             AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionRedis);
             messagingTemplate.convertAndSendToUser(principal.getName(),"/ws/start/" + auctionId, auctionDtoWebSocket);

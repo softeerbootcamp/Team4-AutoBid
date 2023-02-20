@@ -1,8 +1,8 @@
 package com.codesquad.autobid.websocket.service;
 
+import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
+import com.codesquad.autobid.auction.repository.AuctionRedisBidderDTO;
 import com.codesquad.autobid.auction.domain.Auction;
-import com.codesquad.autobid.auction.repository.AuctionRedis;
-import com.codesquad.autobid.auction.repository.Bidder;
 import com.codesquad.autobid.auction.service.AuctionService;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.service.UserService;
@@ -27,10 +27,10 @@ public class WebSocketService {
         this.auctionService = auctionService;
     }
 
-    public List<BidderDto> bidderToBidderDto(Set<Bidder> bidders) {
+    public List<BidderDto> bidderToBidderDto(Set<AuctionRedisBidderDTO> auctionRedisBidderDTOS) {
         List<BidderDto> bidderDtoList = new ArrayList<>();
         BidderDto bidderDto = new BidderDto();
-        for (Bidder i : bidders) {
+        for (AuctionRedisBidderDTO i : auctionRedisBidderDTOS) {
             Long userId = i.getUserId();
             Optional<User> user = userService.findById(userId);
             if(user.isPresent()){
@@ -44,16 +44,17 @@ public class WebSocketService {
         return bidderDtoList;
     }
 
-    public AuctionDtoWebSocket parsingDto(AuctionRedis auction) {
+    public AuctionDtoWebSocket parsingDto(AuctionRedisDTO auctionRedis) {
         AuctionDtoWebSocket auctionDtoWebSocket = new AuctionDtoWebSocket();
+        AuctionRedisDTO auction = auctionService.getAuction(auctionRedis.getAuctionId());
         List<BidderDto> bidderDtoList = new ArrayList<>();
 
         try {
-            if (auction.getBidders().isEmpty()) {
+            if (auction.getAuctionRedisBidderDto().isEmpty()) {
                 auctionDtoWebSocket = AuctionDtoWebSocket.of(0L, bidderDtoList); // 현재 입찰가, 입찰자들, 참여자 수
             }
-            else if (!auction.getBidders().isEmpty()) {
-                bidderDtoList = bidderToBidderDto(auction.getBidders()); // bidder -> bidderDto
+            else if (!auction.getAuctionRedisBidderDto().isEmpty()) {
+                bidderDtoList = bidderToBidderDto(auction.getAuctionRedisBidderDto()); // bidder -> bidderDto
                 auctionDtoWebSocket = AuctionDtoWebSocket.of(auction.getPrice(), bidderDtoList); // 현재 입찰가, 입찰자들, 참여자 수
             }
         } catch (NullPointerException e) {
