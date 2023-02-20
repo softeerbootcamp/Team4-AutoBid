@@ -3,15 +3,24 @@ package com.codesquad.autobid.config;
 import com.codesquad.autobid.web.argumentresolver.AccessTokenArgumentResolver;
 import com.codesquad.autobid.web.argumentresolver.AuthorizedUserArgumentResolver;
 import com.codesquad.autobid.web.interceptor.AuthorizationInterceptor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
+import java.util.Objects;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
