@@ -43,8 +43,8 @@ public class AuctionRedisRepository {
                 .collect(Collectors.toSet()));
     }
 
-    public void delete(Auction auction) {
-        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auction.getId());
+    public void delete(Long auctionId) {
+        Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionId);
         for (String key : keys.values()) {
             redisTemplate.delete(key);
         }
