@@ -1,7 +1,6 @@
 @import "../../style/reset.css";
 @import "../../style/common.css";
 
-/* TODO: ADD HR, .VL IN COMMON CSS FILE */
 hr {
   border-bottom: 1px solid var(--color-semi-gray);
   border-top: 0;

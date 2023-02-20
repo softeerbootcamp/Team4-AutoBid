@@ -12,7 +12,6 @@ uploadInput.onchange = () => {
 
     if (files == null) return;
     addImages(files).then(setImageDeleteButton).then();
-
 }
 
 async function addImages(files: FileList) {
