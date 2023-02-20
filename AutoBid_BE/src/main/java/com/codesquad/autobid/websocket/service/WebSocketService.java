@@ -29,12 +29,12 @@ public class WebSocketService {
 
     public List<BidderDto> bidderToBidderDto(Set<AuctionRedisBidderDTO> auctionRedisBidderDTOS) {
         List<BidderDto> bidderDtoList = new ArrayList<>();
-        BidderDto bidderDto = new BidderDto();
         for (AuctionRedisBidderDTO i : auctionRedisBidderDTOS) {
+            BidderDto bidderDto = new BidderDto();
             Long userId = i.getUserId();
             Optional<User> user = userService.findById(userId);
             if(user.isPresent()){
-                bidderDto.setPrice(i.getPrice());
+                bidderDto.setPrice(-i.getPrice());
                 bidderDto.setUserId(userId);
                 bidderDto.setUsername(user.get().getName());
                 bidderDto.setPhoneNumber(user.get().getMobilenum());
