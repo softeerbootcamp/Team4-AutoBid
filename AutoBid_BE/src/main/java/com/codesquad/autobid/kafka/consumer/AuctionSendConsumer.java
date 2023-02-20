@@ -36,7 +36,7 @@ public class AuctionSendConsumer {
         log.info("get-price:{}",auctionKafkaDTO.getPrice());
         log.info("user-count:{}",auctionDtoWebSocket.getNumberOfUsers());
         log.info("user-price:{}",auctionDtoWebSocket.getPrice());
-
+        log.info("broadcast:{}", url);
         webSocketService.broadCast(auctionDtoWebSocket,url);
     }
 

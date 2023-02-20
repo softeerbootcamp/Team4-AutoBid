@@ -32,6 +32,7 @@ public class AuctionOpenAdapter {
     @KafkaListener(topics = "auction-open", groupId = "auction-open-consumer")
     public void consume(String json) throws JsonProcessingException {
         AuctionKafkaDTO auctionKafkaDTO = om.readValue(json, AuctionKafkaDTO.class);
+        log.info("auction-open:{}", auctionKafkaDTO);
         // mysql
         Auction auction = auctionRepository.findById(auctionKafkaDTO.getAuctionId()).get();
         auction.open();
