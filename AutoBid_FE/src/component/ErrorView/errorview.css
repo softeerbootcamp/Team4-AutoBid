@@ -1,0 +1,22 @@
+@import "../../style/all.css";
+
+[data-component="ErrorView"] {
+    padding: 32px;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-level-3);
+    background-color: var(--color-white);
+    width: 500px;
+}
+
+[data-component="ErrorView"] .error-view__title {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 32px;
+}
+
+[data-component="ErrorView"] .error-view__msg {
+    display: block;
+    font-size: 20px;
+    width: 100%;
+    text-align: center;
+}

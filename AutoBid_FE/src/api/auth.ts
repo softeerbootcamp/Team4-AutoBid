@@ -22,7 +22,7 @@ const getAuthUri = () => {
 export const requestCode = asyncTaskWrapper(() => {
     const authUri = getAuthUri();
     const popup = popupCenter({url: authUri, title: 'Hyundai OAuth', w: 500, h: 600});
-    return new Promise((resolve: (code: string) => any, reject) => {
+    return new Promise((resolve: (code: string|null) => any) => {
         const targetUrl = new URL(AUTH_REDIRECT_URI);
         const checker = setInterval(() => {
             try {
@@ -35,7 +35,8 @@ export const requestCode = asyncTaskWrapper(() => {
             } catch (e) {} finally {
                 if (!popup || popup.closed) {
                     clearInterval(checker);
-                    reject('Authentication canceled');
+                    console.error('Authentication canceled');
+                    resolve(null);
                 }
             }
         }, 100);
@@ -43,31 +44,46 @@ export const requestCode = asyncTaskWrapper(() => {
 });
 
 export const requestLiveSession = asyncTaskWrapper(async (code: string): Promise<UserInfo | null> => {
-    const res = await fetch(`${API_BASE_URL}${LOGIN_ENDPOINT}`, {
-        method: 'POST',
-        headers: { 'X-Auth-Code': code },
-        credentials: 'include'
-    });
-    if (res.ok)
-        return await res.json() as UserInfo;
-    return null;
+    try {
+        const res = await fetch(`${API_BASE_URL}${LOGIN_ENDPOINT}`, {
+            method: 'POST',
+            headers: { 'X-Auth-Code': code },
+            credentials: 'include'
+        });
+        if (res.ok)
+            return await res.json() as UserInfo;
+        return null;
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
 });
 
 export const requestCurrentUser = asyncTaskWrapper(async (): Promise<UserInfo | null> => {
-    const res = await fetch(`${API_BASE_URL}${USER_ENDPOINT}`, {
-        method: 'GET',
-        credentials: 'include'
-    });
-    if (res.ok)
-        return await res.json() as UserInfo;
-    return null;
+    try {
+        const res = await fetch(`${API_BASE_URL}${USER_ENDPOINT}`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+        if (res.ok)
+            return await res.json() as UserInfo;
+        return null;
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
 });
 
 export const requestInvalidateSession = asyncTaskWrapper(async (): Promise<boolean> => {
-    const res = await fetch(`${API_BASE_URL}${LOGOUT_ENDPOINT}`, {
-        method: 'DELETE',
-        credentials: 'include'
-    });
-    return res.ok;
+    try {
+        const res = await fetch(`${API_BASE_URL}${LOGOUT_ENDPOINT}`, {
+            method: 'POST',
+            credentials: 'include'
+        });
+        return res.ok;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
 });
 

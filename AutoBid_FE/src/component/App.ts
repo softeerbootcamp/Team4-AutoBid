@@ -5,6 +5,7 @@ import "./app.css";
 import QuerySidebar from "./QuerySidebar/QuerySidebar";
 import {whoIam} from "../store/user";
 import MyPage from "./MyPage/MyPage";
+import Modal from "./Modal/Modal";
 
 class App extends Component<any> {
     template(): InnerHTML["innerHTML"] {
@@ -15,6 +16,7 @@ class App extends Component<any> {
             <div data-component="AuctionList" hidden></div>
             <div data-component="MyPage"></div>
         </div>
+        <div data-component="Modal"></div>
         `;
     }
 
@@ -22,14 +24,17 @@ class App extends Component<any> {
         const $header = this.$target.querySelector('[data-component="Header"]') as HTMLElement;
         new Header($header, {});
 
-        const $auctionList = document.querySelector('[data-component="AuctionList"]') as HTMLElement;
+        const $auctionList = this.$target.querySelector('[data-component="AuctionList"]') as HTMLElement;
         new AuctionList($auctionList, {});
 
-        const $querySidebar = document.querySelector('[data-component="QuerySidebar"]') as HTMLElement;
+        const $querySidebar = this.$target.querySelector('[data-component="QuerySidebar"]') as HTMLElement;
         new QuerySidebar($querySidebar, {});
 
         const $myPage = document.querySelector('[data-component="MyPage"]') as HTMLElement;
         new MyPage($myPage, {});
+        
+        const $modal = this.$target.querySelector('[data-component="Modal"]') as HTMLElement;
+        new Modal($modal, {});
 
         whoIam().then(() => {console.log('session user initialized')});
     }
