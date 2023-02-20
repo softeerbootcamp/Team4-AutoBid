@@ -14,6 +14,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 @AllArgsConstructor
 @Table("users") @Getter @Setter
 @ToString
@@ -34,12 +39,18 @@ public class User implements Serializable {
     @Column("user_mobilenum")
     private String mobilenum;
 
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     @Column("user_birthdate")
     private LocalDate birthdate;
 
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     @Column("created_at")
     private LocalDateTime createAt;
 
+    @JsonSerialize(using = LocalDateSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     @Column("updated_at")
     private LocalDateTime updateAt;
 

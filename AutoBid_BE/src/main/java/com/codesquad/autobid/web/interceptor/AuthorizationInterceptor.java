@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import com.codesquad.autobid.OauthToken;
 import com.codesquad.autobid.test.UserTestUtil;
+import com.codesquad.autobid.user.domain.User;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -31,7 +32,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return false;
 		}
-		log.info((String)session.getAttribute("user"));
+		log.info(String.valueOf((User)session.getAttribute("user")));
 		return true;
 	}
 }
