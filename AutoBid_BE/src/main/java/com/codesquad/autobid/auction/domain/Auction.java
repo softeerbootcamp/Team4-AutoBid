@@ -82,6 +82,10 @@ public class Auction {
 		auctionStatus = AuctionStatus.COMPLETED;
 	}
 
+	public void updateEndPrice(Long auctionEndPrice) {
+		this.auctionEndPrice = auctionEndPrice;
+	}
+
 	public void update(AuctionRedis findAuction) {
 		auctionEndPrice = findAuction.getPrice();
 		auctionStatus = AuctionStatus.COMPLETED;
