@@ -1,10 +1,9 @@
 import Component from "../../core/component";
 import {requestParticipationList, requestMyList, requestUserCarList} from "../../api/mypage";
 import {Auction} from "../../model/auction";
-import "./mypage.css";
 import {CarInfo} from "../../model/car";
 import AuctionCard from "../AuctionCard/AuctionCard";
-import auctionList from "../AuctionList/AuctionList";
+import "./mypage.css";
 
 class MyPage extends Component<any> {
     private participationList: Auction[] = [];
@@ -15,6 +14,37 @@ class MyPage extends Component<any> {
         this.updateParticipationList();
         this.updateCarList();
         // this.updateUserCarList();
+
+        // const leftButtons = document.getElementsByClassName("my-page__swap-button-left") as HTMLCollectionOf<Element>;
+        // const rightButtons = document.getElementsByClassName("my-page__swap-button-right") as HTMLCollectionOf<Element>;
+        // const cardHolders = document.getElementsByClassName("my-page__card-list__holder");
+        // const cardWidth = 266;
+        //
+        // console.log(leftButtons);
+        // console.log(cardHolders);
+        // for (let i = 0; i < cardHolders.length; i++) {
+        //     console.log(cardHolders[i].scrollLeft);
+        //     leftButtons[i].addEventListener('click', () => {
+        //         cardHolders[i].scrollLeft -= cardWidth;
+        //         console.log(cardHolders[i].scrollLeft);
+        //     });
+        //     rightButtons[i].addEventListener('click', () => {
+        //         cardHolders[i].scrollLeft += cardWidth;
+        //         console.log(cardHolders[i].scrollLeft);
+        //     });
+        // }
+        //
+        // console.log(cardHolders);
+        // this.addEvent('click', '.my-page__swap-button-left', () => {
+        //     cardHolders[0].scrollLeft -= cardWidth;
+        // });
+        // this.addEvent('click', '.my-page__swap-button-right', () => {
+        //     cardHolders[0].scrollLeft += cardWidth;
+        // });
+
+        this.addEvent('click', '.my-page__swap-button-left', () => {
+
+        });
     }
 
     updateParticipationList() {
@@ -22,7 +52,6 @@ class MyPage extends Component<any> {
             if (auctionListData) {
                 const {auctionInfoList} = auctionListData;
                 this.participationList = auctionInfoList;
-                // console.log(`participation ${this.participationList}`);
             } else {
                 this.participationList = [];
             }
@@ -58,21 +87,21 @@ class MyPage extends Component<any> {
 
     template(): InnerHTML["innerHTML"] {
         return `
-    <div class="my-page__section-holder my-page__main__my-car-list__holder">
+    <div class="my-page__section-holder my-page__main__participating-bids__holder">
         <h3>참여 경매</h3>
         <hr>
-        <div class="my-page__card-slider my-page__main__my-car-list">
+        <div class="my-page__card-slider my-page__main__participating-bids">
             <button class="my-page__swap-button-left"><i class="fas fa-chevron-left"></i></button>
                 ${this.setCards(this.participationList, "participationCard")}
             <button class="my-page__swap-button-right"><i class="fas fa-chevron-right"></i></button>
         </div>
     </div>
-    <div class="my-page__section-holder my-page__main__participating-bids__holder">
+    <div class="my-page__section-holder my-page__main__my-car-list__holder">
         <h3>등록 경매</h3>
         <hr>
-        <div class="my-page__card-slider my-page__main__participating-bids">
+        <div class="my-page__card-slider my-page__main__my-car-list">
             <button class="my-page__swap-button-left"><i class="fas fa-chevron-left"></i></button>
-                ${this.setCards(this.myCarList, "myCard")}
+                ${this.setCards(this.myCarList, "myCarCard")}
             <button class="my-page__swap-button-right"><i class="fas fa-chevron-right"></i></button>
         </div>
     </div>
@@ -88,16 +117,15 @@ class MyPage extends Component<any> {
         `
     }
 
-    // ${this.setCards(this.myCarList)}
     // ${this.setCards(this.userCarList)}
 
-    setCards(auctionList: Auction[], componentName: String): InnerHTML['innerHTML'] {
+    setCards(auctionList: Auction[], dataType: String): InnerHTML['innerHTML'] {
         if (auctionList && auctionList.length) {
             return `
                 <div class="my-page__card-list__holder">
                     ${auctionList.map(() => {
-                        return `<div data-component="${componentName}"></div>`
-                    }).join('')}
+                return `<div data-component="AuctionCard" data-type="${dataType}"></div>`
+            }).join('')}
                 </div>
             `
         }
@@ -108,7 +136,7 @@ class MyPage extends Component<any> {
 
     mounted() {
         const participationList = this.participationList;
-        const $participationCards = this.$target.querySelectorAll('[data-component="participationCard"]');
+        const $participationCards = this.$target.querySelectorAll('[data-type="participationCard"]');
         $participationCards.forEach(($participationCard, idx) => {
             new AuctionCard($participationCard as HTMLElement, {
                 auction: participationList[idx],
@@ -118,9 +146,9 @@ class MyPage extends Component<any> {
             });
         });
         const myCarList = this.myCarList;
-        const $myCarCards = this.$target.querySelectorAll('[data-component="myCard"]');
-        $myCarCards.forEach(($myCarCards, idx) => {
-            new AuctionCard($myCarCards as HTMLElement, {
+        const $myCarCards = this.$target.querySelectorAll('[data-type="myCarCard"]');
+        $myCarCards.forEach(($myCarCard, idx) => {
+            new AuctionCard($myCarCard as HTMLElement, {
                 auction: myCarList[idx],
                 onClick: () => {
                     console.log(idx);

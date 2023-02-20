@@ -1,5 +1,5 @@
-/*@import "../../style/reset.css";*/
-/*@import "../../style/common.css";*/
+@import "../../style/reset.css";
+@import "../../style/common.css";
 
 hr {
   border-bottom: 1px solid var(--color-semi-gray);
@@ -21,6 +21,7 @@ hr {
 .my-page__section-holder {
   display: flex;
   flex-direction: column;
+  width: var(--container-max-width);
   padding-top: 32px;
 }
 
@@ -41,12 +42,15 @@ hr {
 /* Card item start */
 
 .my-page__card-list__holder {
+  width: 830px;
+  height: 100%;
   align-items: center;
-  width: 100%;
   display: flex;
-  overflow: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
+  /*overflow-x: hidden;*/
   scroll-behavior: smooth;
+  gap: 32px;
+  padding: 16px 0;
 }
 
 .card-container__card-item {
