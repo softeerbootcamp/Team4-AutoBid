@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,10 +27,6 @@ public class AuctionRedisRepository {
         zSetOps = redisTemplate.opsForZSet();
     }
 
-    public void saveBid(){
-
-    }
-
     public void save(AuctionRedisDTO auctionRedisDTO) {
         Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionRedisDTO.getAuctionId());
 
@@ -39,7 +36,7 @@ public class AuctionRedisRepository {
         }
     }
 
-    private void saveBidders(String key, Set<AuctionRedisBidderDTO> auctionRedisBidderDTOS) {
+    private void saveBidders(String key, List<AuctionRedisBidderDTO> auctionRedisBidderDTOS) {
         zSetOps.add(
             key,
             auctionRedisBidderDTOS.stream()
@@ -57,15 +54,15 @@ public class AuctionRedisRepository {
     public AuctionRedisDTO findById(Long auctionId) {
         Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionId);
         Long price = Integer.toUnsignedLong((int) stringOps.get(keys.get(AuctionRedisKey.PRICE)));
-        Set<AuctionRedisBidderDTO> auctionRedisBidderDTOS = parseToBidderSet(keys.get(AuctionRedisKey.BIDDERS), 0, -1);
+        List<AuctionRedisBidderDTO> auctionRedisBidderDTOS = parseToBidderSet(keys.get(AuctionRedisKey.BIDDERS), 0, -1);
         return AuctionRedisDTO.of(auctionId, price, auctionRedisBidderDTOS);
     }
 
-    private Set<AuctionRedisBidderDTO> parseToBidderSet(String key, int from, int to) {
+    private List<AuctionRedisBidderDTO> parseToBidderSet(String key, int from, int to) {
         Set<DefaultTypedTuple> set = zSetOps.rangeWithScores(key, from, to);
         return set.stream()
             .map((dtt) -> AuctionRedisBidderDTO.of(Integer.toUnsignedLong((int) dtt.getValue()), -1 * dtt.getScore().longValue()))
-            .collect(Collectors.toSet());
+            .collect(Collectors.toList());
     }
 
     public Long getPrice(Long auctionId) {

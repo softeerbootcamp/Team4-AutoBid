@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,7 +58,7 @@ public class WebSocketControllerTest {
         AuctionRedisBidderDTO auctionRedisBidderDTO3 = AuctionRedisBidderDTO.of(3L, 30000L);
         AuctionRedisBidderDTO auctionRedisBidderDTO4 = AuctionRedisBidderDTO.of(4L, 40000L);
 
-        Set<AuctionRedisBidderDTO> auctionRedisBidderDTOSet = new HashSet<>();
+        List<AuctionRedisBidderDTO> auctionRedisBidderDTOSet = new ArrayList<>();
         auctionRedisBidderDTOSet.add(auctionRedisBidderDTO1);
         auctionRedisBidderDTOSet.add(auctionRedisBidderDTO2);
         auctionRedisBidderDTOSet.add(auctionRedisBidderDTO3);
@@ -70,7 +71,7 @@ public class WebSocketControllerTest {
         // 레디스 저장
         auctionRedisRepository.save(auctionRedisDTO);
         // 비더가져오기
-        Set<AuctionRedisBidderDTO> auctionRedisBidderDTOS = auctionRedisDTO.getAuctionRedisBidderDto();
+        List<AuctionRedisBidderDTO> auctionRedisBidderDTOS = auctionRedisDTO.getAuctionRedisBidderDto();
         // set -> list
         List<BidderDto> bidderDtoList = webSocketService.bidderToBidderDto(auctionRedisBidderDTOS);
 

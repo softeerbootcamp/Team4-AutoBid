@@ -53,7 +53,7 @@ public class AuctionCloseAdapter {
         produce(auctionKafkaDTO);
     }
 
-    private List<AuctionKafkaUserDTO> findBidders(Set<AuctionRedisBidderDTO> auctionRedisBidderDtos) {
+    private List<AuctionKafkaUserDTO> findBidders(List<AuctionRedisBidderDTO> auctionRedisBidderDtos) {
         return auctionRedisBidderDtos.stream()
             .map(auctionBidderDTO -> {
                 User user = userRepository.findById(auctionBidderDTO.getUserId()).get();

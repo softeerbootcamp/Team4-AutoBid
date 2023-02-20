@@ -27,7 +27,7 @@ public class WebSocketService {
         this.auctionService = auctionService;
     }
 
-    public List<BidderDto> bidderToBidderDto(Set<AuctionRedisBidderDTO> auctionRedisBidderDTOS) {
+    public List<BidderDto> bidderToBidderDto(List<AuctionRedisBidderDTO> auctionRedisBidderDTOS) {
         List<BidderDto> bidderDtoList = new ArrayList<>();
         for (AuctionRedisBidderDTO i : auctionRedisBidderDTOS) {
             BidderDto bidderDto = new BidderDto();
