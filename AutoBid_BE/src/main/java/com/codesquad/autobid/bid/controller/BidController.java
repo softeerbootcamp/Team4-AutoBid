@@ -15,6 +15,7 @@ import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.web.argumentresolver.AuthorizedUser;
 import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
 import com.codesquad.autobid.websocket.service.WebSocketService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,9 @@ public class BidController {
 
 	@PostMapping("/auction/bid")
 	public ResponseEntity<Boolean> bidRegister(@Parameter @RequestBody BidRegisterRequest bidRegisterRequest,
-		@Parameter(hidden = true) @AuthorizedUser User user) {
+		@Parameter(hidden = true) @AuthorizedUser User user) throws JsonProcessingException {
+		System.out.println("-----------------");
+		bidRegisterRequest.setUserId(user.getId());
 		//		 boolean result = bidService.suggestBid(bidRegisterRequest, user);
 		//
 		//		if (!result) {
@@ -48,10 +51,11 @@ public class BidController {
 		//		 }
 
 		Long auctionId = bidRegisterRequest.getAuctionId();
-		AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionId);
-		log.info("getUserNum : {}", auctionDtoWebSocket.getUserNumber());
-		log.info("getPrice : {}", auctionDtoWebSocket.getPrice());
-		messagingTemplate.convertAndSend("/ws/start/" + auctionId, auctionDtoWebSocket);
+		//AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionId);
+		//log.info("getUserNum : {}", auctionDtoWebSocket.getUserNumber());
+		//log.info("getPrice : {}", auctionDtoWebSocket.getPrice());
+		//messagingTemplate.convertAndSend("/ws/start/" + auctionId, auctionDtoWebSocket);
+		System.out.println(bidRegisterRequest);
 		bidAdapter.produce(bidRegisterRequest);
 		return ResponseEntity.status(HttpStatus.OK).body(true);
 	}
