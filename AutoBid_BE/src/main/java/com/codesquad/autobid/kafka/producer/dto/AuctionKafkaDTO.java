@@ -1,6 +1,7 @@
 package com.codesquad.autobid.kafka.producer.dto;
 
 import com.codesquad.autobid.auction.domain.Auction;
+import com.codesquad.autobid.auction.domain.AuctionStatus;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class AuctionKafkaDTO {
 
     private Long auctionId;
     private String auctionTitle;
+    private AuctionStatus auctionStatus;
     private Long price;
     private List<AuctionKafkaUserDTO> users;
     private int numberOfUsers;
@@ -23,6 +25,7 @@ public class AuctionKafkaDTO {
         AuctionKafkaDTO auctionKafkaDTO = new AuctionKafkaDTO();
         auctionKafkaDTO.auctionId = auction.getId();
         auctionKafkaDTO.auctionTitle = auction.getAuctionTitle();
+        auctionKafkaDTO.auctionStatus = auction.getAuctionStatus();
         auctionKafkaDTO.price = auction.getAuctionStartPrice();
         auctionKafkaDTO.users = new ArrayList<>();
         auctionKafkaDTO.numberOfUsers = 0;
