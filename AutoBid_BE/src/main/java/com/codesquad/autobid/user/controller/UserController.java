@@ -59,7 +59,7 @@ public class UserController {
         return new ResponseEntity<>(Optional.empty(), HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<HttpStatus> delete(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
         String accessToken = (String) session.getAttribute(OauthToken.ACCESS_TOKEN_KEY);
