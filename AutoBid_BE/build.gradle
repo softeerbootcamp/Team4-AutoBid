@@ -48,6 +48,8 @@ dependencies {
     // Spring Scheduler ShedLock
     implementation 'net.javacrumbs.shedlock:shedlock-spring:4.14.0'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.14.0'
+    //redisson client
+    implementation 'org.redisson:redisson-spring-boot-starter:3.16.3'
 }
 
 tasks.named('test') {
