@@ -9,20 +9,24 @@ import com.codesquad.autobid.user.service.UserService;
 import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
 import com.codesquad.autobid.websocket.domain.BidderDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class WebSocketService {
+    private final SimpMessageSendingOperations messagingTemplate;
     private final UserService userService;
     private final AuctionService auctionService;
 
     @Autowired
-    public WebSocketService(UserService userService, AuctionService auctionService) {
+    public WebSocketService(SimpMessageSendingOperations messagingTemplate,
+                            UserService userService,
+                            AuctionService auctionService) {
+        this.messagingTemplate = messagingTemplate;
         this.userService = userService;
         this.auctionService = auctionService;
     }
@@ -33,7 +37,7 @@ public class WebSocketService {
             BidderDto bidderDto = new BidderDto();
             Long userId = i.getUserId();
             Optional<User> user = userService.findById(userId);
-            if(user.isPresent()){
+            if (user.isPresent()) {
                 bidderDto.setPrice(i.getPrice());
                 bidderDto.setUserId(userId);
                 bidderDto.setUsername(user.get().getName());
@@ -52,20 +56,22 @@ public class WebSocketService {
         try {
             if (auction.getAuctionRedisBidderDto().isEmpty()) {
                 auctionDtoWebSocket = AuctionDtoWebSocket.of(0L, bidderDtoList); // 현재 입찰가, 입찰자들, 참여자 수
-            }
-            else if (!auction.getAuctionRedisBidderDto().isEmpty()) {
+            } else if (!auction.getAuctionRedisBidderDto().isEmpty()) {
                 bidderDtoList = bidderToBidderDto(auction.getAuctionRedisBidderDto()); // bidder -> bidderDto
                 auctionDtoWebSocket = AuctionDtoWebSocket.of(auction.getPrice(), bidderDtoList); // 현재 입찰가, 입찰자들, 참여자 수
             }
         } catch (NullPointerException e) {
-
         }
-
         return auctionDtoWebSocket;
     }
 
     public AuctionDtoWebSocket parsingDto(Auction auction) {
         List<BidderDto> bidderDtoList = new ArrayList<>();
         return AuctionDtoWebSocket.of(auction.getAuctionEndPrice(), bidderDtoList);
+    }
+
+    public void broadCast(AuctionDtoWebSocket auctionDtoWebSocket, String url) {
+        // /end/auctionId
+        messagingTemplate.convertAndSend("/ws"+url, auctionDtoWebSocket);
     }
 }

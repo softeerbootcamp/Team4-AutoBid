@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Component
 public class AuctionScheduler {
 
-    private static final String CRON_RATE = "* */15 * * * *";
+    private static final String CRON_RATE = "0 */1 * * * *";
 
     private final AuctionService auctionService;
 
