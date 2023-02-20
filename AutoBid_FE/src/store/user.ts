@@ -28,8 +28,7 @@ export const login = async () => {
 };
 
 export const logout = async () => {
-    const logoutResult = await requestInvalidateSession();
-    if (!logoutResult) return false;
+    await requestInvalidateSession();
     GlobalStore.get().dispatch({ type: UserActionType.LOGOUT });
     return true;
 };

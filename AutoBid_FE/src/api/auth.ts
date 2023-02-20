@@ -77,7 +77,7 @@ export const requestCurrentUser = asyncTaskWrapper(async (): Promise<UserInfo | 
 export const requestInvalidateSession = asyncTaskWrapper(async (): Promise<boolean> => {
     try {
         const res = await fetch(`${API_BASE_URL}${LOGOUT_ENDPOINT}`, {
-            method: 'DELETE',
+            method: 'POST',
             credentials: 'include'
         });
         return res.ok;
