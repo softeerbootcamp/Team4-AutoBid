@@ -3,6 +3,8 @@ package com.codesquad.autobid.user.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
@@ -14,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 
 @AllArgsConstructor
 @Table("users") @Getter @Setter
+@ToString
 public class User implements Serializable {
     @Id
     @Column("user_id")
