@@ -18,13 +18,6 @@ import java.util.Objects;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        return mapper;
-    }
-
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new AccessTokenArgumentResolver());

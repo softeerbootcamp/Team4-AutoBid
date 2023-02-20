@@ -25,9 +25,9 @@ public class BidAdapter {
 	private final BidRepository bidRepository;
 	private final AuctionRepository auctionRepository;
 
-	public BidAdapter(KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper,
+	public BidAdapter(KafkaTemplate<String, String> kafkaTemplate,
 		BidRepository bidRepository, AuctionRepository auctionRepository) {
-		this.objectMapper = objectMapper;
+		this.objectMapper = new ObjectMapper();
 		this.kafkaTemplate = kafkaTemplate;
 		this.bidRepository = bidRepository;
 		this.auctionRepository = auctionRepository;
