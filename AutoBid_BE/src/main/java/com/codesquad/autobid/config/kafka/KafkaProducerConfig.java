@@ -24,12 +24,12 @@ public class KafkaProducerConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String BOOTSTRAP_SERVERS;
 
-    @Bean
-    public KafkaTemplate<String, AuctionKafkaDTO> auctionKafkaTemplate() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
-        props.put(KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        props.put(VALUE_SERIALIZER_CLASS_CONFIG, AuctionKafkaDTOSerializer.class);
-        return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(props));
-    }
+    // @Bean
+    // public KafkaTemplate<String, AuctionKafkaDTO> auctionKafkaTemplate() {
+    //     Map<String, Object> props = new HashMap<>();
+    //     props.put(BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+    //     props.put(KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    //     props.put(VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+    //     return new KafkaTemplate<>(new DefaultKafkaProducerFactory<>(props));
+    // }
 }
