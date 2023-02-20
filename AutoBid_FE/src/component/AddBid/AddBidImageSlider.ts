@@ -6,6 +6,7 @@ const imageWidth = document.querySelector(".add-bid__images-container")!.childre
 leftButton.addEventListener("click", () => {
     slideContainer.scrollLeft -= imageWidth;
 });
+
 rightButton.addEventListener("click", () => {
     slideContainer.scrollLeft += imageWidth;
 });

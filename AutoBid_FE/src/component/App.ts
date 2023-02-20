@@ -7,6 +7,7 @@ import {whoIam} from "../store/user";
 import MyPage from "./MyPage/MyPage";
 import Modal from "./Modal/Modal";
 import {Page, PAGE_INITIAL, PageState, pageStateSelector} from "../store/page";
+import AddBid from "./AddBidModal/AddBid";
 
 class App extends Component<PageState> {
     stateSelector(globalState: any): PageState | undefined {
@@ -51,6 +52,11 @@ class App extends Component<PageState> {
         if ($myPage) {
             new MyPage($myPage as HTMLElement, {});
         }
+        //
+        // const $addBid = document.querySelector('[data-component="AddBid"]');
+        // if ($addBid) {
+        //     new AddBid($addBid as HTMLElement, {});
+        // }
         
         const $modal = this.$target.querySelector('[data-component="Modal"]') as HTMLElement;
         new Modal($modal, {});
