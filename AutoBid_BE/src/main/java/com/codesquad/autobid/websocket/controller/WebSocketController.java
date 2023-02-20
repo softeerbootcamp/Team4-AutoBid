@@ -59,10 +59,6 @@ public class WebSocketController {
     public void exitAll(
             @DestinationVariable(value = "auctionId") Long auctionId
     ) {
-        /**
-         *  TODO
-         *   - data 삭제
-         * **/
         messagingTemplate.convertAndSend("/ws/end/" + auctionId, "exit");
     }
 

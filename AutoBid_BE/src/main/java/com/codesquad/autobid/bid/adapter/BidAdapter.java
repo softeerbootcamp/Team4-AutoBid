@@ -1,9 +1,14 @@
 package com.codesquad.autobid.bid.adapter;
 
+import com.codesquad.autobid.auction.repository.AuctionRedis;
+import com.codesquad.autobid.auction.service.AuctionService;
+import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
+import com.codesquad.autobid.websocket.service.WebSocketService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
 import com.codesquad.autobid.auction.domain.Auction;
@@ -21,12 +26,21 @@ import lombok.extern.slf4j.Slf4j;
 public class BidAdapter {
 	private final KafkaTemplate<String, String> kafkaTemplate;
 	private final ObjectMapper objectMapper;
-
+	private final AuctionService auctionService;
 	private final BidRepository bidRepository;
 	private final AuctionRepository auctionRepository;
+	private final WebSocketService webSocketService;
+	private final SimpMessageSendingOperations messagingTemplate;
 
 	public BidAdapter(KafkaTemplate<String, String> kafkaTemplate,
-		BidRepository bidRepository, AuctionRepository auctionRepository) {
+					  AuctionService auctionService,
+					  BidRepository bidRepository,
+					  AuctionRepository auctionRepository,
+					  WebSocketService webSocketService,
+					  SimpMessageSendingOperations messagingTemplate) {
+		this.auctionService = auctionService;
+		this.webSocketService = webSocketService;
+		this.messagingTemplate = messagingTemplate;
 		this.objectMapper = new ObjectMapper();
 		this.kafkaTemplate = kafkaTemplate;
 		this.bidRepository = bidRepository;
@@ -64,6 +78,15 @@ public class BidAdapter {
 	@KafkaListener(topics = "bid-event", groupId = "bidder-redis")
 	public void saveBiddersAndBroadcast(@Payload String bidRegisterRequestStr) throws JsonProcessingException {
 		BidRegisterRequest bidRegisterRequest = objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class);
+
+		Long auctionId = bidRegisterRequest.getAuctionId();
+		AuctionRedis auctionRedis = auctionService.getAuction(auctionId);
+		if (auctionRedis != null) { // 시작된 경우
+			AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionRedis);
+			messagingTemplate.convertAndSend("/ws/start/" + auctionId, auctionDtoWebSocket);
+			return;
+		}
+
 		log.info("bid-event bid-redis {}", bidRegisterRequest);
 	}
 
