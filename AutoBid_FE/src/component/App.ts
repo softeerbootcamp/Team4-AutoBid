@@ -6,7 +6,6 @@ import QuerySidebar from "./QuerySidebar/QuerySidebar";
 import {whoIam} from "../store/user";
 import MyPage from "./MyPage/MyPage";
 import Modal from "./Modal/Modal";
-import EmojiExplosion from "./EmojiExplosion/EmojiExplosion";
 import {Page, PAGE_INITIAL, PageState, pageStateSelector} from "../store/page";
 
 class App extends Component<PageState> {
@@ -55,9 +54,6 @@ class App extends Component<PageState> {
         
         const $modal = this.$target.querySelector('[data-component="Modal"]') as HTMLElement;
         new Modal($modal, {});
-
-        const $emojiExplosion = this.$target.querySelector('[data-component="EmojiExplosion"]') as HTMLElement;
-        new EmojiExplosion($emojiExplosion, {});
 
         whoIam().then(() => {console.log('session user initialized')});
     }

@@ -15,9 +15,11 @@ import {
     setOnStart
 } from "../../api/live";
 import AnimatedText from "../AnimatedText/AnimatedText";
-import {login, whoIam} from "../../store/user";
+import {login, UserState, userStateSelector, whoIam} from "../../store/user";
 import Toast from "../../core/toast";
 import {ModalState, modalStateSelector} from "../../store/modal";
+import GlobalStore from "../../core/store";
+import {Emoji} from "../../core/emoji";
 
 const BID_UNIT = 5;
 
@@ -29,8 +31,10 @@ class AuctionDetail extends Component<ModalState, Auction> {
         return globalState[modalStateSelector];
     }
     onStateChanged(prevLocalState: ModalState) {
-        if (!this.state?.pop)
+        if (!this.state?.pop) {
             disconnectSocketSession();
+            Emoji.cancel();
+        }
     }
 
     template(): InnerHTML["innerHTML"] {
@@ -95,6 +99,9 @@ class AuctionDetail extends Component<ModalState, Auction> {
         this.lastPrice = price;
         this.setBidButton(false, `경매가 종료되었습니다.`);
         this.fetchUsers(users, '경매가 종료되었습니다.');
+        if (users.length) {
+            this.checkWinnerAndBlast(users[0].userId);
+        }
         disconnectSocketSession();
     }
 
@@ -148,7 +155,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
 
         this.fetchUsers([], `${this.isEnded() ? '경매가 종료되었습니다.' : '경매 시작을 대기 하고 있습니다.'}`);
 
-        if (!this.isEnded()) {
+        if (!this.isEnded()) {  // TODO 버그
             this.timeoutRecursive();
             setOnStart(this.onStart.bind(this));
             setOnBid(this.onBid.bind(this));
@@ -180,6 +187,14 @@ class AuctionDetail extends Component<ModalState, Auction> {
         if (this.isProgress())
             return `경매 종료 <b>${deltaTimeToString((new Date(endTime)).getTime() - Date.now())}</b>전`;
         return `경매 시작 <b>${deltaTimeToString((new Date(startTime)).getTime() - Date.now())}</b>전`;
+    }
+
+    checkWinnerAndBlast(winnerId: number) {
+        const user = GlobalStore.get().getState()[userStateSelector] as UserState;
+        if (user && user.id && user.id === winnerId) {
+            Emoji.blast();
+            Toast.show('경매를 낙찰받았습니다! 축하합니다!', 1000);
+        }
     }
 }
 
