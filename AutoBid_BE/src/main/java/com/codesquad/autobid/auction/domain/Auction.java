@@ -9,7 +9,7 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import com.codesquad.autobid.auction.repository.AuctionRedis;
+import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
 import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.user.domain.User;
 
@@ -78,11 +78,12 @@ public class Auction {
 		auctionStatus = AuctionStatus.PROGRESS;
 	}
 
-	public void close() {
+	public void markToFinish(Long endPrice) {
 		auctionStatus = AuctionStatus.COMPLETED;
+		auctionEndPrice = endPrice;
 	}
 
-	public void update(AuctionRedis findAuction) {
+	public void update(AuctionRedisDTO findAuction) {
 		auctionEndPrice = findAuction.getPrice();
 		auctionStatus = AuctionStatus.COMPLETED;
 	}
