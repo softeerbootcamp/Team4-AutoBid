@@ -50,16 +50,13 @@ public class UserController {
         UserImpoResponse userImpoResponse = UserImpoResponse.create(user.getId(), user.getName(), user.getEmail(), user.getMobilenum());
         Optional<UserImpoResponse> userResponse = Optional.of(userImpoResponse);
 
-        if(userResponse.isPresent()){
-            HttpSession httpSession = httpServletRequest.getSession();
-            httpSession.setAttribute("user", userImpoResponse);
-            httpSession.setAttribute(OauthToken.ACCESS_TOKEN_KEY, oauthToken.getAccessToken());
-            return new ResponseEntity<>(userResponse, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(Optional.empty(), HttpStatus.NOT_FOUND);
+        HttpSession httpSession = httpServletRequest.getSession();
+        httpSession.setAttribute("user", user);
+        httpSession.setAttribute(OauthToken.ACCESS_TOKEN_KEY, oauthToken.getAccessToken());
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 
-    @DeleteMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<HttpStatus> delete(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
         String accessToken = (String) session.getAttribute(OauthToken.ACCESS_TOKEN_KEY);
@@ -71,11 +68,8 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<UserImpoResponse> userResponse(HttpServletRequest httpServletRequest) {
-        HttpSession session = httpServletRequest.getSession();
-        UserImpoResponse userImpo = (UserImpoResponse) session.getAttribute("user");
-        Optional<User> user = userService.findById(userImpo.getId());
-        if(user.isPresent()) return new ResponseEntity<>(userImpo, HttpStatus.OK);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<UserImpoResponse> userResponse(HttpServletRequest httpServletRequest, @AuthorizedUser User user) {
+        return ResponseEntity.ok()
+            .body(UserImpoResponse.create(user.getId(), user.getName(), user.getEmail(), user.getMobilenum()));
     }
 }

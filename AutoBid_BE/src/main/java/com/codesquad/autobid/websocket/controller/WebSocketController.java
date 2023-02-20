@@ -1,5 +1,9 @@
 package com.codesquad.autobid.websocket.controller;
 
+import com.codesquad.autobid.auction.domain.Auction;
+import com.codesquad.autobid.auction.domain.AuctionStatus;
+import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
+import com.codesquad.autobid.auction.service.AuctionService;
 import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
 import com.codesquad.autobid.websocket.service.WebSocketService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,40 +24,41 @@ import java.security.Principal;
 public class WebSocketController {
     private final SimpMessageSendingOperations messagingTemplate;
     private final WebSocketService webSocketService;
+    private final AuctionService auctionService;
 
     @Autowired
-    public WebSocketController(SimpMessageSendingOperations messagingTemplate, WebSocketService webSocketService) {
+    public WebSocketController(SimpMessageSendingOperations messagingTemplate, WebSocketService webSocketService, AuctionService auctionService) {
         this.messagingTemplate = messagingTemplate;
         this.webSocketService = webSocketService;
+        this.auctionService = auctionService;
     }
 
-    @MessageMapping("/enter/{auctionId}")
-    public void onAllEntered(
-            @DestinationVariable(value = "auctionId") Long auctionId
-    ) { // convertAndSend
-        AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionId);
-        messagingTemplate.convertAndSend("/ws/start/" + auctionId, auctionDtoWebSocket);
-    }
-
-    @MessageMapping("/enter/solo/{auctionId}")
+    @MessageMapping("/enter/{auctionId}") // 사용자 입장 <경매 시작 후>
     public void onUserEntered(
             @DestinationVariable(value = "auctionId") Long auctionId,
             Principal principal
     ) { // convertAndSendToUser
         String name = principal.getName();
         log.info("name: {} ",name);
-        AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionId);
-        messagingTemplate.convertAndSendToUser(principal.getName(),"/ws/start/" + auctionId, auctionDtoWebSocket);
+
+        AuctionRedisDTO auctionRedis = auctionService.getAuction(auctionId);
+        if (auctionRedis != null) { // 시작된 경우
+            AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionRedis);
+            messagingTemplate.convertAndSendToUser(principal.getName(),"/ws/start/" + auctionId, auctionDtoWebSocket);
+            return;
+        }
+        Auction auctionDb = auctionService.getDBAuction(auctionId);
+        AuctionStatus auctionStatus = auctionDb.getAuctionStatus();
+        if (auctionStatus == AuctionStatus.COMPLETED){ // auction 이 종료된 경우
+            AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionDb);
+            messagingTemplate.convertAndSendToUser(principal.getName(),"/ws/end/" + auctionId, auctionDtoWebSocket);
+        }
     }
 
     @MessageMapping("/end/{auctionId}")
     public void exitAll(
             @DestinationVariable(value = "auctionId") Long auctionId
     ) {
-        /**
-         *  TODO
-         *   - data 삭제
-         * **/
         messagingTemplate.convertAndSend("/ws/end/" + auctionId, "exit");
     }
 

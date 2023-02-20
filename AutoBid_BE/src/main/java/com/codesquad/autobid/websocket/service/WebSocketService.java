@@ -2,6 +2,7 @@ package com.codesquad.autobid.websocket.service;
 
 import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
 import com.codesquad.autobid.auction.repository.AuctionRedisBidderDTO;
+import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.service.AuctionService;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.service.UserService;
@@ -35,17 +36,17 @@ public class WebSocketService {
             if(user.isPresent()){
                 bidderDto.setPrice(i.getPrice());
                 bidderDto.setUserId(userId);
-                bidderDto.setUserName(user.get().getName());
-                bidderDto.setMobileNum(user.get().getMobilenum());
+                bidderDto.setUsername(user.get().getName());
+                bidderDto.setPhoneNumber(user.get().getMobilenum());
             }
         }
         bidderDtoList.add(bidderDto);
         return bidderDtoList;
     }
 
-    public AuctionDtoWebSocket parsingDto(Long auctionId) {
+    public AuctionDtoWebSocket parsingDto(AuctionRedisDTO auctionRedis) {
         AuctionDtoWebSocket auctionDtoWebSocket = new AuctionDtoWebSocket();
-        AuctionRedisDTO auction = auctionService.getAuction(auctionId);
+        AuctionRedisDTO auction = auctionService.getAuction(auctionRedis.getAuctionId());
         List<BidderDto> bidderDtoList = new ArrayList<>();
 
         try {
@@ -61,5 +62,10 @@ public class WebSocketService {
         }
 
         return auctionDtoWebSocket;
+    }
+
+    public AuctionDtoWebSocket parsingDto(Auction auction) {
+        List<BidderDto> bidderDtoList = new ArrayList<>();
+        return AuctionDtoWebSocket.of(auction.getAuctionEndPrice(), bidderDtoList);
     }
 }

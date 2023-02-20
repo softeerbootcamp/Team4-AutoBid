@@ -5,8 +5,6 @@ import com.codesquad.autobid.auction.domain.AuctionStatus;
 import com.codesquad.autobid.auction.repository.AuctionRedisBidderDTO;
 import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
 import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
-import com.codesquad.autobid.auction.service.AuctionService;
-import com.codesquad.autobid.bid.repository.BidRepository;
 import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
@@ -37,16 +35,11 @@ public class WebSocketControllerTest {
 
     private final WebSocketService webSocketService;
     private final AuctionRedisRepository auctionRedisRepository;
-    private final BidRepository bidRepository;
 
     @Autowired
-    WebSocketControllerTest(AuctionService auctionService,
-                            WebSocketService webSocketService,
-                            AuctionRedisRepository auctionRedisRepository,
-                            BidRepository bidRepository) {
+    WebSocketControllerTest(WebSocketService webSocketService, AuctionRedisRepository auctionRedisRepository) {
         this.webSocketService = webSocketService;
         this.auctionRedisRepository = auctionRedisRepository;
-        this.bidRepository = bidRepository;
     }
 
     @DisplayName("Bidder 변환 확인")
@@ -85,14 +78,14 @@ public class WebSocketControllerTest {
 
         for (BidderDto i : bidderDtoList) {
             log.info("price: {}", i.getPrice());
-            log.info("mobileNum: {}", i.getMobileNum());
-            log.info("userName: {}", i.getUserName());
+            log.info("mobileNum: {}", i.getPhoneNumber());
+            log.info("userName: {}", i.getUsername());
         }
 
         AuctionDtoWebSocket auctionDtoWebSocket = AuctionDtoWebSocket.of(auctionRedisDTO.getPrice(), bidderDtoList);
         log.info("현재입찰가: {}", auctionDtoWebSocket.getPrice());
-        List<BidderDto> biddersResult = auctionDtoWebSocket.getBidders();
-        Long userNumber = auctionDtoWebSocket.getUserNumber();
+        List<BidderDto> biddersResult = auctionDtoWebSocket.getUsers();
+        Long userNumber = auctionDtoWebSocket.getNumberOfUsers();
 
         Assertions.assertThat(biddersResult).isEqualTo(bidderDtoList);
         Assertions.assertThat(userNumber).isEqualTo(bidderSize);

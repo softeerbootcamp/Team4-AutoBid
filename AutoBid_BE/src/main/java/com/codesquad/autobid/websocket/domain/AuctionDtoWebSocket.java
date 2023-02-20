@@ -11,12 +11,12 @@ import java.util.List;
 @Setter
 public class AuctionDtoWebSocket {
     private Long price;
-    private Long userNumber;
-    private List<BidderDto> bidders = new ArrayList<>();
+    private Long numberOfUsers;
+    private List<BidderDto> users = new ArrayList<>();
 
-    public AuctionDtoWebSocket(Long price, List<BidderDto> bidders) {
+    public AuctionDtoWebSocket(Long price, List<BidderDto> users) {
         this.price = price;
-        this.bidders = bidders;
+        this.users = users;
     }
 
     public AuctionDtoWebSocket() {
@@ -25,7 +25,7 @@ public class AuctionDtoWebSocket {
 
     public static AuctionDtoWebSocket of(Long price, List<BidderDto> bidders) {
         AuctionDtoWebSocket auctionDtoWebSocket =  new AuctionDtoWebSocket(price, bidders);
-        auctionDtoWebSocket.setUserNumber( Long.valueOf(bidders.size()));
+        auctionDtoWebSocket.setNumberOfUsers( Long.valueOf(bidders.size()));
         return auctionDtoWebSocket;
     }
 }

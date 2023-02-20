@@ -87,14 +87,14 @@ class WebSocketControllerTest {
 
         for (BidderDto i : bidderDtoList) {
             log.info("price: {}",  i.getPrice());
-            log.info("mobileNum: {}",  i.getMobileNum());
-            log.info("userName: {}",  i.getUserName());
+            log.info("mobileNum: {}",  i.getPhoneNumber());
+            log.info("userName: {}",  i.getUsername());
         }
 
         AuctionDtoWebSocket auctionDtoWebSocket = AuctionDtoWebSocket.of(auctionRedisDTO.getPrice(), bidderDtoList);
         log.info("현재입찰가: {}",  auctionDtoWebSocket.getPrice());
-        List<BidderDto> biddersResult = auctionDtoWebSocket.getBidders();
-        Long userNumber = auctionDtoWebSocket.getUserNumber();
+        List<BidderDto> biddersResult = auctionDtoWebSocket.getUsers();
+        Long userNumber = auctionDtoWebSocket.getNumberOfUsers();
 
         Assertions.assertThat(biddersResult).isEqualTo(bidderDtoList);
         Assertions.assertThat(userNumber).isEqualTo(bidderSize);

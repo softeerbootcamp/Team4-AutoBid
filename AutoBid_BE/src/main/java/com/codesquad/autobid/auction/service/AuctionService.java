@@ -16,7 +16,6 @@ import com.codesquad.autobid.kafka.producer.AuctionCloseProducer;
 import com.codesquad.autobid.kafka.producer.AuctionOpenProducer;
 import com.codesquad.autobid.kafka.producer.dto.AuctionKafkaDTO;
 import com.codesquad.autobid.user.domain.User;
-import com.codesquad.autobid.user.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -29,6 +28,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Transactional(readOnly = true)
@@ -211,5 +211,9 @@ public class AuctionService {
     public AuctionRedisDTO getAuction(Long auctionId) {
         return auctionRedisRepository.findById(auctionId);
     }
-}
 
+    public Auction getDBAuction(Long auctionId) {
+        Optional<Auction> auction = auctionRepository.findById(auctionId);
+        return auction.orElse(null);
+    }
+}

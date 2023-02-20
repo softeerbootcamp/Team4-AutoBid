@@ -14,11 +14,13 @@ import com.codesquad.autobid.user.domain.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
 @AllArgsConstructor
 @ToString
+@NoArgsConstructor
 @Table("bid")
 public class Bid {
 
@@ -51,5 +53,13 @@ public class Bid {
 	public static Bid of(AggregateReference<Auction, Long> auctionId, AggregateReference<User, Long> userId, Long price,
 		Boolean bidAccept) {
 		return new Bid(auctionId, userId, price, bidAccept);
+	}
+
+	public void updatePrice(Long price) {
+		this.price = price;
+	}
+
+	public void updateAccept(boolean bidAccept) {
+		this.bidAccept = bidAccept;
 	}
 }

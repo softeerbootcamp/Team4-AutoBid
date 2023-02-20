@@ -86,4 +86,8 @@ public class Auction {
         auctionStatus = AuctionStatus.COMPLETED;
         auctionEndPrice = endPrice;
     }
+
+    public void updateEndPrice(Long auctionEndPrice) {
+        this.auctionEndPrice = auctionEndPrice;
+    }
 }
