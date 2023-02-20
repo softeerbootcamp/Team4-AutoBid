@@ -39,8 +39,8 @@ public class WebSocketService {
                 bidderDto.setUsername(user.get().getName());
                 bidderDto.setPhoneNumber(user.get().getMobilenum());
             }
+            bidderDtoList.add(bidderDto);
         }
-        bidderDtoList.add(bidderDto);
         return bidderDtoList;
     }
 
