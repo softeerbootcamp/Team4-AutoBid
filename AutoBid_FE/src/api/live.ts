@@ -23,12 +23,13 @@ export const setOnEnd = (handler: (live: LiveDTO) => any) => onEnd = handler;
 export const setOnBid = (handler: (live: LiveDTO) => any) => onBid = handler;
 
 const API_BASE_URL = process.env.API_BASE_URL || 'https://www.autobid.site';
-const LIVE_ENDPOINT = process.env.LIVE_ENDPOINT || '/auction-room';
+const LIVE_ENDPOINT = process.env.LIVE_ENDPOINT || '/ws';
 const BID_ENDPOINT = process.env.BID_ENDPOINT || '/auction/bid'
 const ENTER_ROUTE = process.env.ENTER_ROUTE || '/ws/enter';
 const START_ROUTE = process.env.START_ROUTE || '/ws/start';
 const USER_START_ROUTE = process.env.USER_START_ROUTE || '/user/ws/start';
 const END_ROUTE = process.env.END_ROUTE || '/ws/end';
+const USER_END_ROUTE = process.env.USER_END_ROUTE || '/user/ws/end';
 const BID_ROUTE = process.env.BID_ROUTE || '/ws/bid';
 
 export const requestSocketSession = (auctionId: number, test = false) => {
@@ -77,6 +78,12 @@ export const requestSocketSession = (auctionId: number, test = false) => {
             //  1. 만약 '상황 1.'이 아닌 경우 입찰 버튼을 비활성화 하고 경매 종료 View 로 갱신
             //  2. 만약 live.users[0].userId 가 currentLogOn.userId 와 같은 경우 🎉
             //  3. disconnectSocketSession() 호출하여 열려있는 STOMP 세션 종료
+        });
+
+        // Sub /user/end/{auctionId}
+        stompClient?.subscribe(`${USER_END_ROUTE}/${auctionId}`, ({ body }) => {
+            const live = JSON.parse(body) as LiveDTO;
+            onEnd(live);
         });
 
         // Sub /bid/{auctionId}
