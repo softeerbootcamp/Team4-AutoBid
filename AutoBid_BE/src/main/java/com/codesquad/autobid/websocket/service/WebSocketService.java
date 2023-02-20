@@ -34,7 +34,7 @@ public class WebSocketService {
             Long userId = i.getUserId();
             Optional<User> user = userService.findById(userId);
             if(user.isPresent()){
-                bidderDto.setPrice(-i.getPrice());
+                bidderDto.setPrice(i.getPrice());
                 bidderDto.setUserId(userId);
                 bidderDto.setUsername(user.get().getName());
                 bidderDto.setPhoneNumber(user.get().getMobilenum());
