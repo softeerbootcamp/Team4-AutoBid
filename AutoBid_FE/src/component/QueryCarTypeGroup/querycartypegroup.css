@@ -5,7 +5,7 @@
     gap: 10px;
     grid-template-columns: repeat(3, 1fr);
     justify-items: center;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
 }
 
 .query-car-type-group__btn {
