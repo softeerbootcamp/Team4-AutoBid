@@ -5,6 +5,7 @@ import "./app.css";
 import QuerySidebar from "./QuerySidebar/QuerySidebar";
 import {whoIam} from "../store/user";
 import Modal from "./Modal/Modal";
+import EmojiExplosion from "./EmojiExplosion/EmojiExplosion";
 
 class App extends Component<any> {
     template(): InnerHTML["innerHTML"] {
@@ -30,6 +31,9 @@ class App extends Component<any> {
 
         const $modal = this.$target.querySelector('[data-component="Modal"]') as HTMLElement;
         new Modal($modal, {});
+
+        const $emojiExplosion = this.$target.querySelector('[data-component="EmojiExplosion"]') as HTMLElement;
+        new EmojiExplosion($emojiExplosion, {});
 
         whoIam().then(() => {console.log('session user initialized')});
     }
