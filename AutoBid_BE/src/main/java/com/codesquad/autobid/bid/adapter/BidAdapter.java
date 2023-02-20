@@ -5,6 +5,7 @@ import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
 import com.codesquad.autobid.auction.repository.AuctionRepository;
 import com.codesquad.autobid.auction.service.AuctionService;
 import com.codesquad.autobid.bid.domain.Bid;
+import com.codesquad.autobid.bid.repository.BidRedisRepository;
 import com.codesquad.autobid.bid.repository.BidRepository;
 import com.codesquad.autobid.bid.request.BidRegisterRequest;
 import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
@@ -29,16 +30,19 @@ public class BidAdapter {
     private final AuctionRepository auctionRepository;
     private final WebSocketService webSocketService;
     private final SimpMessageSendingOperations messagingTemplate;
+    private final BidRedisRepository bidRedisRepository;
 
     public BidAdapter(KafkaTemplate<String, String> kafkaTemplate,
                       AuctionService auctionService,
                       BidRepository bidRepository,
                       AuctionRepository auctionRepository,
                       WebSocketService webSocketService,
-                      SimpMessageSendingOperations messagingTemplate) {
+                      SimpMessageSendingOperations messagingTemplate,
+                      BidRedisRepository bidRedisRepository) {
         this.auctionService = auctionService;
         this.webSocketService = webSocketService;
         this.messagingTemplate = messagingTemplate;
+        this.bidRedisRepository = bidRedisRepository;
         this.objectMapper = new ObjectMapper();
         this.kafkaTemplate = kafkaTemplate;
         this.bidRepository = bidRepository;
@@ -54,8 +58,8 @@ public class BidAdapter {
         log.info("bid-event bid-mysql {}", bidRegisterRequest);
         // bid 저장
         Bid bid = bidRepository.findBidByAuctionIdAndUserId(bidRegisterRequest.getAuctionId(),
-            bidRegisterRequest.getUserId()).orElse(Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
-            AggregateReference.to(bidRegisterRequest.getUserId()), bidRegisterRequest.getSuggestedPrice(), false));
+                bidRegisterRequest.getUserId()).orElse(Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
+                AggregateReference.to(bidRegisterRequest.getUserId()), bidRegisterRequest.getSuggestedPrice(), false));
 
         bid.updatePrice(bidRegisterRequest.getSuggestedPrice());
 
@@ -63,7 +67,7 @@ public class BidAdapter {
 
         // Auction 저장
         Auction auction = auctionRepository.findById(bidRegisterRequest.getAuctionId())
-            .orElseThrow(() -> new RuntimeException("존재하는 경매가 없습니다."));
+                .orElseThrow(() -> new RuntimeException("존재하는 경매가 없습니다."));
 
         auction.updateEndPrice(bidRegisterRequest.getSuggestedPrice());
 
@@ -75,16 +79,17 @@ public class BidAdapter {
     // 2. bidders 웹소켓에 뿌려주기
     @KafkaListener(topics = "bid-event", groupId = "bidder-redis")
     public void saveBiddersAndBroadcast(@Payload String bidRegisterRequestStr) throws JsonProcessingException {
-        BidRegisterRequest bidRegisterRequest = objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class);
+        BidRegisterRequest bidRegisterRequest = objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class); // auctionID, userID
 
+        Bid bid = Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
+                AggregateReference.to(bidRegisterRequest.getUserId()),
+                bidRegisterRequest.getSuggestedPrice(), false);
+        bidRedisRepository.save(bid);
         Long auctionId = bidRegisterRequest.getAuctionId();
         AuctionRedisDTO auctionRedis = auctionService.getAuction(auctionId);
-        if (auctionRedis != null) { // 시작된 경우
-            AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionRedis);
-            messagingTemplate.convertAndSend("/ws/start/" + auctionId, auctionDtoWebSocket);
-            return;
-        }
+        AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionRedis);
 
+        messagingTemplate.convertAndSend("/ws/start/" + auctionId, auctionDtoWebSocket);
         log.info("bid-event bid-redis {}", bidRegisterRequest);
     }
 

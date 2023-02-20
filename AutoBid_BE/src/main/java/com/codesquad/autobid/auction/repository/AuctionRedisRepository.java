@@ -26,6 +26,10 @@ public class AuctionRedisRepository {
         zSetOps = redisTemplate.opsForZSet();
     }
 
+    public void saveBid(){
+
+    }
+
     public void save(AuctionRedisDTO auctionRedisDTO) {
         Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionRedisDTO.getAuctionId());
 

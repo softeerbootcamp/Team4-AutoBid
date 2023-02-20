@@ -34,14 +34,6 @@ public class BidService {
             if (!checkBid(bidRegisterRequest.getSuggestedPrice(), bidRegisterRequest.getAuctionId(), user)) {
                 return false;
             }
-            Bid bid = Bid.of(
-                    AggregateReference.to(bidRegisterRequest.getAuctionId()),
-                    AggregateReference.to(user.getId()),
-                    bidRegisterRequest.getSuggestedPrice(),
-                    false);
-
-            bidRepository.save(bid);
-            bidRedisRepository.save(bid);
             return true;
         } catch (AuctionNotFoundException e) {
             return false; // todo: return error response
