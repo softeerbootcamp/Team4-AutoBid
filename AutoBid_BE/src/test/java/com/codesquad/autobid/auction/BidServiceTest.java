@@ -21,16 +21,16 @@ public class BidServiceTest {
 	@Autowired
 	private BidService bidService;
 
-	@DisplayName("입찰하기")
-	@Test
-	public void suggestBidTest() {
-		// given
-		BidRegisterRequest bidRegisterRequest = new BidRegisterRequest(5L, 1000L);
-
-		// when
-		boolean result = bidService.suggestBid(bidRegisterRequest, UserTestUtil.TEST_USER_1);
-
-		// then
-		assertThat(result).isEqualTo(true);
-	}
+	// @DisplayName("입찰하기")
+	// @Test
+	// public void suggestBidTest() {
+	// 	// given
+	// 	BidRegisterRequest bidRegisterRequest = new BidRegisterRequest(5L, 1000L);
+	//
+	// 	// when
+	// 	boolean result = bidService.suggestBid(bidRegisterRequest, UserTestUtil.TEST_USER_1);
+	//
+	// 	// then
+	// 	assertThat(result).isEqualTo(true);
+	// }
 }

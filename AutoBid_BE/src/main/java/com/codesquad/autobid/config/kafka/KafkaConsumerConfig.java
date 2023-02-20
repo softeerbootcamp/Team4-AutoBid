@@ -21,18 +21,18 @@ public class KafkaConsumerConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String BOOTSTRAP_SERVERS;
 
-    @Bean
-    public ConsumerFactory<String, AuctionKafkaDTO> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<>(consumerProps());
-    }
-
-    private Map<String, Object> consumerProps() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "group");
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, AuctionKafkaDTODeserializer.class);
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
-        return props;
-    }
+    // @Bean
+    // public ConsumerFactory<String, AuctionKafkaDTO> consumerFactory() {
+    //     return new DefaultKafkaConsumerFactory<>(consumerProps());
+    // }
+    //
+    // private Map<String, Object> consumerProps() {
+    //     Map<String, Object> props = new HashMap<>();
+    //     props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
+    //     props.put(ConsumerConfig.GROUP_ID_CONFIG, "group");
+    //     props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+    //     props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, AuctionKafkaDTODeserializer.class);
+    //     props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+    //     return props;
+    // }
 }
