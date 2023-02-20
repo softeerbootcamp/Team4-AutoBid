@@ -43,11 +43,11 @@ public class BidController {
 //		 	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 //		 }
 
-		Long auctionId = bidRegisterRequest.getAuctionId();
-		AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionId);
-		log.info("getUserNum : {}",auctionDtoWebSocket.getUserNumber());
-		log.info("getPrice : {}",auctionDtoWebSocket.getPrice());
-		messagingTemplate.convertAndSend("/ws/start/" + auctionId, auctionDtoWebSocket);
+//		Long auctionId = bidRegisterRequest.getAuctionId();
+//		AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionId);
+//		log.info("getUserNum : {}",auctionDtoWebSocket.getUserNumber());
+//		log.info("getPrice : {}",auctionDtoWebSocket.getPrice());
+//		messagingTemplate.convertAndSend("/ws/start/" + auctionId, auctionDtoWebSocket);
 		return ResponseEntity.status(HttpStatus.OK).body(true);
 	}
 }
