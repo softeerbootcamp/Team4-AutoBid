@@ -1,6 +1,7 @@
 import {Auction} from "../model/auction";
 import GlobalStore, {registerReducer} from "../core/store";
 import {Reducer} from "redux";
+import {Error} from "../model/error";
 
 export enum ModalView {
     NONE,
