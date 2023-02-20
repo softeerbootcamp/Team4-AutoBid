@@ -27,7 +27,7 @@ public class AuctionSendConsumer {
     public void consume(String json) throws JsonProcessingException {
         log.debug("AuctionSendConsumer: {}", json);
         AuctionKafkaDTO auctionKafkaDTO = om.readValue(json, AuctionKafkaDTO.class);
-        String url = "/end" + auctionKafkaDTO.getAuctionId();
+        String url = "/end/" + auctionKafkaDTO.getAuctionId();
         List<BidderDto> bidderUser = auctionKafkaDTO.getUsers().stream().map(BidderDto::from).collect(Collectors.toList());
         AuctionDtoWebSocket auctionDtoWebSocket = AuctionDtoWebSocket.of(auctionKafkaDTO.getPrice(), bidderUser);
 
