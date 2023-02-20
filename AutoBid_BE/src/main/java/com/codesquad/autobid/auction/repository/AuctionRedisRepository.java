@@ -45,7 +45,7 @@ public class AuctionRedisRepository {
 			}
 			Long curPrice = Long.valueOf(String.valueOf(stringOps.get(keys.get(AuctionRedisKey.PRICE))));
 			if (bid.getPrice() > curPrice) {
-				System.out.println(bid.getPrice() + " " + curPrice);
+				log.info(bid.getPrice() + " " + curPrice);
 				stringOps.set(keys.get(AuctionRedisKey.PRICE), String.valueOf(bid.getPrice()));
 				if (rLock != null && rLock.isLocked()) {
 					rLock.unlock();

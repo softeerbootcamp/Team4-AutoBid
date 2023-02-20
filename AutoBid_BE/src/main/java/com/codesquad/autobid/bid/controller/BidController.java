@@ -31,7 +31,9 @@ public class BidController {
 	public ResponseEntity<Boolean> bidRegister(@Parameter @RequestBody BidRegisterRequest bidRegisterRequest,
 		@Parameter(hidden = true) @AuthorizedUser User user) throws JsonProcessingException {
 		bidRegisterRequest.setUserId(user.getId());
-		if (!auctionService.saveBidRedis(bidRegisterRequest)) {
+		boolean result = auctionService.saveBidRedis(bidRegisterRequest);
+		log.info(String.valueOf(result));
+		if (!result) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 		}
 		//		 boolean result = bidService.suggestBid(bidRegisterRequest, user);
