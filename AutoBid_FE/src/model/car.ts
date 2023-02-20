@@ -1,5 +1,6 @@
 export type CarListDTO = {
-    carList: CarInfo[]
+    carList: CarInfo[],
+    length: number
 };
 
 export enum CarType {

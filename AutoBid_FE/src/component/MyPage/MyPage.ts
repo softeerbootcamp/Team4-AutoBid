@@ -2,16 +2,19 @@ import Component from "../../core/component";
 import {requestParticipationList, requestMyList, requestUserCarList} from "../../api/mypage";
 import {Auction} from "../../model/auction";
 import "./mypage.css";
+import {CarInfo} from "../../model/car";
+import AuctionCard from "../AuctionCard/AuctionCard";
+import auctionList from "../AuctionList/AuctionList";
 
 class MyPage extends Component<any> {
     private participationList: Auction[] = [];
     private myCarList: Auction[] = [];
-    private userCarList: Auction[] = [];
+    private userCarList: CarInfo[] = [];
 
     initialize() {
         this.updateParticipationList();
         this.updateCarList();
-        this.updateUserCarList();
+        // this.updateUserCarList();
     }
 
     updateParticipationList() {
@@ -19,6 +22,7 @@ class MyPage extends Component<any> {
             if (auctionListData) {
                 const {auctionInfoList} = auctionListData;
                 this.participationList = auctionInfoList;
+                // console.log(`participation ${this.participationList}`);
             } else {
                 this.participationList = [];
             }
@@ -38,17 +42,19 @@ class MyPage extends Component<any> {
         });
     }
 
-    updateUserCarList() {
-        requestUserCarList().then(auctionListData => {
-            if (auctionListData) {
-                const {auctionInfoList} = auctionListData;
-                this.userCarList = auctionInfoList;
-            } else {
-                this.userCarList = [];
-            }
-            this.render();
-        });
-    }
+    // updateUserCarList() {
+    //     requestUserCarList().then(auctionListData => {
+    //         if (auctionListData) {
+    //             const {carList} = auctionListData;
+    //             console.log(auctionListData);
+    //             console.log(carList);
+    //             this.userCarList = carList;
+    //         } else {
+    //             this.userCarList = [];
+    //         }
+    //         this.render();
+    //     });
+    // }
 
     template(): InnerHTML["innerHTML"] {
         return `
@@ -57,7 +63,7 @@ class MyPage extends Component<any> {
         <hr>
         <div class="my-page__card-slider my-page__main__my-car-list">
             <button class="my-page__swap-button-left"><i class="fas fa-chevron-left"></i></button>
-                ${this.setCards(this.participationList)}
+                ${this.setCards(this.participationList, "participationCard")}
             <button class="my-page__swap-button-right"><i class="fas fa-chevron-right"></i></button>
         </div>
     </div>
@@ -66,7 +72,7 @@ class MyPage extends Component<any> {
         <hr>
         <div class="my-page__card-slider my-page__main__participating-bids">
             <button class="my-page__swap-button-left"><i class="fas fa-chevron-left"></i></button>
-                ${this.setCards(this.myCarList)}
+                ${this.setCards(this.myCarList, "myCard")}
             <button class="my-page__swap-button-right"><i class="fas fa-chevron-right"></i></button>
         </div>
     </div>
@@ -75,19 +81,22 @@ class MyPage extends Component<any> {
         <hr>
         <div class="my-page__card-slider my-page__main__registered-bids">
             <button class="my-page__swap-button-left"><i class="fas fa-chevron-left"></i></button>
-                ${this.setCards(this.userCarList)}
+            
             <button class="my-page__swap-button-right"><i class="fas fa-chevron-right"></i></button>
         </div>
     </div>
         `
     }
 
-    setCards(auctionList: Auction[]): InnerHTML['innerHTML'] {
+    // ${this.setCards(this.myCarList)}
+    // ${this.setCards(this.userCarList)}
+
+    setCards(auctionList: Auction[], componentName: String): InnerHTML['innerHTML'] {
         if (auctionList && auctionList.length) {
             return `
                 <div class="my-page__card-list__holder">
                     ${auctionList.map(() => {
-                        `<div data-component="AuctionCard"></div>`
+                        return `<div data-component="${componentName}"></div>`
                     }).join('')}
                 </div>
             `
@@ -98,7 +107,26 @@ class MyPage extends Component<any> {
     }
 
     mounted() {
-        super.mounted();
+        const participationList = this.participationList;
+        const $participationCards = this.$target.querySelectorAll('[data-component="participationCard"]');
+        $participationCards.forEach(($participationCard, idx) => {
+            new AuctionCard($participationCard as HTMLElement, {
+                auction: participationList[idx],
+                onClick: () => {
+                    console.log(idx);
+                }
+            });
+        });
+        const myCarList = this.myCarList;
+        const $myCarCards = this.$target.querySelectorAll('[data-component="myCard"]');
+        $myCarCards.forEach(($myCarCards, idx) => {
+            new AuctionCard($myCarCards as HTMLElement, {
+                auction: myCarList[idx],
+                onClick: () => {
+                    console.log(idx);
+                }
+            });
+        });
     }
 }
 
