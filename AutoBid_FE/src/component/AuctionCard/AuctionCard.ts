@@ -67,7 +67,7 @@ class AuctionCard extends Component<any, { auction: Auction }> {
     }
 
     priceInfo() {
-        const {startPrice, endPrice, startTime, endTime} = this.props.auction;
+        const {endPrice, startTime, endTime} = this.props.auction;
         const $startTime = new Date(startTime).getTime();
         const $endTime = new Date(endTime).getTime();
         const now = Date.now();
@@ -75,7 +75,7 @@ class AuctionCard extends Component<any, { auction: Auction }> {
         if (now <= $startTime) {
             return `
                 <div class="card-item__details__price status--before">
-                    <em>시작가</em><b><div data-component="AnimatedNumber" data-price="${startPrice}"></div></b>만원
+                    <em>시작가</em><b><div data-component="AnimatedNumber" data-price="${endPrice}"></div></b>만원
                 </div>
                 `;
         } else if ($startTime <= now && now < $endTime) {
