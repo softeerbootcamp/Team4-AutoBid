@@ -4,6 +4,7 @@ import AuctionList from "./AuctionList/AuctionList";
 import "./app.css";
 import QuerySidebar from "./QuerySidebar/QuerySidebar";
 import {whoIam} from "../store/user";
+import MyPage from "./MyPage/MyPage";
 import Modal from "./Modal/Modal";
 
 class App extends Component<any> {
@@ -11,8 +12,9 @@ class App extends Component<any> {
         return `
         <header data-component="Header"></header>
         <div class="main-container">
-            <div data-component="QuerySidebar"></div>
-            <div data-component="AuctionList"></div>
+            <div data-component="QuerySidebar" hidden></div>
+            <div data-component="AuctionList" hidden></div>
+            <div data-component="MyPage"></div>
         </div>
         <div data-component="Modal"></div>
         `;
@@ -28,6 +30,9 @@ class App extends Component<any> {
         const $querySidebar = this.$target.querySelector('[data-component="QuerySidebar"]') as HTMLElement;
         new QuerySidebar($querySidebar, {});
 
+        const $myPage = document.querySelector('[data-component="MyPage"]') as HTMLElement;
+        new MyPage($myPage, {});
+        
         const $modal = this.$target.querySelector('[data-component="Modal"]') as HTMLElement;
         new Modal($modal, {});
 
