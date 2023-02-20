@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum AuctionRedisKey {
     PRICE("auction#%d_price"),
-    BIDDERS("auction#%d_bidders");
+    BIDDERS("auction#%d_bidders"),
+    LOCK("auction#%d_lock");
 
     private String fieldName;
 }
