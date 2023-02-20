@@ -1,7 +1,7 @@
 package com.codesquad.autobid.kafka.adapter;
 
 import com.codesquad.autobid.auction.domain.Auction;
-import com.codesquad.autobid.auction.repository.AuctionRedis;
+import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
 import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
 import com.codesquad.autobid.auction.repository.AuctionRepository;
 import com.codesquad.autobid.kafka.producer.dto.AuctionKafkaDTO;
@@ -25,7 +25,6 @@ public class AuctionOpenAdapter {
     private final AuctionRedisRepository auctionRedisRepository;
     private final AuctionRepository auctionRepository;
 
-
     @KafkaListener(topics = "auction-open", groupId = "auction-open-consumer")
     public void consume(@Payload AuctionKafkaDTO auctionKafkaDTO) {
         log.debug("AuctionOpenAdapter: {}", auctionKafkaDTO.getAuction());
@@ -33,7 +32,8 @@ public class AuctionOpenAdapter {
         // todo: check deserialize
         auction.open();
         auctionRepository.save(auction);
-        auctionRedisRepository.save(AuctionRedis.from(auction));
+        auctionRedisRepository.save(AuctionRedisDTO.from(auction));
+
         produce(auctionKafkaDTO);
     }
 

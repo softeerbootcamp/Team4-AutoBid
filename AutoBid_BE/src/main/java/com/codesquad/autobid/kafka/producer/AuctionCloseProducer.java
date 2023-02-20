@@ -1,6 +1,6 @@
 package com.codesquad.autobid.kafka.producer;
 
-import com.codesquad.autobid.auction.domain.Auction;
+import com.codesquad.autobid.kafka.producer.dto.AuctionKafkaDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -16,9 +16,9 @@ public class AuctionCloseProducer {
     private String AUCTION_CLOSE_TOPIC_NAME;
     private final KafkaTemplate kafkaTemplate;
 
-    public void produce(List<Auction> auctions) {
+    public void produce(List<AuctionKafkaDTO> auctions) {
         // todo: check serialize
-        for (Auction auction : auctions) {
+        for (AuctionKafkaDTO auction : auctions) {
             kafkaTemplate.send(AUCTION_CLOSE_TOPIC_NAME, auction);
         }
     }
