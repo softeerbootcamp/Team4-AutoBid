@@ -7,7 +7,7 @@ public enum AuctionStatus {
 	COMPLETED(2);
 	private int status;
 
-	public static final Long BEFORE_END_PRICE = 0L;
+	public static final Long BEFORE_END_PRICE = -1L;
 
 	AuctionStatus(int status) {
 		this.status = status;
