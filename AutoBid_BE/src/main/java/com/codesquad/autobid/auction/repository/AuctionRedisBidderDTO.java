@@ -6,14 +6,14 @@ import lombok.*;
 @Setter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class AuctionBidderDTO {
+public class AuctionRedisBidderDTO {
 
     private Long userId;
     private Long price;
-    public static AuctionBidderDTO of(Long userId, Long price) {
-        AuctionBidderDTO auctionBidderDTO = new AuctionBidderDTO();
-        auctionBidderDTO.userId = userId;
-        auctionBidderDTO.price = price;
-        return auctionBidderDTO;
+    public static AuctionRedisBidderDTO of(Long userId, Long price) {
+        AuctionRedisBidderDTO auctionRedisBidderDTO = new AuctionRedisBidderDTO();
+        auctionRedisBidderDTO.userId = userId;
+        auctionRedisBidderDTO.price = price;
+        return auctionRedisBidderDTO;
     }
 }

@@ -7,30 +7,26 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Getter
-public class AuctionRedis {
+public class AuctionRedisDTO {
 
-    private Long id;
+    private Long auctionId;
 
     private Long price;
 
-    private Set<Bidder> bidders = new HashSet<>();
+    private Set<AuctionRedisBidderDTO> auctionRedisBidderDto = new HashSet<>();
 
-    private AuctionRedis(Long id, Long price) {
-        this.id = id;
+    private AuctionRedisDTO(Long auctionId, Long price) {
+        this.auctionId = auctionId;
         this.price = price;
     }
 
-    public static AuctionRedis from(Auction auction) {
-        return new AuctionRedis(auction.getId(), auction.getAuctionStartPrice());
+    public static AuctionRedisDTO from(Auction auction) {
+        return new AuctionRedisDTO(auction.getId(), auction.getAuctionStartPrice());
     }
 
-    public static AuctionRedis of(Long auctionId, Long price, Set<Bidder> bidders) {
-        AuctionRedis auctionRedis = new AuctionRedis(auctionId, price);
-        auctionRedis.bidders = bidders;
-        return auctionRedis;
-    }
-
-    public void addBidder(Bidder bidder) {
-        bidders.add(bidder);
+    public static AuctionRedisDTO of(Long auctionId, Long price, Set<AuctionRedisBidderDTO> auctionRedisBidderDTOS) {
+        AuctionRedisDTO auctionRedisDto = new AuctionRedisDTO(auctionId, price);
+        auctionRedisDto.auctionRedisBidderDto = auctionRedisBidderDTOS;
+        return auctionRedisDto;
     }
 }
