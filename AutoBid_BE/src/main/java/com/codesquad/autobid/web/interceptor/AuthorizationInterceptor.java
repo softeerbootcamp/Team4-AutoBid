@@ -25,12 +25,13 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 		}
 
 		HttpSession session = request.getSession(false);
-		log.info("session : {}",session);
+		
 
 		if (session == null || session.getAttribute(OauthToken.ACCESS_TOKEN_KEY) == null) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return false;
 		}
+		log.info(session.getAttribute("user"));
 
 		return true;
 	}
