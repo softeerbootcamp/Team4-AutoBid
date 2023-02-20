@@ -122,13 +122,18 @@ export const disconnectSocketSession = (test = false) => {
 }
 
 export const requestBid = asyncTaskWrapper(async (auctionId: number, suggestedPrice: number) => {
-    const bidRes = await fetch(`${API_BASE_URL}${BID_ENDPOINT}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ auctionId, suggestedPrice })
-    });
-    return bidRes.ok;
+    try {
+        const bidRes = await fetch(`${API_BASE_URL}${BID_ENDPOINT}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ auctionId, suggestedPrice })
+        });
+        return bidRes.ok;
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
 });
 
 declare global {

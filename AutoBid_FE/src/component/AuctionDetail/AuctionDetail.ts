@@ -155,13 +155,11 @@ class AuctionDetail extends Component<ModalState, Auction> {
 
         this.fetchUsers([], `${this.isEnded() ? '경매가 종료되었습니다.' : '경매 시작을 대기 하고 있습니다.'}`);
 
-        if (!this.isEnded()) {  // TODO 버그
-            this.timeoutRecursive();
-            setOnStart(this.onStart.bind(this));
-            setOnBid(this.onBid.bind(this));
-            setOnEnd(this.onEnd.bind(this));
-            requestSocketSession(auctionId);
-        }
+        this.timeoutRecursive();
+        setOnStart(this.onStart.bind(this));
+        setOnBid(this.onBid.bind(this));
+        setOnEnd(this.onEnd.bind(this));
+        requestSocketSession(auctionId);
     }
 
     timeoutRecursive() {
