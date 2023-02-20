@@ -1,15 +1,11 @@
 package com.codesquad.autobid.websocket.domain;
 
 
-import com.codesquad.autobid.auction.repository.Bidder;
-import com.codesquad.autobid.user.service.UserService;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
