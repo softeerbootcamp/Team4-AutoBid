@@ -17,7 +17,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/auction-room")
-                .setAllowedOriginPatterns("https://www.autobid.im/")
                 .setHandshakeHandler(new CustomHandshakeHandler())
                 .withSockJS();
     }
