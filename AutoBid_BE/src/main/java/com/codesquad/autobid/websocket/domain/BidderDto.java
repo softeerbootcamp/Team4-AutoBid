@@ -7,14 +7,14 @@ import lombok.Setter;
 @Setter
 public class BidderDto {
     private Long userId;
-    private String userName;
-    private String mobileNum;
+    private String username;
+    private String phoneNumber;
     private Long price;
 
-    public BidderDto(Long userId, String userName, String mobileNum, Long price) {
+    public BidderDto(Long userId, String userName, String phoneNumber, Long price) {
         this.userId = userId;
-        this.userName = userName;
-        this.mobileNum = mobileNum;
+        this.username = userName;
+        this.phoneNumber = phoneNumber;
         this.price = price;
     }
 

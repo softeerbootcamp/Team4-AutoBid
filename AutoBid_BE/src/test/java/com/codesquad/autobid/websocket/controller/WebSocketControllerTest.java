@@ -6,7 +6,6 @@ import com.codesquad.autobid.auction.repository.AuctionRedis;
 import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
 import com.codesquad.autobid.auction.repository.Bidder;
 import com.codesquad.autobid.auction.service.AuctionService;
-import com.codesquad.autobid.bid.domain.Bid;
 import com.codesquad.autobid.bid.repository.BidRepository;
 import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.user.domain.User;
@@ -19,16 +18,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.codesquad.autobid.util.AuctionTestUtil.saveAuction;
 import static com.codesquad.autobid.util.CarTestUtil.getNewCars;
 import static com.codesquad.autobid.util.CarTestUtil.saveCar;
 import static com.codesquad.autobid.util.UserTestUtil.getNewUser;
@@ -91,14 +87,14 @@ class WebSocketControllerTest {
 
         for (BidderDto i : bidderDtoList) {
             log.info("price: {}",  i.getPrice());
-            log.info("mobileNum: {}",  i.getMobileNum());
-            log.info("userName: {}",  i.getUserName());
+            log.info("mobileNum: {}",  i.getPhoneNumber());
+            log.info("userName: {}",  i.getUsername());
         }
 
         AuctionDtoWebSocket auctionDtoWebSocket = AuctionDtoWebSocket.of(auctionRedis.getPrice(), bidderDtoList);
         log.info("현재입찰가: {}",  auctionDtoWebSocket.getPrice());
-        List<BidderDto> biddersResult = auctionDtoWebSocket.getBidders();
-        Long userNumber = auctionDtoWebSocket.getUserNumber();
+        List<BidderDto> biddersResult = auctionDtoWebSocket.getUsers();
+        Long userNumber = auctionDtoWebSocket.getNumberOfUsers();
 
         Assertions.assertThat(biddersResult).isEqualTo(bidderDtoList);
         Assertions.assertThat(userNumber).isEqualTo(bidderSize);
