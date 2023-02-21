@@ -1,7 +1,7 @@
 import Component from "../../core/component";
 import {ModalState, modalStateSelector} from "../../store/modal";
 import {disconnectSocketSession} from "../../api/live";
-import {AddBid} from "../../model/addBid";
+import {AddBid, AddBidDTO} from "../../model/addBid";
 import "./addbiddetail.css";
 
 class AddBidDetail extends Component<ModalState> {
@@ -84,10 +84,6 @@ class AddBidDetail extends Component<ModalState> {
             this.addImages(files).then(this.setImageDeleteButton).then();
         }
 
-        this.addEvent('click', '.add-bid__bid-submit__button', async () => {
-            console.log("CLICKED");
-        });
-
         const slideContainer = document.querySelector(".add-bid__images-container")!;
         const imageWidth = 68;
         this.addEvent('click', '.add-bid__swap-button-left', () => {
@@ -95,6 +91,10 @@ class AddBidDetail extends Component<ModalState> {
         });
         this.addEvent('click', '.add-bid__swap-button-right', () => {
             slideContainer.scrollLeft += imageWidth;
+        });
+
+        this.addEvent('click', '.add-bid__bid-submit__button', async () => {
+
         });
     }
 
@@ -139,6 +139,21 @@ class AddBidDetail extends Component<ModalState> {
                 imagesContainer.removeChild(parent);
             })
         }
+    }
+
+    getBidDetails() {
+        let auctionTitle = (document.querySelector('.add-bid__bid-title__input') as HTMLInputElement).value;
+        let carID = (document.querySelector('.add-bid__car-type__car-list') as HTMLSelectElement).value;
+        let auctionStartTime = (document.querySelector('.add-bid__bid-start-time__input') as HTMLInputElement).value;
+        let auctionEndTime = (document.querySelector('.add-bid__bid-end-time__input') as HTMLInputElement).value;
+        let auctionStartPrice = (document.querySelector('.add-bid__bid-start-price__input') as HTMLInputElement).value;
+
+        const inputFileList = (document.querySelector('.add-bid__file-upload-input') as HTMLInputElement).files!;
+        // for (const file of inputFiles.files!) {
+        //     formData.append("multipartFileList", file);
+        // }
+
+
     }
 
     submitEvent() {
