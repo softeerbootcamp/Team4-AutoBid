@@ -68,13 +68,80 @@ class AddBidDetail extends Component<ModalState> {
     }
 
     initialize() {
-        this.addEvent('click', '.add-bid__bid-submit__button', async () => {
-            // TODO: send data to server
-            console.log("CLICKED");
-        });
     }
 
     mounted() {
+        const uploadInput = document.querySelector('.add-bid__file-upload-input') as HTMLInputElement;
+        let files;
+
+        // uploading images to page
+        this.addEvent('click', '.add-bid__image', async () => {
+            uploadInput.click();
+        });
+        uploadInput.onchange = () => {
+            files = uploadInput.files;
+            if (files == null) return;
+            this.addImages(files).then(this.setImageDeleteButton).then();
+        }
+
+        this.addEvent('click', '.add-bid__bid-submit__button', async () => {
+            console.log("CLICKED");
+        });
+
+        const slideContainer = document.querySelector(".add-bid__images-container")!;
+        const imageWidth = 68;
+        this.addEvent('click', '.add-bid__swap-button-left', () => {
+            slideContainer.scrollLeft -= imageWidth;
+        });
+        this.addEvent('click', '.add-bid__swap-button-right', () => {
+            slideContainer.scrollLeft += imageWidth;
+        });
+    }
+
+    async addImages(files: FileList) {
+        const imagesContainer = document.querySelector(".add-bid__images-container")!;
+
+        if (files == null) return;
+        for (let file of files) {
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                imagesContainer.innerHTML += `<div class="add-bid__image-container">
+            <button class="add-bid__image-delete"><i class="fa-solid fa-circle-xmark"></i></button>
+            <img class="add-bid__image" src="${reader.result}" alt="">
+            </div>`;
+            }
+        }
+    }
+
+    cameraEvent(files: FileList) {
+        const imagesContainer = document.querySelector(".add-bid__images-container")!;
+
+        if (files == null) return;
+        for (let file of files) {
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                imagesContainer.innerHTML += `<div class="add-bid__image-container">
+                <button class="add-bid__image-delete"><i class="fa-solid fa-circle-xmark"></i></button>
+                <img class="add-bid__image" src="${reader.result}" alt="">
+                </div>`;
+            }
+        }
+    }
+
+    setImageDeleteButton() {
+        const deleteButtons = document.getElementsByClassName('add-bid__image-delete');
+        for (let button of deleteButtons) {
+            button.addEventListener("click", () => {
+                let parent = button.parentElement!;
+                let imagesContainer = button.closest(".add-bid__images-container")!;
+                imagesContainer.removeChild(parent);
+            })
+        }
+    }
+
+    submitEvent() {
 
     }
 }

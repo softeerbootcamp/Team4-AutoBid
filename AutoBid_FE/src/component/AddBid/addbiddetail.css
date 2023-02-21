@@ -52,10 +52,8 @@ input {
 
 .add-bid__add-image__container {
   background-color: var(--color-light-gray);
-  padding: 8px;
   border-radius: 8px;
   display: flex;
-  /*border: 1px var(--color-black);*/
 }
 
 .add-bid__swap-button-right {
@@ -64,6 +62,7 @@ input {
 
 .fas {
   opacity: 50%;
+  width: fit-content;
 }
 
 .fas:hover {
