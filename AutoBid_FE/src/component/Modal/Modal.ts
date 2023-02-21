@@ -3,6 +3,7 @@ import {closeModal, MODAL_INITIAL, ModalState, modalStateSelector, ModalView} fr
 import "./modal.css";
 import AuctionDetail from "../AuctionDetail/AuctionDetail";
 import ErrorView from "../ErrorView/ErrorView";
+import PostAuctionForm from "../PostAuctionForm/PostAuctionForm";
 
 class Modal extends Component<ModalState> {
     stateSelector(globalState: any): ModalState | undefined {
@@ -37,6 +38,11 @@ class Modal extends Component<ModalState> {
             new AuctionDetail($auctionDetail as HTMLElement, auction);
         }
 
+        const $addBidDetail = this.$target.querySelector('[data-component="PostAuctionForm"]');
+        if ($addBidDetail) {
+            new PostAuctionForm($addBidDetail as HTMLElement, {});
+        }
+
         const $errorView = this.$target.querySelector('[data-component="ErrorView"]');
         const { error } = this.state || MODAL_INITIAL;
         if ($errorView && error) {
@@ -50,7 +56,7 @@ class Modal extends Component<ModalState> {
             case ModalView.NONE:
                 return '';
             case ModalView.POSTING:
-                return 'PostingAuction';
+                return 'PostAuctionForm';
             case ModalView.SHOWING:
                 return 'AuctionDetail';
             case ModalView.ERROR:

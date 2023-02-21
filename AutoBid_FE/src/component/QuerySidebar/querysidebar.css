@@ -13,7 +13,7 @@
 
 .query-side-bar__n-sold {
     padding: 0 0 16px;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
     text-align: center;
     font-size: 20px;
     border-bottom: 1px solid lightgray;
@@ -53,7 +53,7 @@
 .query-side-bar__set-fund__title {
     font-weight: normal;
     text-align: left;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 }
 
 .query-side-bar__set-fund__val {
@@ -63,6 +63,7 @@
 
 .query-side-bar__set-fund__avg {
     text-align: left;
+    margin-top: 8px;
     display: block;
 }
 

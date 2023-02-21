@@ -30,7 +30,7 @@ export const popShowingAuctionModal = (auction: Auction) => {
 };
 
 export const popPostingAuctionModal = () => {
-    GlobalStore.get().dispatch({ type: ModalActionType.POP_POSTING });
+    GlobalStore.get().dispatch({ type: ModalActionType.POP_POSTING});
 };
 
 export const popErrorModal = (error: Error) => {
@@ -56,7 +56,7 @@ const modal: Reducer<ModalState> = (state = MODAL_INITIAL, action) => {
         case ModalActionType.POP_POSTING:
             return { ...MODAL_INITIAL,
                 pop: true,
-                view: ModalView.POSTING
+                view: ModalView.POSTING,
             };
         case ModalActionType.POP_ERROR:
             return { ...MODAL_INITIAL,

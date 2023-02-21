@@ -24,7 +24,7 @@ class MyPage extends Component<any> {
         `
     }
 
-    mounted() {
+    mounted() {  // TODO test 뺄 것
         const $participatingList = this.$target.querySelector('.my-page__main__participating-bids') as HTMLElement;
         requestMyParticipationAuctionList(true).then(auctionListDTO => {
             this.mountAuctionList($participatingList, auctionListDTO);
