@@ -1,5 +1,5 @@
 export type AddBid = {
-    multipartFileList: FormData,
+    fileList: FileList,
     carId: number,
     auctionTitle: string,
     auctionStartTime: string,
