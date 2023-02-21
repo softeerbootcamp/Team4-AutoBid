@@ -63,7 +63,7 @@ public class AuctionService {
             auctionRegisterRequest.getAuctionStartTime(),
             auctionRegisterRequest.getAuctionEndTime(),
             auctionRegisterRequest.getAuctionStartPrice(),
-            AuctionStatus.BEFORE_END_PRICE,
+            auctionRegisterRequest.getAuctionStartPrice(),
             AuctionStatus.BEFORE);
         auctionRepository.save(auction);
         List<MultipartFile> images = auctionRegisterRequest.getMultipartFileList();
