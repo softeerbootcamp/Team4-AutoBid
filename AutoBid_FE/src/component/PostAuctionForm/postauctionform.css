@@ -126,7 +126,7 @@
   border-radius: 8px;
   height: 60px;
   margin: 8px;
-  opacity: 50%;
+  opacity: 0.5;
 }
 [data-component="PostAuctionForm"] .post-auction-form__image-container__add-btn i {
   font-size: 30px;
@@ -134,7 +134,7 @@
 }
 [data-component="PostAuctionForm"] .post-auction-form__image-container__add-btn:hover {
   color: var(--color-blue);
-  opacity: 100%;
+  opacity: 1;
 }
 
 [data-component="PostAuctionForm"] .post-auction-form__image-container {
