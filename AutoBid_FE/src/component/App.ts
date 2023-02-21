@@ -8,7 +8,6 @@ import MyPage from "./MyPage/MyPage";
 import Modal from "./Modal/Modal";
 import EmojiExplosion from "./EmojiExplosion/EmojiExplosion";
 import {Page, PAGE_INITIAL, PageState, pageStateSelector} from "../store/page";
-import AddBid from "./AddBidModal/AddBid";
 
 class App extends Component<PageState> {
     stateSelector(globalState: any): PageState | undefined {

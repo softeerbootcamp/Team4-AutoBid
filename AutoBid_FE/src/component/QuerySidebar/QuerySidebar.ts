@@ -7,7 +7,8 @@ import {initializeQuery, queryStateSelector, setRange} from "../../store/query";
 import "./querysidebar.css"
 import AnimatedNumber from "../AnimatedNumber/AnimatedNumber";
 import {AuctionQuery} from "../../model/query";
-import {popErrorModal} from "../../store/modal";
+import {popErrorModal, popPostingAuctionModal} from "../../store/modal";
+import {AddBid} from "../../model/addBid";
 
 class QuerySidebar extends Component<AuctionQuery> {
     stateSelector(globalState: any): AuctionQuery | undefined {
@@ -43,17 +44,23 @@ class QuerySidebar extends Component<AuctionQuery> {
     }
 
     onStateChanged(prevLocalState: AuctionQuery) {
-        const { auctionStatus, carType } = this.state as AuctionQuery;
+        const {auctionStatus, carType} = this.state as AuctionQuery;
         if (prevLocalState.auctionStatus !== auctionStatus || prevLocalState.carType !== carType) {
             this.fetchStatistic(false);
         }
     }
 
+    initialize() {
+        this.addEvent('click', '.query-side-bar__new-auction-btn', () => {
+            popPostingAuctionModal();
+        });
+    }
+
     fetchStatistic(first = true) {
-        const { auctionStatus, carType } = this.state as AuctionQuery;
+        const {auctionStatus, carType} = this.state as AuctionQuery;
         requestAuctionStatistic(auctionStatus, carType).then(statistic => {
             if (!statistic || statistic.maxPrice === 0) {
-                popErrorModal({ title: '조회할 데이터가 없습니다', message: '기본 조건으로 검색합니다' });
+                popErrorModal({title: '조회할 데이터가 없습니다', message: '기본 조건으로 검색합니다'});
                 initializeQuery();
                 return;
             }
@@ -88,8 +95,9 @@ class QuerySidebar extends Component<AuctionQuery> {
 
     updateNSold(nSold: number) {
         const $animatedNumber = this.$target.querySelector('[data-component="AnimatedNumber"]') as HTMLElement;
-        new AnimatedNumber($animatedNumber, { start: 0, destination: nSold + 1000, speed: 500 });
+        new AnimatedNumber($animatedNumber, {start: 0, destination: nSold + 1000, speed: 500});
     }
+
     updateFundVal(min: number, max: number) {
         const minPriceInt = Math.floor(min);
         const maxPriceInt = Math.ceil(max);
@@ -99,7 +107,8 @@ class QuerySidebar extends Component<AuctionQuery> {
         const avg = Math.round((min + max) / 2);
         $fundAvg.innerHTML = `차량 평균값 <b>${avg.toLocaleString()}만원</b>`
     }
-    updateHistogram({ contents }: Histogram) {
+
+    updateHistogram({contents}: Histogram) {
         const $histogram = this.$target.querySelector('.query-side-bar__set-fund__hist') as HTMLElement;
         const max = Math.max(...contents);
         $histogram.innerHTML = `${contents.map(value => `
@@ -107,6 +116,7 @@ class QuerySidebar extends Component<AuctionQuery> {
             style="height: ${Math.round(value / max * 80)}%"></span>
         `).join('')}`;
     }
+
     mountDoubleRangeSlider(min: number, max: number, left: number, right: number) {
         const $holder = this.$target.querySelector('.query-side-bar__double-range-slider-holder') as HTMLElement;
         $holder.innerHTML = '<div data-component="DoubleRangeSlider"></div>';
