@@ -11,10 +11,15 @@
   --color-gray: #666666;
   --color-semi-gray: #808080;
   --color-light-gray: #D3D3D3;
+  --color-lighter-gray: #EFEFEF;
 
   --box-shadow-level-1: 2px 2px 20px 0 #0000000f;
   --box-shadow-level-2: 4px 4px 20px 10px #0000000f;
   --box-shadow-level-3: 6px 6px 20px 20px #0000000f;
+
+  --box-shadow-level-minus-1: 2px 2px 20px 0 #0000000f inset;
+  --box-shadow-level-minus-2: 4px 4px 20px 10px #0000000f inset;
+  --box-shadow-level-minus-3: 6px 6px 20px 20px #0000000f inset;
 
   --container-max-width: 1050px;
   --container-padding: 0 32px;

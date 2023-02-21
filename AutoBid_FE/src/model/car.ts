@@ -1,7 +1,4 @@
-export type CarListDTO = {
-    carList: CarInfo[],
-    length: number
-};
+export type CarListDTO = CarInfo[]
 
 export enum CarType {
     ALL = 'ALL',
@@ -12,9 +9,14 @@ export enum CarType {
     FCEV = 'FCEV'
 }
 
+export enum CarState {
+    NOT_FOR_SALE = 'NOT_FOR_SALE',
+    FOR_SALE = 'FOR_SALE'
+}
+
 export type CarInfo = {
     carId: number, distance: number,
-    name: string, type: CarType, sellName: string
+    name: string, type: CarType, sellName: string, state: CarState
 };
 
 export const getCarTypeName = (carType: CarType) => {
