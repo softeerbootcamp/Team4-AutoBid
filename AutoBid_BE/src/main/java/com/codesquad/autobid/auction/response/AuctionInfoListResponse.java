@@ -7,13 +7,22 @@ import java.util.stream.Collectors;
 
 import com.codesquad.autobid.auction.domain.AuctionInfoDto;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @ToString
 @Getter @Setter
+@NoArgsConstructor
 public class AuctionInfoListResponse {
 	private int totalAuctionNum;
 	private List<AuctionInfo> auctionInfoList;
@@ -39,6 +48,8 @@ public class AuctionInfoListResponse {
 
 @ToString
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Getter @Setter
+@NoArgsConstructor
 class AuctionInfo implements Serializable {
 	private Long auctionId;
 	private String title;
@@ -46,7 +57,11 @@ class AuctionInfo implements Serializable {
 	private Long startPrice;
 	private Long endPrice;
 	private String status;
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDateTime startTime;
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDateTime endTime;
 	private CarInfo carInfo;
 
@@ -65,6 +80,8 @@ class AuctionInfo implements Serializable {
 }
 
 @ToString
+@Getter @Setter
+@NoArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 class CarInfo implements Serializable {
 	private Long carId;
