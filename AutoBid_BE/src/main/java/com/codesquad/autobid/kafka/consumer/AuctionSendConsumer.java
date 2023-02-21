@@ -32,8 +32,6 @@ public class AuctionSendConsumer {
         List<BidderDto> bidderUser = auctionKafkaDTO.getUsers().stream().map(BidderDto::from).collect(Collectors.toList());
         AuctionDtoWebSocket auctionDtoWebSocket = AuctionDtoWebSocket.of(auctionKafkaDTO.getPrice(), bidderUser);
 
-        log.info("json-string:{}", json);
-        log.info("get-price:{}",auctionKafkaDTO.getPrice());
         webSocketService.broadCast(auctionDtoWebSocket,url);
     }
 

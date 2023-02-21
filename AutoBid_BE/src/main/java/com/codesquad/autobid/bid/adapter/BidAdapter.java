@@ -83,10 +83,10 @@ public class BidAdapter {
         Bid bid = Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
                 AggregateReference.to(bidRegisterRequest.getUserId()),
                 bidRegisterRequest.getSuggestedPrice(), false);
-        bidRedisRepository.save(bid);
+        bidRedisRepository.save(bid); // redis 저장
         Long auctionId = bidRegisterRequest.getAuctionId();
-        AuctionRedisDTO auctionRedis = auctionService.getAuction(auctionId);
-        AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionRedis);
+        AuctionRedisDTO auctionRedis = auctionService.getAuction(auctionId); // 저장된 것을 불러온다.
+        AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionRedis); // 레디스에서 가져온 데이터를 파싱
 
         log.error("auctionRedis-id : {}", auctionRedis.getAuctionId());
         log.error("auctionRedis-price : {}", auctionRedis.getPrice());

@@ -48,7 +48,7 @@ public class AuctionCloseAdapter {
         Auction auction = auctionRepository.findById(auctionRedisDto.getAuctionId()).get();
         auction.markToFinish(auctionRedisDto.getPrice());
         auctionRepository.save(auction);
-
+        auctionKafkaDTO.setPrice(auctionRedisDto.getPrice());
         auctionKafkaDTO.update(auctionKafkaUserDTOs);
         produce(auctionKafkaDTO);
     }
