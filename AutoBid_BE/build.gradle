@@ -48,6 +48,10 @@ dependencies {
     // Spring Scheduler ShedLock
     implementation 'net.javacrumbs.shedlock:shedlock-spring:4.14.0'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.14.0'
+
+    //sentry
+    implementation 'io.sentry:sentry-logback:6.9.0'
+    implementation 'io.sentry:sentry-spring-boot-starter:6.9.0'
 }
 
 tasks.named('test') {
