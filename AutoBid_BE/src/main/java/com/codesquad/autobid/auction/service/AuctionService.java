@@ -49,6 +49,12 @@ public class AuctionService {
     private final AuctionCloseProducer auctionCloseProducer;
 
     @Transactional
+    public boolean saveBidRedis(BidRegisterRequest bidRegisterRequest) {
+        return auctionRedisRepository.saveBid(Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
+            AggregateReference.to(bidRegisterRequest.getUserId()), bidRegisterRequest.getSuggestedPrice(), false));
+    }
+
+    @Transactional
     public Auction addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
         Auction auction = Auction.of(
             auctionRegisterRequest.getCarId(),
@@ -96,13 +102,14 @@ public class AuctionService {
     }
 
     public AuctionInfoListResponse getAuctions(String carType, String auctionStatus, Long startPrice, Long endPrice,
-                                               int page, int size) {
+        int page, int size) {
         List<AuctionInfoDto> auctionInfoDtoList = getAuctionDtoList(carType, auctionStatus, startPrice, endPrice);
+        System.out.println(auctionInfoDtoList);
         return getAuctionInfoListResponse(auctionInfoDtoList, page, size);
     }
 
     public List<AuctionInfoDto> getAuctionDtoList(String carType, String auctionStatus, Long startPrice,
-                                                  Long endPrice) {
+        Long endPrice) {
         List<AuctionInfoDto> auctionInfoDtoList;
 
         if (carType.equals("ALL") && auctionStatus.equals("ALL")) { // 둘 다 ALL인 경우
@@ -124,7 +131,7 @@ public class AuctionService {
     // 2 5 ~ 9 (size-1)*page ~ size*page -1
     // 3 10 ~ 14
     public AuctionInfoListResponse getAuctionInfoListResponse(List<AuctionInfoDto> auctionInfoDtoList, int page,
-                                                              int size) {
+        int size) {
         int totalAuctionNum = auctionInfoDtoList.size();
         auctionInfoDtoList = subAuctionDtoList(auctionInfoDtoList, page, size, totalAuctionNum);
 
@@ -133,7 +140,7 @@ public class AuctionService {
     }
 
     public AuctionInfoListResponse auctionInfoDtoListToAuctionInfoListResponse(List<AuctionInfoDto> auctionInfoDtoList,
-                                                                               int totalAuctionNum) {
+        int totalAuctionNum) {
         auctionInfoDtoList.forEach(auctionInfoDto -> {
             List<Image> images = imageRepository.findAllByAuctionId(
                 AggregateReference.to(auctionInfoDto.getAuctionId()));
@@ -143,7 +150,8 @@ public class AuctionService {
         return AuctionInfoListResponse.of(auctionInfoDtoList, totalAuctionNum);
     }
 
-    public List<AuctionInfoDto> subAuctionDtoList(List<AuctionInfoDto> auctionInfoDtoList, int page, int size, int totalAuctionNum) {
+    public List<AuctionInfoDto> subAuctionDtoList(List<AuctionInfoDto> auctionInfoDtoList, int page, int size,
+        int totalAuctionNum) {
         if (totalAuctionNum == 0) {
             return auctionInfoDtoList;
         }
