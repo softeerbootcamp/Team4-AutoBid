@@ -22,13 +22,13 @@ public class EmailConsumer {
 
     @KafkaListener(topics = "auction-email", groupId = "auction-email-consumer")
     public void consume(String json) throws JsonProcessingException {
+        log.error("EmailConsumer: {}", json);
         AuctionKafkaDTO auctionKafkaDTO = om.readValue(json, AuctionKafkaDTO.class);
         List<AuctionKafkaUserDTO> users = auctionKafkaDTO.getUsers();
 
         for (AuctionKafkaUserDTO user : users) {
             String auctionTitle = auctionKafkaDTO.getAuctionTitle();
             Long endPrice = auctionKafkaDTO.getPrice();
-
             emailService.send(auctionTitle, endPrice, user);
         }
     }
