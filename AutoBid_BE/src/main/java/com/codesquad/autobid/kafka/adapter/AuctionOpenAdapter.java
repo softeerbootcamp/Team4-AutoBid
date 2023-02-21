@@ -37,6 +37,7 @@ public class AuctionOpenAdapter {
         Auction auction = auctionRepository.findById(auctionKafkaDTO.getAuctionId()).get();
         auction.open();
         auctionRepository.save(auction);
+        log.info("redis save: {}", auction.getId());
         // redis
         auctionRedisRepository.save(AuctionRedisDTO.from(auction));
 
@@ -44,6 +45,7 @@ public class AuctionOpenAdapter {
     }
 
     private void produce(AuctionKafkaDTO auctionKafkaDTO) throws JsonProcessingException {
+        log.info("produce auction : {}", auctionKafkaDTO.getAuctionId());
         kafkaTemplate.send(AUCTION_SEND_TOPIC_NAME, new String(om.writeValueAsBytes(auctionKafkaDTO)));
     }
 }

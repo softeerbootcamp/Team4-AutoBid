@@ -41,9 +41,10 @@ public class AuctionSendConsumer {
     }
 
     private String getUrl(AuctionKafkaDTO auctionKafkaDTO) {
+        // 오츤 프로듀서 -> 오픈 어댑터 -> 오픈 프로듀서
         if (auctionKafkaDTO.getAuctionStatus() == AuctionStatus.PROGRESS) {
-            return "/end/" + auctionKafkaDTO.getAuctionId();
+            return "/end/" + auctionKafkaDTO.getAuctionId(); // 경매 진행 중 -> 종료
         }
-        return "/start/" + auctionKafkaDTO.getAuctionId();
+        return "/start/" + auctionKafkaDTO.getAuctionId(); // 경매 시작 전 -> 진행
     }
 }
