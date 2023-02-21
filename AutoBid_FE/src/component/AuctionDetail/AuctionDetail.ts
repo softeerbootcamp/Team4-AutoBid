@@ -42,7 +42,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
         return `
         <div class="container--left">
             <div data-component="ImageSlider"></div>
-            <h4 class="auction-detail__timer">${this.timerInfo()}</h4>
+            <h4 class="auction-detail__timer">접속 중</h4>
         </div>
         <div class="container--right">
             <h1 class="auction-detail__title">${title}</h1>
@@ -54,7 +54,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
                 <div class="auction-detail__live-bids-container__live-bids" data-component="AnimatedText"></div>
             </div>
             <button class="auction-detail__bid-btn" disabled>
-                ${this.isEnded() ? '종료된 경매는 입찰할 수 없습니다' : '대기 중'}
+                접속 중
             </button>
         </div>
         `;
@@ -81,7 +81,8 @@ class AuctionDetail extends Component<ModalState, Auction> {
     }
 
     onStart({ price, users }: LiveDTO) {
-        this.isProgress = () => true;
+        this.isStarted = () => true;
+        this.isEnded = () => false;
         this.setPrice((this.lastPrice * 10000), (price * 10000), 300);
         this.lastPrice = price;
         this.setBidButton(true, `호가 ${(price + BID_UNIT).toLocaleString()}만원 입찰`);
@@ -97,7 +98,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
         this.isEnded = () => true;
         this.setPrice((this.lastPrice * 10000), (price * 10000), 300);
         this.lastPrice = price;
-        this.setBidButton(false, `경매가 종료되었습니다.`);
+        this.setBidButton(false, `종료된 경매는 입찰할 수 없습니다.`);
         this.fetchUsers(users, '경매가 종료되었습니다.');
         if (users.length) {
             this.checkWinnerAndBlast(users[0].userId);
@@ -129,7 +130,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
         const $animatedNumber = $holder.querySelector('[data-component="AnimatedNumber"]') as HTMLElement;
         new AnimatedNumber($animatedNumber, { start, destination, speed });
 
-        if (this.isProgress() && !this.isEnded()) {
+        if (this.isStarted() && !this.isEnded()) {
             $holder.classList.add('price--live');
         } else {
             $holder.classList.remove('price--live');
@@ -140,7 +141,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
         const { endTime } = this.props;
         return (new Date(endTime).getTime()) < Date.now();
     }
-    isProgress() {
+    isStarted() {
         const { startTime } = this.props;
         return (new Date(startTime).getTime() < Date.now());
     }
@@ -166,8 +167,6 @@ class AuctionDetail extends Component<ModalState, Auction> {
         setTimeout(() => {
             if (!this.$target.isConnected) return;
             this.refreshTimer();
-
-            if (this.isEnded()) return;
             this.timeoutRecursive();
         }, 1000);
     }
@@ -180,9 +179,9 @@ class AuctionDetail extends Component<ModalState, Auction> {
     timerInfo() {
         const { startTime, endTime } = this.props;
         if (this.isEnded())
-            return '경매 종료됨';
+            return '경매 시간이 만료되었습니다.';
 
-        if (this.isProgress())
+        if (this.isStarted())
             return `경매 종료 <b>${deltaTimeToString((new Date(endTime)).getTime() - Date.now())}</b>전`;
         return `경매 시작 <b>${deltaTimeToString((new Date(startTime)).getTime() - Date.now())}</b>전`;
     }
@@ -191,7 +190,7 @@ class AuctionDetail extends Component<ModalState, Auction> {
         const user = GlobalStore.get().getState()[userStateSelector] as UserState;
         if (user && user.id && user.id === winnerId) {
             Emoji.blast();
-            Toast.show('경매를 낙찰받았습니다! 축하합니다!', 1000);
+            Toast.show('경매를 낙찰받았습니다! 축하합니다!', 2000);
         }
     }
 }
