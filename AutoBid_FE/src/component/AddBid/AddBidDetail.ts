@@ -1,15 +1,12 @@
 import Component from "../../core/component";
 import {ModalState, modalStateSelector} from "../../store/modal";
-import {Auction} from "../../model/auction";
 import {disconnectSocketSession} from "../../api/live";
+import {AddBid} from "../../model/addBid";
+import "./addbid.css";
 
-class AddBid extends Component<ModalState, Auction> {
+class AddBidDetail extends Component<ModalState> {
     stateSelector(globalState: any): ModalState | undefined {
         return globalState[modalStateSelector];
-    }
-
-    onStateChanged(prevLocalState: ModalState) {
-        if (!this.state?.pop) disconnectSocketSession();
     }
 
     // TODO: add-bid__car-type__container should be filled with owner's cars
@@ -72,8 +69,8 @@ class AddBid extends Component<ModalState, Auction> {
 
     initialize() {
         this.addEvent('click', '.add-bid__bid-submit__button', async () => {
-            const bidTitle = this.props.title;
-
+            // TODO: send data to server
+            console.log("CLICKED");
         });
     }
 
@@ -82,4 +79,4 @@ class AddBid extends Component<ModalState, Auction> {
     }
 }
 
-export default AddBid;
+export default AddBidDetail;
