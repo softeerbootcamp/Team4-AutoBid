@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,8 +31,9 @@ public class AuctionKafkaDTO {
         return auctionKafkaDTO;
     }
 
-    public void update(List<AuctionKafkaUserDTO> auctionKafkaUserDTOs) {
+    public void update(Long price, List<AuctionKafkaUserDTO> auctionKafkaUserDTOs) {
         this.users = auctionKafkaUserDTOs;
+        this.price = price;
         this.numberOfUsers = auctionKafkaUserDTOs.size();
     }
 }
