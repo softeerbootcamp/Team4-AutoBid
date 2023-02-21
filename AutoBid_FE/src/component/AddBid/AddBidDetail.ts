@@ -2,7 +2,7 @@ import Component from "../../core/component";
 import {ModalState, modalStateSelector} from "../../store/modal";
 import {disconnectSocketSession} from "../../api/live";
 import {AddBid} from "../../model/addBid";
-import "./addbid.css";
+import "./addbiddetail.css";
 
 class AddBidDetail extends Component<ModalState> {
     stateSelector(globalState: any): ModalState | undefined {
