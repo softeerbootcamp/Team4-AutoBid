@@ -40,7 +40,6 @@ class Modal extends Component<ModalState> {
 
         const $addBidDetail = this.$target.querySelector('[data-component="AddBidDetail"]');
         if ($addBidDetail) {
-            console.log($addBidDetail)
             new AddBidDetail($addBidDetail as HTMLElement, {});
         }
 
