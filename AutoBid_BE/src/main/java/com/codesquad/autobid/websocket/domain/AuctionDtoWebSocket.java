@@ -19,10 +19,6 @@ public class AuctionDtoWebSocket {
         this.users = users;
     }
 
-    public AuctionDtoWebSocket() {
-    }
-
-
     public static AuctionDtoWebSocket of(Long price, List<BidderDto> bidders) {
         AuctionDtoWebSocket auctionDtoWebSocket =  new AuctionDtoWebSocket(price, bidders);
         auctionDtoWebSocket.setNumberOfUsers( Long.valueOf(bidders.size()));
