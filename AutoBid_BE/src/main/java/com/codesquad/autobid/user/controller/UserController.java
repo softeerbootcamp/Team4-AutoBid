@@ -42,7 +42,7 @@ public class UserController {
 
     @Operation(summary = "로그인 API", description = "로그인을 합니다.")
     @PostMapping("/login")
-    public ResponseEntity<Optional<UserImpoResponse>> login(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<UserImpoResponse> login(HttpServletRequest httpServletRequest) {
         String code = httpServletRequest.getHeader("X-Auth-Code");
         log.info("code : {}",code);
         OauthToken oauthToken = authService.getOauthToken(code);
@@ -53,7 +53,7 @@ public class UserController {
         HttpSession httpSession = httpServletRequest.getSession();
         httpSession.setAttribute("user", user);
         httpSession.setAttribute(OauthToken.ACCESS_TOKEN_KEY, oauthToken.getAccessToken());
-        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        return new ResponseEntity<>(userResponse.get(), HttpStatus.OK);
     }
 
     @PostMapping("/logout")
