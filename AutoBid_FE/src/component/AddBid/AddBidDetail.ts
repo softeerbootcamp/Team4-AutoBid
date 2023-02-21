@@ -1,8 +1,7 @@
 import Component from "../../core/component";
 import {ModalState, modalStateSelector} from "../../store/modal";
-import {disconnectSocketSession} from "../../api/live";
-import {AddBid, AddBidDTO} from "../../model/addBid";
 import "./addbiddetail.css";
+import {requestPostAuction} from "../../api/auction";
 
 class AddBidDetail extends Component<ModalState> {
     stateSelector(globalState: any): ModalState | undefined {
@@ -94,7 +93,7 @@ class AddBidDetail extends Component<ModalState> {
         });
 
         this.addEvent('click', '.add-bid__bid-submit__button', async () => {
-
+            this.getBidDetails();
         });
     }
 
@@ -142,18 +141,18 @@ class AddBidDetail extends Component<ModalState> {
     }
 
     getBidDetails() {
+        const fileList = (document.querySelector('.add-bid__file-upload-input') as HTMLInputElement).files!;
         let auctionTitle = (document.querySelector('.add-bid__bid-title__input') as HTMLInputElement).value;
-        let carID = (document.querySelector('.add-bid__car-type__car-list') as HTMLSelectElement).value;
+        let carId = (document.querySelector('.add-bid__car-type__car-list') as HTMLSelectElement).value as unknown as number;
         let auctionStartTime = (document.querySelector('.add-bid__bid-start-time__input') as HTMLInputElement).value;
         let auctionEndTime = (document.querySelector('.add-bid__bid-end-time__input') as HTMLInputElement).value;
-        let auctionStartPrice = (document.querySelector('.add-bid__bid-start-price__input') as HTMLInputElement).value;
+        let auctionStartPrice = ((document.querySelector('.add-bid__bid-start-price__input') as HTMLInputElement).value as unknown) as number;
 
-        const inputFileList = (document.querySelector('.add-bid__file-upload-input') as HTMLInputElement).files!;
-        // for (const file of inputFiles.files!) {
-        //     formData.append("multipartFileList", file);
-        // }
-
-
+        requestPostAuction({
+            fileList, carId, auctionTitle, auctionStartTime, auctionEndTime, auctionStartPrice
+        }).then((result) => {
+            console.log(result);
+        });
     }
 
     submitEvent() {
