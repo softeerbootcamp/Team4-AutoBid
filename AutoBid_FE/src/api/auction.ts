@@ -27,24 +27,28 @@ export const requestAuctionList = asyncTaskWrapper(
 export const requestPostAuction = asyncTaskWrapper(
     async ({fileList, carId, auctionTitle, auctionStartTime, auctionEndTime, auctionStartPrice}: AddBid) => {
         const formData = new FormData();
-        // formData.append('fileList', fileList);
-        // formData.append('carId', carId);
-        //
-        // for (const file in fileList) {
-        //     const exampleFile = fs.createReadStream()
-        // }
+        formData.append('fileList', JSON.stringify(fileList));
+        formData.append('carId', JSON.stringify(carId));
+        formData.append('auctionTitle', JSON.stringify(auctionTitle));
+        formData.append('auctionStartTime', JSON.stringify(auctionStartTime));
+        formData.append('auctionEndTime', JSON.stringify(auctionEndTime));
+        formData.append('auctionStartPrice', JSON.stringify(auctionStartPrice));
+
+        for (const file in fileList) {
+            formData.append('multipartFileList', file);
+        }
+
+        console.log(formData);
 
         try {
             const result = await fetch(`${API_BASE_URL}${POST_AUCTION_ENDPOINT}`, {
                 method: 'POST',
                 body: formData
             });
-            if (result.ok)
-                return await result.json();
-            return null;
+            return result.ok;
         } catch (e) {
             console.error(e);
-            return null;
+            return false;
         }
     }
 )
