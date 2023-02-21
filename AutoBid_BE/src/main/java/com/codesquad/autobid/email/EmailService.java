@@ -1,8 +1,6 @@
 package com.codesquad.autobid.email;
 
-import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.kafka.producer.dto.AuctionKafkaUserDTO;
-import com.codesquad.autobid.user.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,18 +20,13 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public boolean send(String auctionTitle, Long endPrice, AuctionKafkaUserDTO user) {
-        try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom(USERNAME);
-            message.setTo(user.getEmail());
-            message.setSubject(buildTitle(auctionTitle));
-            message.setText(buildContent(auctionTitle, endPrice, user.getName(), user.getPrice()));
-            javaMailSender.send(message);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    public void send(String auctionTitle, Long endPrice, AuctionKafkaUserDTO user) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(USERNAME);
+        message.setTo(user.getEmail());
+        message.setSubject(buildTitle(auctionTitle));
+        message.setText(buildContent(auctionTitle, endPrice, user.getName(), user.getPrice()));
+        javaMailSender.send(message);
     }
 
     private String buildContent(String auctionTitle, Long endPrice, String username, Long userPrice) {
