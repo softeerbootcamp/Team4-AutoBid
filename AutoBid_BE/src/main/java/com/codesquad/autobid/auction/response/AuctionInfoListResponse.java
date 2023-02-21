@@ -13,7 +13,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 @ToString
-@Getter @Setter
+@Getter
+@Setter
 public class AuctionInfoListResponse {
 	private int totalAuctionNum;
 	private List<AuctionInfo> auctionInfoList;
@@ -28,7 +29,7 @@ public class AuctionInfoListResponse {
 			return new AuctionInfo(auctionInfoDto.getAuctionId(), auctionInfoDto.getAuctionTitle(),
 				auctionInfoDto.getImages(), auctionInfoDto.getAuctionStartPrice(), auctionInfoDto.getAuctionEndPrice(),
 				auctionInfoDto.getAuctionStatus(), auctionInfoDto.getAuctionStartTime(),
-				auctionInfoDto.getAuctionEndTime(), new CarInfo(auctionInfoDto.getCarId(),
+				auctionInfoDto.getAuctionEndTime(), new CarInfo(auctionInfoDto.getCarState(), auctionInfoDto.getCarId(),
 				auctionInfoDto.getCarDistance(), auctionInfoDto.getCarName(), auctionInfoDto.getCarType(),
 				auctionInfoDto.getCarSellname()));
 		}).collect(Collectors.toList());
@@ -72,13 +73,15 @@ class CarInfo implements Serializable {
 	private String name;
 	private String type;
 	private String sellName;
+	private String state;
 
-	public CarInfo(Long carId, Long distance, String name, String type, String sellName) {
+	public CarInfo(String state, Long carId, Long distance, String name, String type, String sellName) {
 		this.carId = carId;
 		this.distance = distance;
 		this.name = name;
 		this.type = type;
 		this.sellName = sellName;
+		this.state = state;
 	}
 }
 
