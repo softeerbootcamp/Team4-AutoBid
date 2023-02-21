@@ -42,6 +42,7 @@ public class WebSocketController {
         log.info("name: {} ",name);
 
         AuctionRedisDTO auctionRedis = auctionService.getAuction(auctionId);
+        log.info("auctionRedis : {}");
         if (auctionRedis != null) { // 시작된 경우
             AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionRedis);
             messagingTemplate.convertAndSendToUser(principal.getName(),"/ws/start/" + auctionId, auctionDtoWebSocket);
