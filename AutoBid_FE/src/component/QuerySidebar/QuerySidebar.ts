@@ -8,7 +8,6 @@ import "./querysidebar.css"
 import AnimatedNumber from "../AnimatedNumber/AnimatedNumber";
 import {AuctionQuery} from "../../model/query";
 import {popErrorModal, popPostingAuctionModal} from "../../store/modal";
-import {AddBid} from "../../model/addBid";
 
 class QuerySidebar extends Component<AuctionQuery> {
     stateSelector(globalState: any): AuctionQuery | undefined {

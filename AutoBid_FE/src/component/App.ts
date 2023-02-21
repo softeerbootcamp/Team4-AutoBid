@@ -51,11 +51,6 @@ class App extends Component<PageState> {
         if ($myPage) {
             new MyPage($myPage as HTMLElement, {});
         }
-        //
-        // const $addBid = document.querySelector('[data-component="AddBid"]');
-        // if ($addBid) {
-        //     new AddBid($addBid as HTMLElement, {});
-        // }
         
         const $modal = this.$target.querySelector('[data-component="Modal"]') as HTMLElement;
         new Modal($modal, {});
