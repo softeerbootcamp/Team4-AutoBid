@@ -8,8 +8,8 @@ import "./auctioncard.css";
 import {popShowingAuctionModal} from "../../store/modal";
 
 
-const getInfoStr = ({distance, type, sellName}: CarInfo) =>
-    `${sellName} | ${distance.toLocaleString()}km | ${getCarTypeName(type)}`;
+const getInfoStr = ({distance, type, name, sellName}: CarInfo) =>
+    `${name} ${sellName} | ${distance.toLocaleString()}km | ${getCarTypeName(type)}`;
 
 
 class AuctionCard extends Component<any, { auction: Auction }> {
