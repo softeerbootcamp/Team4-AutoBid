@@ -93,7 +93,6 @@ public class AuctionService {
     public AuctionInfoListResponse getAuctions(String carType, String auctionStatus, Long startPrice, Long endPrice,
                                                int page, int size) {
         List<AuctionInfoDto> auctionInfoDtoList = getAuctionDtoList(carType, auctionStatus, startPrice, endPrice);
-        System.out.println(auctionInfoDtoList);
         return getAuctionInfoListResponse(auctionInfoDtoList, page, size);
     }
 
