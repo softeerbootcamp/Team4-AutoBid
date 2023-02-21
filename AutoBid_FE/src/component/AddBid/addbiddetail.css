@@ -21,8 +21,9 @@ input {
 }
 
 .add-bid {
-  background-color: #EEEEEE;
-  border-radius: 8px;
+  background-color: var(--color-white);
+  box-shadow: var(--box-shadow-level-3);
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   padding: 48px;
@@ -50,13 +51,24 @@ input {
 }
 
 .add-bid__add-image__container {
-  background-color: white;
+  background-color: var(--color-light-gray);
+  padding: 8px;
   border-radius: 8px;
   display: flex;
+  /*border: 1px var(--color-black);*/
 }
 
 .add-bid__swap-button-right {
   margin-left: auto;
+}
+
+.fas {
+  opacity: 50%;
+}
+
+.fas:hover {
+  color: var(--color-blue);
+  opacity: 100%;
 }
 
 .add-bid__images-container {
@@ -70,6 +82,12 @@ input {
   font-size: 30px;
   height: 60px;
   padding: 15px;
+  opacity: 75%;
+}
+
+.fa-camera:hover {
+  color: var(--color-blue);
+  opacity: 100%;
 }
 
 .add-bid__image-container {
@@ -126,8 +144,4 @@ input {
 
 .add-bid__images-container > input {
   display: none;
-}
-
-.fa-camera:hover {
-  color: var(--color-blue)
 }

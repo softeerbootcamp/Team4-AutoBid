@@ -61,9 +61,6 @@ class App extends Component<PageState> {
         const $modal = this.$target.querySelector('[data-component="Modal"]') as HTMLElement;
         new Modal($modal, {});
 
-        const $emojiExplosion = this.$target.querySelector('[data-component="EmojiExplosion"]') as HTMLElement;
-        new EmojiExplosion($emojiExplosion, {});
-
         whoIam().then(() => {console.log('session user initialized')});
     }
 }
