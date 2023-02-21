@@ -1,12 +1,11 @@
 import dotenv from "dotenv";
 import {AuctionQuery} from "../model/query";
-import {AuctionListDTO} from "../model/auction";
+import {AuctionForm, AuctionListDTO} from "../model/auction";
 import {ARTICLE_PER_PAGE, asyncTaskWrapper} from "../core/util";
-import {AddBid} from "../model/addBid";
 
 dotenv.config();
-const API_BASE_URL = process.env.API_BASE_URL as string;
-const LIST_ENDPOINT = process.env.LIST_ENDPOINT as string;
+const API_BASE_URL = process.env.API_BASE_URL || 'https://www.autobid.site';
+const LIST_ENDPOINT = process.env.LIST_ENDPOINT || '/auction/list';
 const POST_AUCTION_ENDPOINT = process.env.POST_AUCTION_ENDPOINT || '/auction';
 
 export const requestAuctionList = asyncTaskWrapper(
@@ -25,24 +24,21 @@ export const requestAuctionList = asyncTaskWrapper(
     });
 
 export const requestPostAuction = asyncTaskWrapper(
-    async ({fileList, carId, auctionTitle, auctionStartTime, auctionEndTime, auctionStartPrice}: AddBid) => {
+    async ({multipartFileList, carId, auctionTitle, auctionStartTime, auctionEndTime, auctionStartPrice}: AuctionForm, test = false) => {
         const formData = new FormData();
-        formData.append('fileList', JSON.stringify(fileList));
-        formData.append('carId', JSON.stringify(carId));
-        formData.append('auctionTitle', JSON.stringify(auctionTitle));
-        formData.append('auctionStartTime', JSON.stringify(auctionStartTime));
-        formData.append('auctionEndTime', JSON.stringify(auctionEndTime));
-        formData.append('auctionStartPrice', JSON.stringify(auctionStartPrice));
-
-        for (const file in fileList) {
+        [...multipartFileList].forEach(file => {
             formData.append('multipartFileList', file);
-        }
-
-        console.log(formData);
+        });
+        formData.append('carId', carId.toString());
+        formData.append('auctionTitle', auctionTitle);
+        formData.append('auctionStartTime', auctionStartTime);
+        formData.append('auctionEndTime', auctionEndTime);
+        formData.append('auctionStartPrice', auctionStartPrice.toString());
 
         try {
             const result = await fetch(`${API_BASE_URL}${POST_AUCTION_ENDPOINT}`, {
                 method: 'POST',
+                headers: { ...(test ? { Authorization: 'Bearer random' } : {}) },
                 body: formData
             });
             return result.ok;

@@ -7,6 +7,15 @@ export enum AuctionStatus {
     COMPLETED = 'COMPLETED'
 }
 
+export type AuctionForm = {
+    multipartFileList: FileList,
+    carId: number,
+    auctionTitle: string,
+    auctionStartTime: string,
+    auctionEndTime: string,
+    auctionStartPrice: number
+}
+
 export type Auction = {
     auctionId: number, images: string[],
     title: string, carInfo: CarInfo,
