@@ -1,0 +1,139 @@
+@import "../css/reset.css";
+@import "../css/common.css";
+
+body {
+  background-color: var(--color-light-gray);
+}
+
+hr {
+  border-bottom: 1px solid var(--color-semi-gray);
+  border-top: 0;
+  margin: 16px 0;
+}
+
+.my-page {
+  background-color: var(--color-white);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 64px;
+  margin-left: 16px;
+  padding: var(--container-padding);
+  width: var(--container-max-width);
+}
+
+.my-page__section-holder {
+  display: flex;
+  flex-direction: column;
+  padding-top: 32px;
+}
+
+.my-page__section-holder > h3 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.my-page__card-slider {
+  display: flex;
+}
+
+.fa-chevron-left {
+  font-size: 24px;
+  margin-right: 16px;
+}
+
+/* Card item start */
+
+.my-page__card-list__holder {
+  align-items: center;
+  width: 100%;
+  display: flex;
+  overflow: scroll;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.card-container__card-item {
+  border-radius: 15px;
+  box-shadow: var(--box-shadow-level-1);
+  display: inline-block;
+  margin: 8px 8px 32px;
+  transition: 0.1s;
+  width: 250px;
+}
+
+.card-container__card-item:hover {
+  transform: scale(1.02);
+}
+
+.card-item__swap-button-container {
+  display: flex;
+  height: 140px;
+  justify-content: space-between;
+  opacity: 0;
+  position: absolute;
+  transition: 0.5s;
+  width: 250px;
+  z-index: 1;
+}
+
+.card-item__swap-button-container:hover {
+  opacity: 0.5;
+}
+
+.card-item__img-container {
+  align-items: center;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  display: flex;
+  height: 140px;
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+
+.card-item__img {
+  width: 250px;
+}
+
+.card-item__details-container {
+  cursor: pointer;
+  padding: 16px;
+  text-align: left;
+}
+
+.card-item__details__tags {
+  color: var(--color-semi-blue);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.card-item__details__title {
+  display: block;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.card-item__details__info {
+  display: block;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.card-item__details__price {
+  align-items: baseline;
+  display: flex;
+}
+
+.card-item__details__price b {
+  color: var(--color-blue);
+  font-size: 25px;
+  margin-right: 4px;
+}
+
+/* Card item end */
+
+.fa-chevron-right {
+  font-size: 24px;
+  margin-left: 16px;
+}

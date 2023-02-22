@@ -1,0 +1,41 @@
+{
+  "name": "team4-autobid",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html",
+    "server": "node server/server.js",
+    "test": "parcel test/test.html --open"
+  },
+  "dependencies": {
+    "@stomp/stompjs": "6.1.2",
+    "dotenv": "^16.0.3",
+    "emojisplosion": "^2.6.1",
+    "redux": "4.0.0",
+    "sockjs-client": "1.6.1",
+    "src": "^1.1.2",
+    "ws": "^8.12.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.19",
+    "@types/sockjs-client": "^1.5.1",
+    "express": "^4.18.2",
+    "json-server": "^0.17.1",
+    "node-fetch": "^2.6.8",
+    "parcel-bundler": "^1.6.1",
+    "typescript": "^4.9.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RandomlyChristen/Team4-AutoBid.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RandomlyChristen/Team4-AutoBid/issues"
+  },
+  "homepage": "https://github.com/RandomlyChristen/Team4-AutoBid#readme"
+}
