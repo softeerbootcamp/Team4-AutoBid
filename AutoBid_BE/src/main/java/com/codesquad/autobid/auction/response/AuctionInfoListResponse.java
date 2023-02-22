@@ -36,6 +36,10 @@ public class AuctionInfoListResponse {
 
 		return new AuctionInfoListResponse(totalAuctionNum, auctionInfoLists);
 	}
+
+	public boolean isEmpty() {
+		return totalAuctionNum == 0;
+	}
 }
 
 @ToString
