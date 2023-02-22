@@ -1,5 +1,19 @@
 package com.codesquad.autobid.auction.service;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.domain.AuctionInfoDto;
 import com.codesquad.autobid.auction.domain.AuctionStatus;
@@ -19,22 +33,13 @@ import com.codesquad.autobid.kafka.producer.AuctionOpenProducer;
 import com.codesquad.autobid.kafka.producer.dto.AuctionKafkaDTO;
 import com.codesquad.autobid.user.domain.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 @Service
 public class AuctionService {
 
@@ -99,7 +104,8 @@ public class AuctionService {
     private List<AuctionKafkaDTO> parseToAuctionKafkaDTO(List<Auction> auctions) {
         return auctions.stream().map(AuctionKafkaDTO::from).collect(Collectors.toList());
     }
-
+    
+    @Cacheable(value = "auction", key = "#carType+#auctionStatus+#startPrice+#endPrice")
     public AuctionInfoListResponse getAuctions(String carType, String auctionStatus, Long startPrice, Long endPrice, int page, int size) {
         List<AuctionInfoDto> auctionInfoDtoList = getAuctionDtoList(carType, auctionStatus, startPrice, endPrice);
         return getAuctionInfoListResponse(auctionInfoDtoList, page, size);
@@ -218,5 +224,6 @@ public class AuctionService {
         Optional<Auction> auction = auctionRepository.findById(auctionId);
         return auction.orElse(null);
     }
+
 
 }

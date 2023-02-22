@@ -2,7 +2,18 @@ package com.codesquad.autobid.auction.response;
 
 import com.codesquad.autobid.auction.domain.AuctionInfoDto;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
+import lombok.AllArgsConstructor;
+
+
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -12,8 +23,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ToString
-@Getter
-@Setter
+
+@Getter @Setter
+@NoArgsConstructor
 public class AuctionInfoListResponse {
     private int totalAuctionNum;
     private List<AuctionInfo> auctionInfoList;
@@ -43,16 +55,23 @@ public class AuctionInfoListResponse {
 
 @ToString
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Getter @Setter
+@NoArgsConstructor
 class AuctionInfo implements Serializable {
-    private Long auctionId;
-    private String title;
-    private List<String> images;
-    private Long startPrice;
-    private Long endPrice;
-    private String status;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private CarInfo carInfo;
+
+	private Long auctionId;
+	private String title;
+	private List<String> images;
+	private Long startPrice;
+	private Long endPrice;
+	private String status;
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	private LocalDateTime startTime;
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
+	private LocalDateTime endTime;
+	private CarInfo carInfo;
 
     public AuctionInfo(Long auctionId, String title, List<String> images, Long startPrice, Long endPrice, String status,
                        LocalDateTime startTime, LocalDateTime endTime, CarInfo carInfo) {
@@ -69,6 +88,8 @@ class AuctionInfo implements Serializable {
 }
 
 @ToString
+@Getter @Setter
+@NoArgsConstructor
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 class CarInfo implements Serializable {
     private Long carId;
