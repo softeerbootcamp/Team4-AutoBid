@@ -6,6 +6,7 @@ import com.codesquad.autobid.auction.domain.AuctionStatus;
 import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
 import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
 import com.codesquad.autobid.auction.repository.AuctionRepository;
+import com.codesquad.autobid.auction.repository.exceptions.BidSaveFailedException;
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
 import com.codesquad.autobid.auction.response.AuctionInfoListResponse;
 import com.codesquad.autobid.auction.response.AuctionStatisticsResponse;
@@ -52,7 +53,7 @@ public class AuctionService {
     @Transactional
     public void saveBid(BidRegisterRequest bidRegisterRequest) {
         try {
-            boolean successSavingOnRedis = auctionRedisRepository.saveBid(
+            auctionRedisRepository.saveBid(
                     Bid.of(
                             AggregateReference.to(bidRegisterRequest.getAuctionId()),
                             AggregateReference.to(bidRegisterRequest.getUserId()),
@@ -60,12 +61,8 @@ public class AuctionService {
                             false
                     )
             );
-            if (successSavingOnRedis) {
-                bidAdapter.produce(bidRegisterRequest);
-                return;
-            }
-            throw new Exception("fail saving bid at redis");
-        } catch (Exception e) {
+            bidAdapter.produce(bidRegisterRequest);
+        } catch (BidSaveFailedException e) {
             bidRollbackProducer.produce(bidRegisterRequest);
         }
     }
