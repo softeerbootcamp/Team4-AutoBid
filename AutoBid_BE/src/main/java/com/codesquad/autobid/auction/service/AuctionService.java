@@ -23,6 +23,7 @@ import com.codesquad.autobid.auction.repository.AuctionRepository;
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
 import com.codesquad.autobid.auction.response.AuctionInfoListResponse;
 import com.codesquad.autobid.auction.response.AuctionStatisticsResponse;
+import com.codesquad.autobid.bid.adapter.BidAdapter;
 import com.codesquad.autobid.bid.domain.Bid;
 import com.codesquad.autobid.bid.request.BidRegisterRequest;
 import com.codesquad.autobid.image.domain.Image;
@@ -31,6 +32,7 @@ import com.codesquad.autobid.image.service.S3Uploader;
 import com.codesquad.autobid.kafka.producer.AuctionCloseProducer;
 import com.codesquad.autobid.kafka.producer.AuctionOpenProducer;
 import com.codesquad.autobid.kafka.producer.dto.AuctionKafkaDTO;
+import com.codesquad.autobid.kafka.rollback.BidRollbackProducer;
 import com.codesquad.autobid.user.domain.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -49,16 +51,45 @@ public class AuctionService {
     private final AuctionRedisRepository auctionRedisRepository;
     private final AuctionOpenProducer auctionOpenProducer;
     private final AuctionCloseProducer auctionCloseProducer;
+    private final BidAdapter bidAdapter;
+    private final BidRollbackProducer bidRollbackProducer;
 
     @Transactional
-    public boolean saveBidRedis(BidRegisterRequest bidRegisterRequest) {
-        return auctionRedisRepository.saveBid(
-            Bid.of(
-                AggregateReference.to(bidRegisterRequest.getAuctionId()),
-                AggregateReference.to(bidRegisterRequest.getUserId()),
-                bidRegisterRequest.getSuggestedPrice(),
-                false)
-        );
+    public boolean saveBid(BidRegisterRequest bidRegisterRequest) {
+        try {
+            boolean successSavingOnRedis = auctionRedisRepository.saveBid(
+                Bid.of(
+                    AggregateReference.to(bidRegisterRequest.getAuctionId()),
+                    AggregateReference.to(bidRegisterRequest.getUserId()),
+                    bidRegisterRequest.getSuggestedPrice(),
+                    false
+                )
+            );
+            if (successSavingOnRedis) {
+                produceBidMsg(bidRegisterRequest);
+                return true;
+            }
+            throw new Exception("fail saving bid at redis");
+        } catch (Exception e) {
+            produceRedisRollbackMsg(bidRegisterRequest);
+        }
+        return false;
+    }
+
+    private void produceRedisRollbackMsg(BidRegisterRequest bidRegisterRequest) {
+        try {
+            bidRollbackProducer.produce(bidRegisterRequest);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void produceBidMsg(BidRegisterRequest bidRegisterRequest) {
+        try {
+            bidAdapter.produce(bidRegisterRequest);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Transactional
@@ -92,12 +123,12 @@ public class AuctionService {
     }
 
     public void openPendingAuctions(LocalDateTime openTime) throws JsonProcessingException {
-        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTimeLessThanEqual(AuctionStatus.BEFORE, openTime);
+        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.BEFORE, openTime);
         auctionOpenProducer.produce(parseToAuctionKafkaDTO(auctions));
     }
 
     public void closeFulfilledAuctions(LocalDateTime closeTime) throws JsonProcessingException {
-        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTimeLessThanEqual(AuctionStatus.PROGRESS, closeTime);
+        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.PROGRESS, closeTime);
         auctionCloseProducer.produce(parseToAuctionKafkaDTO(auctions));
     }
 
