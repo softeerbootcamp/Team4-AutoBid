@@ -152,22 +152,22 @@ public class AuctionService {
     }
 
     public AuctionStatisticsResponse getAuctionStaticsResponse(String carType, String auctionStatus) {
-        List<AuctionInfoDto> auctionInfoDtoList = getAuctionInfoDtoForStatistics(carType, auctionStatus);
+        List<Long> auctionInfoDtoList = getAuctionInfoDtoForStatistics(carType, auctionStatus);
         int[] contents = init();
 
         int totalSold = auctionRepository.countAllByAuctionStatus(AuctionStatus.COMPLETED);
         if (auctionInfoDtoList.size() == 0) {
             return AuctionStatisticsResponse.of(0, 0L, 0L, contents);
         }
-        Long minPrice = auctionInfoDtoList.get(0).getAuctionEndPrice();
-        Long maxPrice = auctionInfoDtoList.get(auctionInfoDtoList.size() - 1).getAuctionEndPrice();
+        Long minPrice = auctionInfoDtoList.get(0);
+        Long maxPrice = auctionInfoDtoList.get(auctionInfoDtoList.size() - 1);
         if (maxPrice - minPrice <= 30) {
             maxPrice = minPrice + 100;
         }
         long intervalPrice = (maxPrice - minPrice) / 20;
 
         auctionInfoDtoList.forEach(auctionInfoDto -> {
-            long idx = Math.floorDiv((auctionInfoDto.getAuctionEndPrice() - minPrice), intervalPrice);
+            long idx = Math.floorDiv((auctionInfoDto- minPrice), intervalPrice);
             if (idx == 20) {
                 contents[19] += 1;
             } else {
@@ -184,9 +184,9 @@ public class AuctionService {
         return ints;
     }
 
-    public List<AuctionInfoDto> getAuctionInfoDtoForStatistics(String carType, String auctionStatus) {
+    public List<Long> getAuctionInfoDtoForStatistics(String carType, String auctionStatus) {
 
-        List<AuctionInfoDto> auctionInfoDtoList;
+        List<Long> auctionInfoDtoList;
         if (carType.equals("ALL") && auctionStatus.equals("ALL")) {
             auctionInfoDtoList = auctionRepository.findAllForStatistics();
         } else if (carType.equals("ALL")) {
