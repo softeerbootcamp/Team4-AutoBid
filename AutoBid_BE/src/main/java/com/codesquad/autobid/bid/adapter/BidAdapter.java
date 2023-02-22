@@ -80,15 +80,18 @@ public class BidAdapter {
     @KafkaListener(topics = "bid-event", groupId = "bidder-redis")
     public void saveBiddersAndBroadcast(@Payload String bidRegisterRequestStr) throws JsonProcessingException {
         BidRegisterRequest bidRegisterRequest = objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class); // auctionID, userID
-
         Bid bid = Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
                 AggregateReference.to(bidRegisterRequest.getUserId()),
                 bidRegisterRequest.getSuggestedPrice(), false);
-        bidRedisRepository.save(bid);
+        bidRedisRepository.save(bid); // redis 저장
         Long auctionId = bidRegisterRequest.getAuctionId();
-        AuctionRedisDTO auctionRedis = auctionService.getAuction(auctionId);
-        AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionRedis);
+        AuctionRedisDTO auctionRedis = auctionService.getAuction(auctionId); // 저장된 것을 불러온다.
+        AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionRedis); // 레디스에서 가져온 데이터를 파싱
 
+        log.error("auctionRedis-id : {}", auctionRedis.getAuctionId());
+        log.error("auctionRedis-price : {}", auctionRedis.getPrice());
+        log.error("auctionDtoWebSocket-price : {}", auctionDtoWebSocket.getPrice());
+        log.error("auctionDtoWebSocket-numberOfUsers : {}", auctionDtoWebSocket.getNumberOfUsers());
         messagingTemplate.convertAndSend("/ws/start/" + auctionId, auctionDtoWebSocket);
         log.info("bid-event bid-redis {}", bidRegisterRequest);
     }

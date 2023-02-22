@@ -32,7 +32,7 @@ public class AuctionScheduler {
         try {
             auctionService.openPendingAuctions(getPresentTime());
         } catch (JsonProcessingException e) {
-            log.info("openPendingAuctions failed");
+            log.error("openPendingAuctions failed");
         }
     }
 
@@ -44,7 +44,7 @@ public class AuctionScheduler {
         try {
             auctionService.closeFulfilledAuctions(getPresentTime());
         } catch (JsonProcessingException e) {
-            log.info("closeInProgressAuctions failed");
+            log.error("closeInProgressAuctions failed");
         }
     }
 

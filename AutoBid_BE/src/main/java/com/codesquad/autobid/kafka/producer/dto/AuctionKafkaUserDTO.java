@@ -32,6 +32,7 @@ public class AuctionKafkaUserDTO {
         auctionKafkaUserDTO.name = user.getName();
         auctionKafkaUserDTO.phoneNumber = user.getMobilenum();
         auctionKafkaUserDTO.price = auctionRedisBidderDTO.getPrice();
+        auctionKafkaUserDTO.email = user.getEmail();
         return auctionKafkaUserDTO;
     }
 }

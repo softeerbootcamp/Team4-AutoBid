@@ -4,15 +4,12 @@ import com.codesquad.autobid.auction.domain.Auction;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 public class AuctionRedisDTO {
 
     private Long auctionId;
-
     private Long price;
 
     private List<AuctionRedisBidderDTO> auctionRedisBidderDto = new ArrayList<>();
@@ -30,5 +27,9 @@ public class AuctionRedisDTO {
         AuctionRedisDTO auctionRedisDto = new AuctionRedisDTO(auctionId, price);
         auctionRedisDto.auctionRedisBidderDto = auctionRedisBidderDTOS;
         return auctionRedisDto;
+    }
+
+    public boolean hasBidder() {
+        return !auctionRedisBidderDto.isEmpty();
     }
 }

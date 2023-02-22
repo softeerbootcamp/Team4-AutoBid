@@ -22,9 +22,6 @@ public class CarService {
 
     @Transactional
     public List<CheckCarResponse> getCars(Long userId, String accessToken, boolean refresh) {
-        // if (accessToken.equals("accessToken")) {
-        //     return CarTestUtil.getCarList();
-        // }
         List<Car> cars = carRepository.findCarsByUserId(userId);
         if (refresh) {
             List<Car> updatedCars = getUpdatedCars(cars, accessToken, userId);
@@ -33,7 +30,9 @@ public class CarService {
             carRepository.saveAll(updatedCars);
             cars = updatedCars;
         }
-        return cars.stream().map(CheckCarResponse::from).collect(Collectors.toList());
+        return cars.stream()
+            .map(CheckCarResponse::from)
+            .collect(Collectors.toList());
     }
 
     private List<Car> getUpdatedCars(List<Car> cars, String accessToken, Long userId) {

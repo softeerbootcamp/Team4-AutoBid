@@ -23,6 +23,7 @@ public class AuctionOpenProducer {
 
     public void produce(List<AuctionKafkaDTO> auctions) throws JsonProcessingException {
         for (AuctionKafkaDTO auction : auctions) {
+            log.info("auction : {}", auction.getAuctionId());
             kafkaTemplate.send(AUCTION_OPEN_TOPIC_NAME, new String(om.writeValueAsBytes(auction)));
         }
     }

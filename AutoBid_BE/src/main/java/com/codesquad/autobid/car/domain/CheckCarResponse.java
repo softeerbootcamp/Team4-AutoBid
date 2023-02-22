@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CheckCarResponse {
 
+    private Long carId;
     private Float distance;
     private String name;
     private Type type;
@@ -16,6 +17,7 @@ public class CheckCarResponse {
 
     public static CheckCarResponse from(Car car) {
         CheckCarResponse response = new CheckCarResponse();
+        response.carId = car.getId();
         response.distance = car.getDistance();
         response.name = car.getName();
         response.type = car.getType();

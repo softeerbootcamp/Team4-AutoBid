@@ -33,18 +33,10 @@ public class UserController {
         this.userService = userService;
     }
 
-//
-//    @Operation(summary = "회원 조회 API", description = "회원 조회")
-//    @GetMapping
-//    public ResponseEntity<User> findById(@Parameter(hidden = true) @AuthorizedUser User user) {
-//        return  new ResponseEntity<>(user, HttpStatus.OK);
-//    }
-
     @Operation(summary = "로그인 API", description = "로그인을 합니다.")
     @PostMapping("/login")
-    public ResponseEntity<Optional<UserImpoResponse>> login(HttpServletRequest httpServletRequest) {
+    public ResponseEntity<UserImpoResponse> login(HttpServletRequest httpServletRequest) {
         String code = httpServletRequest.getHeader("X-Auth-Code");
-        log.info("code : {}",code);
         OauthToken oauthToken = authService.getOauthToken(code);
         User user = userService.findUser(oauthToken); // 유저 데이터 찾기
         UserImpoResponse userImpoResponse = UserImpoResponse.create(user.getId(), user.getName(), user.getEmail(), user.getMobilenum());
@@ -53,22 +45,18 @@ public class UserController {
         HttpSession httpSession = httpServletRequest.getSession();
         httpSession.setAttribute("user", user);
         httpSession.setAttribute(OauthToken.ACCESS_TOKEN_KEY, oauthToken.getAccessToken());
-        return new ResponseEntity<>(userResponse, HttpStatus.OK);
+        return new ResponseEntity<>(userResponse.get(), HttpStatus.OK);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<HttpStatus> delete(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
-        String accessToken = (String) session.getAttribute(OauthToken.ACCESS_TOKEN_KEY);
-        OauthToken deleteToken = authService.deleteOauthToken(accessToken);
-        log.info("deleteToken : {}",deleteToken.getAccessToken());
         session.invalidate(); // 세션삭제
-        userService.remove(deleteToken); // 레디스에서 토큰 삭제
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping()
-    public ResponseEntity<UserImpoResponse> userResponse(HttpServletRequest httpServletRequest, @AuthorizedUser User user) {
+    public ResponseEntity<UserImpoResponse> userResponse(@AuthorizedUser User user) {
         return ResponseEntity.ok()
             .body(UserImpoResponse.create(user.getId(), user.getName(), user.getEmail(), user.getMobilenum()));
     }

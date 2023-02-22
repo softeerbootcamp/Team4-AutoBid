@@ -6,6 +6,7 @@ import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
 import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
 import com.codesquad.autobid.auction.repository.AuctionRepository;
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
+import com.codesquad.autobid.bid.request.BidRegisterRequest;
 import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.util.CarTestUtil;
@@ -75,7 +76,7 @@ class AuctionServiceTest {
             auctionService.openPendingAuctions(startTime);
             // then
             assertThat(
-                auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.PROGRESS, startTime).size()
+                auctionRepository.getAuctionByAuctionStatusAndAuctionStartTimeLessThanEqual(AuctionStatus.PROGRESS, startTime).size()
             ).isEqualTo(pendingAuctions.size());
         } catch (JsonProcessingException e) {
         }
@@ -101,7 +102,7 @@ class AuctionServiceTest {
             auctionService.closeFulfilledAuctions(endTime);
             // then
             assertThat(
-                auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.COMPLETED, endTime).size()
+                auctionRepository.getAuctionByAuctionStatusAndAuctionEndTimeLessThanEqual(AuctionStatus.COMPLETED, endTime).size()
             ).isEqualTo(progressAuctions.size());
         } catch (JsonProcessingException e) {
         }
@@ -111,5 +112,26 @@ class AuctionServiceTest {
         return cars.stream()
             .map(c -> Auction.of(c.getId(), c.getUserId().getId(), "title", time, time, 1l, 2l, status))
             .collect(Collectors.toList());
+    }
+
+    @Test
+    @DisplayName("bid 시도")
+    void tryBidding() {
+        // given
+        User user = UserTestUtil.getNewUser();
+        UserTestUtil.saveUser(user);
+        Long auctionId = 999999999l;
+        Long startPrice = 100l;
+
+        auctionRedisRepository.save(AuctionRedisDTO.of(auctionId, startPrice, List.of()));
+        BidRegisterRequest bidRegisterRequest = new BidRegisterRequest();
+        bidRegisterRequest.setAuctionId(auctionId);
+        bidRegisterRequest.setUserId(user.getId());
+        bidRegisterRequest.setSuggestedPrice(startPrice + 1);
+        // when
+        boolean hasSuccess = auctionService.saveBidRedis(bidRegisterRequest);
+        // then
+        assertThat(hasSuccess).isTrue();
+        auctionRedisRepository.deleteAuction(auctionId);
     }
 }

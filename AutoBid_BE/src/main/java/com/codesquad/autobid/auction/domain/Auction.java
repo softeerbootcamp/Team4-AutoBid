@@ -23,11 +23,6 @@ public class Auction {
     @Id
     @Column(value = "auction_id")
     private Long id;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     @Column(value = "car_id")
     private AggregateReference<Car, Long> carId;
     @Column(value = "user_id")
@@ -51,10 +46,7 @@ public class Auction {
     @Column(value = "updated_at")
     private LocalDateTime updatedAt;
 
-    private Auction(Long carId, Long userId, String auctionTitle, LocalDateTime auctionStartTime,
-                    LocalDateTime auctionEndTime,
-                    Long auctionStartPrice,
-                    Long auctionEndPrice, AuctionStatus auctionStatus) {
+    private Auction(Long carId, Long userId, String auctionTitle, LocalDateTime auctionStartTime, LocalDateTime auctionEndTime, Long auctionStartPrice, Long auctionEndPrice, AuctionStatus auctionStatus) {
         this.carId = AggregateReference.to(carId);
         this.userId = AggregateReference.to(userId);
         this.auctionTitle = auctionTitle;
@@ -65,24 +57,15 @@ public class Auction {
         this.auctionStatus = auctionStatus;
     }
 
-    public static Auction of(Long carId,
-                             Long userId,
-                             String auctionTitle,
-                             LocalDateTime auctionStartTime,
-                             LocalDateTime auctionEndTime,
-                             Long auctionStartPrice,
-                             Long auctionEndPrice,
-                             AuctionStatus auctionStatus) {
-        return new Auction(carId, userId, auctionTitle, auctionStartTime, auctionEndTime, auctionStartPrice,
-            auctionEndPrice,
-            auctionStatus);
+    public static Auction of(Long carId, Long userId, String auctionTitle, LocalDateTime auctionStartTime, LocalDateTime auctionEndTime, Long auctionStartPrice, Long auctionEndPrice, AuctionStatus auctionStatus) {
+        return new Auction(carId, userId, auctionTitle, auctionStartTime, auctionEndTime, auctionStartPrice, auctionEndPrice, auctionStatus);
     }
 
     public void open() {
         auctionStatus = AuctionStatus.PROGRESS;
     }
 
-    public void markToFinish(Long endPrice) {
+    public void markToCompleted(Long endPrice) {
         auctionStatus = AuctionStatus.COMPLETED;
         auctionEndPrice = endPrice;
     }

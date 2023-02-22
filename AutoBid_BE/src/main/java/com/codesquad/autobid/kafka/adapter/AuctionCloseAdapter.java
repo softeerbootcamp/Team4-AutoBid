@@ -18,7 +18,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,18 +37,16 @@ public class AuctionCloseAdapter {
 
     @KafkaListener(topics = "auction-close", groupId = "auction-close-consumer")
     public void consume(String json) throws JsonProcessingException {
-        // todo : auctionRedis 정리가 구체적으로 어떤 작업인가?
         AuctionKafkaDTO auctionKafkaDTO = om.readValue(json, AuctionKafkaDTO.class);
         // redis
         AuctionRedisDTO auctionRedisDto = auctionRedisRepository.findById(auctionKafkaDTO.getAuctionId());
         List<AuctionKafkaUserDTO> auctionKafkaUserDTOs = findBidders(auctionRedisDto.getAuctionRedisBidderDto());
-        auctionRedisRepository.delete(auctionRedisDto.getAuctionId());
+        auctionRedisRepository.deleteAuction(auctionRedisDto.getAuctionId());
         // mysql
         Auction auction = auctionRepository.findById(auctionRedisDto.getAuctionId()).get();
-        auction.markToFinish(auctionRedisDto.getPrice());
+        auction.markToCompleted(auctionRedisDto.getPrice());
         auctionRepository.save(auction);
-
-        auctionKafkaDTO.update(auctionKafkaUserDTOs);
+        auctionKafkaDTO.update(auctionRedisDto.getPrice(), auctionKafkaUserDTOs);
         produce(auctionKafkaDTO);
     }
 
@@ -63,7 +60,6 @@ public class AuctionCloseAdapter {
     }
 
     public void produce(AuctionKafkaDTO auctionKafkaDto) throws JsonProcessingException {
-        // todo: check serializer
         kafkaTemplate.send(AUCTION_EMAIL_TOPIC_NAME, new String(om.writeValueAsString(auctionKafkaDto)));
         kafkaTemplate.send(AUCTION_SEND_TOPIC_NAME, new String(om.writeValueAsString(auctionKafkaDto)));
     }
