@@ -8,6 +8,8 @@ import "./querysidebar.css"
 import AnimatedNumber from "../AnimatedNumber/AnimatedNumber";
 import {AuctionQuery} from "../../model/query";
 import {popErrorModal, popPostingAuctionModal} from "../../store/modal";
+import {login, whoIam} from "../../store/user";
+import Toast from "../../core/toast";
 
 class QuerySidebar extends Component<AuctionQuery> {
     stateSelector(globalState: any): AuctionQuery | undefined {
@@ -50,7 +52,12 @@ class QuerySidebar extends Component<AuctionQuery> {
     }
 
     initialize() {
-        this.addEvent('click', '.query-side-bar__new-auction-btn', () => {
+        this.addEvent('click', '.query-side-bar__new-auction-btn', async () => {
+            const userInfo = await whoIam() || await login();
+            if (!userInfo) {
+                Toast.show('경매 등록은 로그인 후 이용할 수 있습니다', 1000);
+                return;
+            }
             popPostingAuctionModal();
         });
     }
