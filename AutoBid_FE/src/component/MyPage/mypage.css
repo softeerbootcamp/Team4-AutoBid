@@ -1,0 +1,44 @@
+@import "../../style/all.css";
+
+[data-component="MyPage"] {
+    width: 100%;
+    padding: 32px;
+    box-shadow: var(--box-shadow-level-1);
+    height: fit-content;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px;
+    gap: 64px
+}
+
+[data-component="MyPage"] .my-page__section-title {
+    font-size: 20px;
+    padding: 0 0 16px;
+    border-bottom: 1px solid lightgray;
+    margin: 0 0 16px
+}
+
+[data-component="MyPage"] .my-page__card-slider {
+    display: flex;
+    align-items: center;
+    border-radius: 15px;
+    background-color: var(--color-white);
+    box-shadow: var(--box-shadow-level-minus-1);
+    padding: 16px;
+    gap: 16px;
+    overflow-x: scroll;
+}
+
+[data-component="MyPage"] .my-page__card-slider.empty:before {
+    content: "조회된 정보가 없습니다";
+}
+
+[data-component="MyPage"] .my-page__card-slider.empty {
+    justify-content: center;
+    font-size: 25px;
+    font-weight: bold;
+    font-style: italic;
+    height: 300px;
+    color: var(--color-light-gray);
+}

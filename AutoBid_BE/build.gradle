@@ -13,11 +13,49 @@ repositories {
 }
 
 dependencies {
+    //websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'org.springframework.session:spring-session-data-redis:2.7.0'
+
+    // kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+
+    // email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    //lombok
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.12'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
+
+    // swagger setting
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.13'
+    implementation 'org.springdoc:springdoc-openapi-data-rest:1.6.13'
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    // aws s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Spring Scheduler ShedLock
+    implementation 'net.javacrumbs.shedlock:shedlock-spring:4.14.0'
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-jdbc-template:4.14.0'
+
+    //sentry
+    implementation 'io.sentry:sentry-logback:6.9.0'
+    implementation 'io.sentry:sentry-spring-boot-starter:6.9.0'
+
+    //redisson client
+    implementation 'org.redisson:redisson-spring-boot-starter:3.19.3'
+
 }
 
 tasks.named('test') {

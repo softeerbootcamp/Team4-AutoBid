@@ -1,0 +1,16 @@
+toast {
+    font-size: 20px;
+    pointer-events: none;
+    background-color: #3a3a3a;
+    border-radius: 2em;
+    color: white;
+    text-align: center;
+    padding: 1em 2em;
+    line-height: 1em;
+    position: fixed;
+    bottom: 5em;
+    height: 3em;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 999;
+}

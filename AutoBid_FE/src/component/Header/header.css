@@ -1,0 +1,43 @@
+@import "../../style/all.css";
+
+[data-component="Header"] {
+    width: 100%;
+    box-shadow: var(--box-shadow-level-1);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    height: 64px;
+    margin-bottom: 32px;
+    background-color: var(--color-lightest-blue);
+}
+
+.header__container__logo {
+    width: 160px;
+    height: 24px;
+    background-size: 160px 24px;
+    background-image: url("https://see.fontimg.com/api/renderfont4/ZVomZ/eyJyIjoiZnMiLCJoIjoxNzIsInciOjIwMDAsImZzIjo4NiwiZmdjIjoiIzA0NzlGRiIsImJnYyI6IiNGRkZGRkYiLCJ0IjoxfQ/YXV0b2JpZA/everbrightsans-regular.png");
+}
+
+.header__container {
+    height: 100%;
+    padding: var(--container-padding);
+    max-width: var(--container-max-width);
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__container__menu {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header__container__content {
+    margin-left: 20px;
+    transition: 0.1s;
+}
+
+.header__container__content--btn:hover {
+    color: var(--color-blue);
+}

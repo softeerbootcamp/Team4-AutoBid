@@ -1,0 +1,1 @@
+export type UserInfo = { id: number, userName: string, email: string, phone: string };

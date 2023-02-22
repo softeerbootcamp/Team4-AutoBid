@@ -1,0 +1,44 @@
+@import "../../style/all.css";
+
+[data-component="ImageSlider"] .swap-button-container {
+    width: inherit;
+    height: inherit;
+    padding: 0 5px;
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    opacity: 0;
+    transition: 0.3s;
+    z-index: 1;
+}
+
+[data-component="ImageSlider"] .fas {
+    color: var(--color-white);
+    font-size: 20px;
+    padding: 4px;
+}
+
+[data-component="ImageSlider"] .swap-button-container:hover {
+    opacity: 0.75;
+}
+
+[data-component="ImageSlider"] .img-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    border-radius: inherit;
+}
+
+[data-component="ImageSlider"] .img-container__scrollable {
+    display: inline-flex;
+    border-radius: inherit;
+}
+
+[data-component="ImageSlider"] .img-container__img {
+    float: left;
+    height: auto;
+    display: block;
+}

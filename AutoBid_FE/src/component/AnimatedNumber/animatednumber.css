@@ -1,0 +1,6 @@
+@import "../../style/all.css";
+
+[data-component="AnimatedNumber"] {
+    display: inline;
+    font: inherit;
+}

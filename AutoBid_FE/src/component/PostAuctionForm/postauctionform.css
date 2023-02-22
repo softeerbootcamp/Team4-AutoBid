@@ -1,0 +1,162 @@
+@import "../../style/all.css";
+
+[data-component="PostAuctionForm"] {
+  background-color: var(--color-white);
+  box-shadow: var(--box-shadow-level-3);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  width: 800px;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__title {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__add-image__container {
+  background-color: var(--color-lighter-gray);
+  border-radius: 8px;
+  display: flex;
+  margin-bottom: 32px;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__images-container {
+  align-items: center;
+  display: flex;
+  overflow-x: scroll;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__images-container__actual-img-holder {
+  width: 100%;
+  align-items: center;
+  display: flex;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__label {
+  font-size: 18px;
+  color: var(--color-gray);
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__input-text {
+  border: none;
+  font-size: 32px;
+  border-bottom: 1px solid var(--color-light-gray);
+  margin-bottom: 32px;
+  padding: 2px 4px;
+}
+[data-component="PostAuctionForm"] .post-auction-form__input-text:focus {
+  border-bottom: 1px solid var(--color-blue);
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__car-select {
+  font-size: 18px;
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-light-gray);
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 32px;
+  width: 100%;
+}
+[data-component="PostAuctionForm"] .post-auction-form__car-select:focus {
+  border: 1px solid var(--color-blue);
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__time-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__time-container__item {
+  width: 100%;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__input-time {
+  font-size: 18px;
+  padding: 8px;
+  width: 100%;
+}
+[data-component="PostAuctionForm"] .post-auction-form__input-time:focus {
+  border: 1px solid var(--color-blue);
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__price-container {
+  font-size: 18px;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 18px;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__auction-start-price__input {
+  text-align: right;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__auction-start-price__str {
+  display: block;
+  margin-left: 32px;
+  font-style: italic;
+  color: var(--color-semi-gray);
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__auction-submit__button {
+  font-size: 18px;
+  font-weight: bold;
+  width: 100%;
+  color: var(--color-blue);
+  background-color: var(--color-light-blue);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__auction-submit__button:hover {
+  color: white;
+  background-color: var(--color-blue);
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__image-container__add-btn {
+  border-radius: 8px;
+  height: 60px;
+  margin: 8px;
+  opacity: 0.5;
+}
+[data-component="PostAuctionForm"] .post-auction-form__image-container__add-btn i {
+  font-size: 30px;
+  padding: 15px;
+}
+[data-component="PostAuctionForm"] .post-auction-form__image-container__add-btn:hover {
+  color: var(--color-blue);
+  opacity: 1;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__image-container {
+  position: relative;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__image-delete {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  z-index: 100;
+  font-size: 18px;
+  color: var(--color-light-gray)
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__image {
+  border-radius: 8px;
+  height: 60px;
+  margin: 8px 8px 8px 0;
+  width: 60px;
+}
+
+[data-component="PostAuctionForm"] .post-auction-form__images-container input {
+  display: none;
+}
