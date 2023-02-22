@@ -87,12 +87,12 @@ public class AuctionService {
     }
 
     public void openPendingAuctions(LocalDateTime openTime) throws JsonProcessingException {
-        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.BEFORE, openTime);
+        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTimeLessThanEqual(AuctionStatus.BEFORE, openTime);
         auctionOpenProducer.produce(parseToAuctionKafkaDTO(auctions));
     }
 
     public void closeFulfilledAuctions(LocalDateTime closeTime) throws JsonProcessingException {
-        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.PROGRESS, closeTime);
+        List<Auction> auctions = auctionRepository.getAuctionByAuctionStatusAndAuctionEndTimeLessThanEqual(AuctionStatus.PROGRESS, closeTime);
         auctionCloseProducer.produce(parseToAuctionKafkaDTO(auctions));
     }
 

@@ -44,7 +44,7 @@ class AuctionRepositoryTest {
         Auction auction = Auction.of(car.getId(), user.getId(),  "test", now, now, 1l, 2l, AuctionStatus.BEFORE);
         auctionRepository.save(auction);
         // when
-        List<Auction> findAuctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.BEFORE, now);
+        List<Auction> findAuctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTimeBeforeOrAuctionStartTime(AuctionStatus.BEFORE, now);
         // then
         assertAll(
                 () -> assertThat(findAuctions.size()).isEqualTo(1),

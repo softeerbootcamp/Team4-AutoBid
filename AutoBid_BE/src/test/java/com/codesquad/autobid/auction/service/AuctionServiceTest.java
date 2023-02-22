@@ -76,7 +76,7 @@ class AuctionServiceTest {
             auctionService.openPendingAuctions(startTime);
             // then
             assertThat(
-                auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.PROGRESS, startTime).size()
+                auctionRepository.getAuctionByAuctionStatusAndAuctionStartTimeLessThanEqual(AuctionStatus.PROGRESS, startTime).size()
             ).isEqualTo(pendingAuctions.size());
         } catch (JsonProcessingException e) {
         }
@@ -102,7 +102,7 @@ class AuctionServiceTest {
             auctionService.closeFulfilledAuctions(endTime);
             // then
             assertThat(
-                auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.COMPLETED, endTime).size()
+                auctionRepository.getAuctionByAuctionStatusAndAuctionEndTimeLessThanEqual(AuctionStatus.COMPLETED, endTime).size()
             ).isEqualTo(progressAuctions.size());
         } catch (JsonProcessingException e) {
         }
