@@ -24,19 +24,19 @@ class MyPage extends Component<any> {
         `
     }
 
-    mounted() {  // TODO test 뺄 것
+    mounted() {
         const $participatingList = this.$target.querySelector('.my-page__main__participating-bids') as HTMLElement;
-        requestMyParticipationAuctionList(true).then(auctionListDTO => {
+        requestMyParticipationAuctionList().then(auctionListDTO => {
             this.mountAuctionList($participatingList, auctionListDTO);
         });
 
         const $myAuctionList = this.$target.querySelector('.my-page__main__my-auction-list') as HTMLElement;
-        requestMyAuctionList(true).then(auctionListDTO => {
+        requestMyAuctionList().then(auctionListDTO => {
             this.mountAuctionList($myAuctionList, auctionListDTO);
         });
 
         const $myCarList = this.$target.querySelector('.my-page__main__my-car-list') as HTMLElement;
-        requestMyCarList(true).then(carListDTO => {
+        requestMyCarList().then(carListDTO => {
             this.mountCarList($myCarList, carListDTO);
         });
     }

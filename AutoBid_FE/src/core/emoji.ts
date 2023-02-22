@@ -24,7 +24,7 @@ const blast = emojisplosions.bind(null, {
         x: Math.random() * innerWidth,
         y: Math.random() * innerHeight,
     }),
-    interval: 1000
+    interval: 300
 });
 
 export const Emoji = {

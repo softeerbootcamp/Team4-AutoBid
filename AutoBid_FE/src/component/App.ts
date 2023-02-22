@@ -7,6 +7,7 @@ import {whoIam} from "../store/user";
 import MyPage from "./MyPage/MyPage";
 import Modal from "./Modal/Modal";
 import {Page, PAGE_INITIAL, PageState, pageStateSelector} from "../store/page";
+import {Emoji} from "../core/emoji";
 
 class App extends Component<PageState> {
     stateSelector(globalState: any): PageState | undefined {

@@ -71,7 +71,7 @@ export const requestSocketSession = (auctionId: number, test = false) => {
             // 이 부분이 동작 하는 상황
             //  1. 클라이언트 로컬 시간이 endTime 을 초과하여 입찰 버튼이 비활성화 된 상태로 서버의 최종 판결을 대기하는 상황에서
             //  2. 서버 측에서 endTime 을 초과한 경매장에 대해 배치처리를 완료했을 때 (broadcast, 참고 API : convertAndSend)
-            //  3. TODO(논의 해 볼 사항) 또는 이미 종료된 방에 접속 시도를 했을 때
+            //  3. (논의 해 볼 사항) 또는 이미 종료된 방에 접속 시도를 했을 때
             const live = JSON.parse(body) as LiveDTO;
             onEnd(live);
             // onEnd 기 할 일

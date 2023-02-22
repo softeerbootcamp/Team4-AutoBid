@@ -103,15 +103,15 @@ class PostAuctionForm extends Component<ModalState> {
         });
     }
 
-    mounted() {  // TODO test 빼고
-        requestMyCarList(true).then(carList => {
+    mounted() {
+        requestMyCarList().then(carList => {
             if (!carList) return;
             const notForSaleCarList = carList.filter(carInfo => carInfo.state === CarState.NOT_FOR_SALE);
             if (!notForSaleCarList.length) return;
             const $carSelect = this.$target.querySelector('.post-auction-form__car-select') as HTMLSelectElement;
             $carSelect.innerHTML += notForSaleCarList.map(carInfo => `
-                <option value="${carInfo.id}">${carInfo.name} ${carInfo.sellName}</option>
-            `).join('');  // TODO DTO 획일화좀
+                <option value="${carInfo.carId}">${carInfo.name} ${carInfo.sellName}</option>
+            `).join('');
         });
     }
 
