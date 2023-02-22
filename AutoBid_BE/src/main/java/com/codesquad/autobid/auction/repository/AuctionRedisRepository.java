@@ -22,6 +22,8 @@ public class AuctionRedisRepository {
 
     private static final Integer LOCKING_TIME = 5;
     private static final Integer LEASE_TIME = 1;
+    private static final Integer REDIS_SCAN_FROM = 0;
+    private static final Integer REDIS_SCAN_TO = -1;
     private final RedisTemplate redisTemplate;
     private final RedissonClient redissonClient;
     private static ValueOperations stringOps;
@@ -39,28 +41,29 @@ public class AuctionRedisRepository {
         Map<AuctionRedisKey, String> keys = AuctionRedisKey.generate(auctionId);
         RLock rLock = redissonClient.getLock(keys.get(AuctionRedisKey.LOCK));
         try {
-            boolean isLocked = rLock.tryLock(LOCKING_TIME, LEASE_TIME, TimeUnit.SECONDS);
-            if (!isLocked) {
+            boolean hasAcquiredLock = rLock.tryLock(LOCKING_TIME, LEASE_TIME, TimeUnit.SECONDS);
+            if (!hasAcquiredLock) {
                 log.error("lock failed : {}", bid);
                 return false;
             }
             Long curPrice = getPrice(auctionId);
             if (bid.getPrice() > curPrice) {
-                log.info(bid.getPrice() + " " + curPrice);
                 setPrice(auctionId, bid.getPrice());
-                if (rLock != null && rLock.isLocked()) {
-                    rLock.unlock();
-                }
+                tryUnlock(rLock);
                 log.info("낙찰 성공 : {}", bid);
                 return true;
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        if (rLock != null && rLock.isLocked()) {
+        tryUnlock(rLock);
+        return false;
+    }
+
+    private void tryUnlock(RLock rLock) {
+        if (rLock.isLocked()) {
             rLock.unlock();
         }
-        return false;
     }
 
     public void save(AuctionRedisDTO auctionRedisDTO) {
@@ -90,7 +93,7 @@ public class AuctionRedisRepository {
         try {
             Map<AuctionRedisKey, String> keys = AuctionRedisKey.generate(auctionId);
             Long price = Integer.toUnsignedLong((int) stringOps.get(keys.get(AuctionRedisKey.PRICE)));
-            List<AuctionRedisBidderDTO> auctionRedisBidderDTOS = parseToBidderSet(keys.get(AuctionRedisKey.BIDDERS), 0, -1);
+            List<AuctionRedisBidderDTO> auctionRedisBidderDTOS = parseToBidderSet(keys.get(AuctionRedisKey.BIDDERS), REDIS_SCAN_FROM, REDIS_SCAN_TO);
             return AuctionRedisDTO.of(auctionId, price, auctionRedisBidderDTOS);
         } catch (NullPointerException e) {
             return null;
