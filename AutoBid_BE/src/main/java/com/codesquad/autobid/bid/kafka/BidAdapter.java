@@ -1,4 +1,4 @@
-package com.codesquad.autobid.bid.adapter;
+package com.codesquad.autobid.bid.kafka;
 
 import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.repository.AuctionRedisDTO;

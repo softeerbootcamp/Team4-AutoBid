@@ -1,4 +1,4 @@
-package com.codesquad.autobid.kafka.consumer;
+package com.codesquad.autobid.bid.kafka;
 
 import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
 import com.codesquad.autobid.bid.request.BidRegisterRequest;

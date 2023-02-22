@@ -10,7 +10,7 @@ import com.codesquad.autobid.auction.repository.exceptions.BidSaveFailedExceptio
 import com.codesquad.autobid.auction.request.AuctionRegisterRequest;
 import com.codesquad.autobid.auction.response.AuctionInfoListResponse;
 import com.codesquad.autobid.auction.response.AuctionStatisticsResponse;
-import com.codesquad.autobid.bid.adapter.BidAdapter;
+import com.codesquad.autobid.bid.kafka.BidAdapter;
 import com.codesquad.autobid.bid.domain.Bid;
 import com.codesquad.autobid.bid.request.BidRegisterRequest;
 import com.codesquad.autobid.image.domain.Image;
@@ -18,7 +18,7 @@ import com.codesquad.autobid.image.repository.ImageRepository;
 import com.codesquad.autobid.image.service.S3Uploader;
 import com.codesquad.autobid.kafka.producer.AuctionCloseProducer;
 import com.codesquad.autobid.kafka.producer.AuctionOpenProducer;
-import com.codesquad.autobid.kafka.producer.BidRollbackProducer;
+import com.codesquad.autobid.bid.kafka.BidRollbackProducer;
 import com.codesquad.autobid.kafka.producer.dto.AuctionKafkaDTO;
 import com.codesquad.autobid.user.domain.User;
 import com.fasterxml.jackson.core.JsonProcessingException;

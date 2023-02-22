@@ -1,4 +1,4 @@
-package com.codesquad.autobid.kafka.producer;
+package com.codesquad.autobid.bid.kafka;
 
 import com.codesquad.autobid.bid.request.BidRegisterRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
