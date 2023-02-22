@@ -112,7 +112,7 @@ public class AuctionRedisRepository {
     }
 
     private Long getPrice(Long auctionId) {
-        return (Long) stringOps.get(AuctionRedisKey.generate(auctionId).get(AuctionRedisKey.PRICE));
+        return Long.valueOf(String.valueOf(stringOps.get(AuctionRedisKey.generate(auctionId).get(AuctionRedisKey.PRICE))));
     }
 
     private void setPrice(Long auctionId, Long price) {
