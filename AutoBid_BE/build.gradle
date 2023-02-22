@@ -54,7 +54,7 @@ dependencies {
     implementation 'io.sentry:sentry-spring-boot-starter:6.9.0'
 
     //redisson client
-    implementation 'org.redisson:redisson-spring-boot-starter:3.16.3'
+    implementation 'org.redisson:redisson-spring-boot-starter:3.19.3'
 
 }
 
