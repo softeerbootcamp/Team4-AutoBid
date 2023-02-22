@@ -40,9 +40,15 @@ public class BidAdapter {
         BidRegisterRequest bidRegisterRequest = objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class);
         log.info("bid-event bid-mysql {}", bidRegisterRequest);
         // bid 저장
-        Bid bid = bidRepository.findBidByAuctionIdAndUserId(bidRegisterRequest.getAuctionId(),
-                bidRegisterRequest.getUserId()).orElse(Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
-                AggregateReference.to(bidRegisterRequest.getUserId()), bidRegisterRequest.getSuggestedPrice(), false));
+        Bid bid = bidRepository.findBidByAuctionIdAndUserId(
+                bidRegisterRequest.getAuctionId(),
+                bidRegisterRequest.getUserId()
+        ).orElse(Bid.of(
+                AggregateReference.to(bidRegisterRequest.getAuctionId()),
+                AggregateReference.to(bidRegisterRequest.getUserId()),
+                bidRegisterRequest.getSuggestedPrice(),
+                false)
+        );
 
         bid.updatePrice(bidRegisterRequest.getSuggestedPrice());
 
