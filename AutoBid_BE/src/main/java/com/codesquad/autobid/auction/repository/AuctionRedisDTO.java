@@ -10,7 +10,6 @@ import java.util.List;
 public class AuctionRedisDTO {
 
     private Long auctionId;
-
     private Long price;
 
     private List<AuctionRedisBidderDTO> auctionRedisBidderDto = new ArrayList<>();
@@ -28,5 +27,9 @@ public class AuctionRedisDTO {
         AuctionRedisDTO auctionRedisDto = new AuctionRedisDTO(auctionId, price);
         auctionRedisDto.auctionRedisBidderDto = auctionRedisBidderDTOS;
         return auctionRedisDto;
+    }
+
+    public boolean hasBidder() {
+        return !auctionRedisBidderDto.isEmpty();
     }
 }

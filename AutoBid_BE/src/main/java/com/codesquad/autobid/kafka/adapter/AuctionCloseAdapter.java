@@ -41,7 +41,7 @@ public class AuctionCloseAdapter {
         // redis
         AuctionRedisDTO auctionRedisDto = auctionRedisRepository.findById(auctionKafkaDTO.getAuctionId());
         List<AuctionKafkaUserDTO> auctionKafkaUserDTOs = findBidders(auctionRedisDto.getAuctionRedisBidderDto());
-        auctionRedisRepository.delete(auctionRedisDto.getAuctionId());
+        auctionRedisRepository.deleteAuction(auctionRedisDto.getAuctionId());
         // mysql
         Auction auction = auctionRepository.findById(auctionRedisDto.getAuctionId()).get();
         auction.markToCompleted(auctionRedisDto.getPrice());

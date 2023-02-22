@@ -50,7 +50,7 @@ class AuctionRedisDTORepositoryTest {
         AuctionRedisDTO auctionRedisDTO = AuctionRedisDTO.from(auction);
         // when
         auctionRedisRepository.save(auctionRedisDTO);
-        auctionRedisRepository.delete(auction.getId());
+        auctionRedisRepository.deleteAuction(auction.getId());
         // then
     }
 }

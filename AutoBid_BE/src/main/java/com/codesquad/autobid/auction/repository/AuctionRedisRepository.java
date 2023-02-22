@@ -35,7 +35,8 @@ public class AuctionRedisRepository {
     }
 
     public boolean saveBid(Bid bid) {
-        Map<AuctionRedisKey, String> keys = AuctionRedisKey.generate(bid.getAuctionId().getId());
+        Long auctionId = bid.getAuctionId().getId();
+        Map<AuctionRedisKey, String> keys = AuctionRedisKey.generate(auctionId);
         RLock rLock = redissonClient.getLock(keys.get(AuctionRedisKey.LOCK));
         try {
             boolean isLocked = rLock.tryLock(LOCKING_TIME, LEASE_TIME, TimeUnit.SECONDS);
@@ -43,10 +44,10 @@ public class AuctionRedisRepository {
                 log.error("lock failed : {}", bid);
                 return false;
             }
-            Long curPrice = Long.valueOf(String.valueOf(stringOps.get(keys.get(AuctionRedisKey.PRICE))));
+            Long curPrice = getPrice(auctionId);
             if (bid.getPrice() > curPrice) {
                 log.info(bid.getPrice() + " " + curPrice);
-                stringOps.set(keys.get(AuctionRedisKey.PRICE), String.valueOf(bid.getPrice()));
+                setPrice(auctionId, bid.getPrice());
                 if (rLock != null && rLock.isLocked()) {
                     rLock.unlock();
                 }
@@ -64,9 +65,8 @@ public class AuctionRedisRepository {
 
     public void save(AuctionRedisDTO auctionRedisDTO) {
         Map<AuctionRedisKey, String> keys = AuctionRedisKey.generate(auctionRedisDTO.getAuctionId());
-
-        stringOps.set(keys.get(AuctionRedisKey.PRICE), auctionRedisDTO.getPrice());
-        if (auctionRedisDTO.getAuctionRedisBidderDto().size() != 0) {
+        setPrice(auctionRedisDTO.getAuctionId(), auctionRedisDTO.getPrice());
+        if (auctionRedisDTO.hasBidder()) {
             saveBidders(keys.get(AuctionRedisKey.BIDDERS), auctionRedisDTO.getAuctionRedisBidderDto());
         }
     }
@@ -79,7 +79,7 @@ public class AuctionRedisRepository {
                 .collect(Collectors.toSet()));
     }
 
-    public void delete(Long auctionId) {
+    public void deleteAuction(Long auctionId) {
         Map<AuctionRedisKey, String> keys = AuctionRedisKey.generate(auctionId);
         for (String key : keys.values()) {
             redisTemplate.delete(key);
@@ -100,13 +100,19 @@ public class AuctionRedisRepository {
     private List<AuctionRedisBidderDTO> parseToBidderSet(String key, int from, int to) {
         Set<DefaultTypedTuple> set = zSetOps.rangeWithScores(key, from, to);
         return set.stream()
-            .map((dtt) -> AuctionRedisBidderDTO.of(Integer.toUnsignedLong((int) dtt.getValue()),
-                -1 * dtt.getScore().longValue()))
+            .map((dtt) -> AuctionRedisBidderDTO.of(
+                    Integer.toUnsignedLong((int) dtt.getValue()),
+                    -1 * dtt.getScore().longValue()
+                )
+            )
             .collect(Collectors.toList());
     }
 
-    public Long getPrice(Long auctionId) {
-        Map<AuctionRedisKey, String> keys = AuctionRedisKey.generate(auctionId);
-        return (Long) stringOps.get(keys.get(AuctionRedisKey.PRICE));
+    private Long getPrice(Long auctionId) {
+        return (Long) stringOps.get(AuctionRedisKey.generate(auctionId).get(AuctionRedisKey.PRICE));
+    }
+
+    private void setPrice(Long auctionId, Long price) {
+        stringOps.set(AuctionRedisKey.generate(auctionId).get(AuctionRedisKey.PRICE), price);
     }
 }
