@@ -1,7 +1,10 @@
 package com.codesquad.autobid.handler.car.enums;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 
+@Getter
 public enum DistanceUnit {
 
     FEET(0, "feet"),
@@ -23,13 +26,5 @@ public enum DistanceUnit {
                 .filter(unit -> unit.code == code)
                 .findAny()
                 .orElse(ETC);
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getPlaceholder() {
-        return placeholder;
     }
 }

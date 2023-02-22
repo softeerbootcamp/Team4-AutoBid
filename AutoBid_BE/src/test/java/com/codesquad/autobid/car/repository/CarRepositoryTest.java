@@ -1,8 +1,10 @@
 package com.codesquad.autobid.car.repository;
 
 import com.codesquad.autobid.car.domain.Car;
-import com.codesquad.autobid.car.util.CarTestUtil;
+import com.codesquad.autobid.util.CarTestUtil;
+import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.repository.UserRepository;
+import com.codesquad.autobid.util.UserTestUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,9 @@ class CarRepositoryTest {
     @DisplayName("자동차 추가 성공")
     void save_car() {
         // given
-        Car car = CarTestUtil.getNewCars(24l, 1).get(0);
+        User user = UserTestUtil.getNewUser();
+        user = userRepository.save(user);
+        Car car = CarTestUtil.getNewCars(user.getId(), 1).get(0);
         // when
         Car scar = carRepository.save(car);
         // then
@@ -42,10 +46,12 @@ class CarRepositoryTest {
     @DisplayName("유저 아이디로 차량 조회 성공")
     void findCarByUserId() {
         // given
-        Car car = CarTestUtil.getNewCars(24l, 1).get(0);
+        User user = UserTestUtil.getNewUser();
+        user = userRepository.save(user);
+        Car car = CarTestUtil.getNewCars(user.getId(), 1).get(0);
         carRepository.save(car);
         // when
-        List<Car> cars = carRepository.findCarsByUserId(24l);
+        List<Car> cars = carRepository.findCarsByUserId(user.getId());
         // then
         assertAll(
                 () -> assertThat(cars.size()).isEqualTo(1),

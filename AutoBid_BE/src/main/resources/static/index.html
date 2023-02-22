@@ -1,14 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Document</title>
 </head>
 <body>
-<a href="https://prd.kr-ccapi.hyundai.com/api/v1/user/oauth2/authorize?response_type=code&client_id=ca9c23ed-0f33-4150-a8db-dd04b2d5f50c&redirect_uri=http://localhost:8080/oauth/login">로그인</a>
-<a href="https://prd.kr-ccapi.hyundai.com/api/v1/user/profile/Authorization?Bearer=&redirect_uri=http://localhost:8080/oauth/login">유저정보</a>
+<a href="https://prd.kr-ccapi.hyundai.com/api/v1/user/oauth2/authorize?response_type=code&client_id=7e27ebbc-695a-46d6-aa1c-ee7c38d6190e&redirect_uri=http://localhost:8080/user/login">로그인</a>
+<a href="https://prd.kr-ccapi.hyundai.com/api/v1/user/oauth2/authorize?response_type=code&client_id=d25eef68-043d-4601-b1c6-1101bb4313f5&redirect_uri=http://localhost:8080/user/login">(성준)로그인</a>
+<a href="http://localhost:8080/user-cars">get Car List From Hyundai</a>
+<a href="http://localhost:8080/user-cars?refresh=false">get Car List From DB</a>
+
+<div class="form-group">
+    <input type="text" class="room-id">
+    <button class="connect-btn">접속</button>
+    <button class="enter-btn-to-me">혼자방입장하기</button>
+    <button class="enter-btn-to-all">모두방입장하기</button>
+</div>
+
+<!--
+    JSPM Generator Import Map
+    Edit URL: https://generator.jspm.io/#U2NgYGBkDM0rySzJSU1hcCguyc8t0AeTWcUO5noGega6SakliaYAYTzJAykA
+  -->
+<script type="importmap">
+  {
+    "imports": {
+      "@stomp/stompjs": "https://ga.jspm.io/npm:@stomp/stompjs@7.0.0/esm6/index.js"
+    }
+  }
+</script>
+
+<!-- ES Module Shims: Import maps polyfill for modules browsers without import maps support (all except Chrome 89+) -->
+<script
+        async
+        src="https://ga.jspm.io/npm:es-module-shims@1.5.1/dist/es-module-shims.js"
+        crossorigin="anonymous"
+></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.js"></script>
+<script type="module">
+    'use strict';
+    import { Stomp } from '@stomp/stompjs';
+
+    const $connectButton = document.querySelector('.connect-btn');
+    const $allButton = document.querySelector('.enter-btn-to-all');
+    const $meButton = document.querySelector('.enter-btn-to-me');
+    const $roomIdInput = document.querySelector('.room-id');
+
+    const socket = new SockJS('/auction-room');
+    const client = Stomp.over(socket);
+    client.connect({}, () => {});
+
+    $connectButton.addEventListener('click', () => {
+        const roomId = $roomIdInput.value;
+        client.subscribe(`/user/ws/start/${roomId}`, message => {
+            console.log(message);
+        });
+        client.subscribe(`/ws/start/${roomId}`, message => {
+            console.log(message);
+        });
+    });
+
+    $allButton.addEventListener('click', () => {
+        const roomId = $roomIdInput.value;
+        // publish : 주소, 헤더, 메세지
+        client.publish({ destination: `/ws/enter/all/${roomId}`, body: 'i am entered' });
+        // client.subscribe(`/subscribe/websocket/${roomId}`, message => {
+        //     console.log(message);
+        // });
+        // fetch(`/auction/post/${roomId}`);
+        // client.subscribe(`/subscribe/websocket/${roomId}`, message => {
+        //     console.log(message);
+        // });
+    });
+
+    $meButton.addEventListener('click', () => {
+        const roomId = $roomIdInput.value;
+        // publish : 주소, 헤더, 메세지
+        client.publish({ destination: `/ws/enter/solo/${roomId}`, body: 'i am entered' });
+        // client.subscribe(`/subscribe/websocket/${roomId}`, message => {
+        //     console.log(message);
+        // });
+        // fetch(`/auction/post/${roomId}`);
+        // client.subscribe(`/subscribe/websocket/${roomId}`, message => {
+        //     console.log(message);
+        // });
+    });
+
+    Window.client = client;
+</script>
 </body>
 </html>
 

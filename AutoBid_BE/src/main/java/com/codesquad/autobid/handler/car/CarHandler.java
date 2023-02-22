@@ -1,7 +1,9 @@
 package com.codesquad.autobid.handler.car;
 
-import com.codesquad.autobid.handler.car.vo.AvailableDistanceVO;
+import com.codesquad.autobid.handler.car.vo.CarListVO;
 import com.codesquad.autobid.handler.car.vo.CarVO;
+import com.codesquad.autobid.handler.car.vo.DistanceVO;
+import com.codesquad.autobid.test.CarTestUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,12 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -31,44 +30,48 @@ public class CarHandler {
     private String CAR_DETAIL_REQUEST_URL;
 
     public List<CarVO> getCars(String accessToken) {
-        HttpEntity request = getAuthorizedRequest(accessToken);
-        ResponseEntity<String> carListResponse = rt.exchange(
-                CAR_LIST_REQUEST_URL,
-                HttpMethod.GET,
-                request,
-                String.class
-        );
-        return parseToCars(carListResponse.getBody());
+        // HttpEntity request = getAuthorizedRequest(accessToken);
+        // ResponseEntity<String> carListResponse = rt.exchange(
+        //         CAR_LIST_REQUEST_URL,
+        //         HttpMethod.GET,
+        //         request,
+        //         String.class
+        // );
+        // return parseToCars(carListResponse.getBody()); // True Code
+        return parseToCars(CarTestUtil.getCarListJson()).getCars(); // Test Code
     }
 
-    private List<CarVO> parseToCars(String body) {
+    private CarListVO parseToCars(String body) {
         try {
             return objectMapper.readValue(body, new TypeReference<>() {
             });
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
             logger.debug("unhandled car list request exception");
-            return new ArrayList<>();
+            return new CarListVO();
         }
     }
 
-    public AvailableDistanceVO getAvailableDistance(String accessToken, String carId) {
-        HttpEntity request = getAuthorizedRequest(accessToken);
-        ResponseEntity<String> carListResponse = rt.exchange(
-                String.format(CAR_DETAIL_REQUEST_URL, carId),
-                HttpMethod.GET,
-                request,
-                String.class
-        );
-        return parseToAvailableDistance(carListResponse.getBody());
+    public DistanceVO getDistance(String accessToken, String carId) {
+        // HttpEntity request = getAuthorizedRequest(accessToken);
+        // 현대차 API에서 제공하는 더미 차량 정보는 실제로 존재하지 않음 -> 현대차 제공 차량 정보로 거리 정보 못 찾음 (유효하지 않은 carId)
+        // ResponseEntity<String> carListResponse = rt.exchange(
+        //         String.format(CAR_DETAIL_REQUEST_URL, carId),
+        //         HttpMethod.GET,
+        //         request,
+        //         String.class
+        // );
+        // return parseToAvailableDistance(carListResponse.getBody()); // True Code
+        return parseToAvailableDistance(CarTestUtil.getDistance()); // True Code
     }
 
-    private AvailableDistanceVO parseToAvailableDistance(String body) {
+    private DistanceVO parseToAvailableDistance(String body) {
         try {
             return objectMapper.readValue(body, new TypeReference<>() {
             });
         } catch (JsonProcessingException e) {
             logger.debug("unhandled car list request exception");
-            return null;
+            return new DistanceVO();
         }
     }
 

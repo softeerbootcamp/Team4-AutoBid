@@ -1,40 +1,34 @@
 package com.codesquad.autobid.handler.car.vo;
 
 import com.codesquad.autobid.car.domain.Type;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CarVO {
 
+    @JsonProperty("carId")
     private String carId;
+    @JsonProperty("carNickname")
+    private String nickname;
+    @JsonProperty("carType")
     private Type type;
+    @JsonProperty("carName")
     private String name;
-    private String sellname;
-    private AvailableDistanceVO availableDistanceVO;
+    @JsonProperty("carSellname")
+    private String sellName;
+    @JsonIgnore
+    private Float distance;
 
-    private CarVO() {
-    }
-
-    public AvailableDistanceVO getAvailableDistanceVO() {
-        return availableDistanceVO;
-    }
-
-    public CarVO addDistanceInfo(AvailableDistanceVO availableDistanceVO) {
-        this.availableDistanceVO = availableDistanceVO;
+    public CarVO setDistance(DistanceVO distanceVO) {
+        this.distance = distanceVO.getDistance();
         return this;
-    }
-
-    public String getCarId() {
-        return carId;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getSellname() {
-        return sellname;
     }
 }

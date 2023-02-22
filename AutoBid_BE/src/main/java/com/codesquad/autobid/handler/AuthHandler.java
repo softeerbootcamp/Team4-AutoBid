@@ -1,8 +1,10 @@
 package com.codesquad.autobid.handler;
 
 import com.codesquad.autobid.OauthToken;
+import com.codesquad.autobid.user.domain.UserVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +17,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+@Slf4j
 @Component
 public class AuthHandler {
 
-    private Logger logger = LoggerFactory.getLogger(AuthHandler.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final RestTemplate rt = new RestTemplate();
 
@@ -30,7 +32,6 @@ public class AuthHandler {
 
     @Value("${hyundai.auth.token_request_uri}")
     private String TOKEN_REQUEST_URI;
-
 
     public OauthToken getOauthToken(OauthType oauthType, String value) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -66,6 +67,4 @@ public class AuthHandler {
 
         return oauthToken;
     }
-
-
 }

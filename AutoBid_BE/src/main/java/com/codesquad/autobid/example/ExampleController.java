@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codesquad.autobid.web.argumentresolver.AuthorizedUser;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,7 +19,7 @@ public class ExampleController {
 
 	private final Logger logger = LoggerFactory.getLogger(ExampleController.class);
 	@Operation(summary = "경매 조회 API", description = "경매 정보를 조회합니다.")
-	@PostMapping("/test")
+	@PostMapping("/image/test")
 	public String test(@Parameter(description = "경매 고유 ID") @RequestParam String id) {
 		logger.info("id = {}", id);
 		return id;
