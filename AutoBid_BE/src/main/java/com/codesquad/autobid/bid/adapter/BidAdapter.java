@@ -41,8 +41,8 @@ public class BidAdapter {
         log.info("bid-event bid-mysql {}", bidRegisterRequest);
         // bid 저장
         Bid bid = bidRepository.findBidByAuctionIdAndUserId(bidRegisterRequest.getAuctionId(),
-            bidRegisterRequest.getUserId()).orElse(Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
-            AggregateReference.to(bidRegisterRequest.getUserId()), bidRegisterRequest.getSuggestedPrice(), false));
+                bidRegisterRequest.getUserId()).orElse(Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
+                AggregateReference.to(bidRegisterRequest.getUserId()), bidRegisterRequest.getSuggestedPrice(), false));
 
         bid.updatePrice(bidRegisterRequest.getSuggestedPrice());
 
@@ -50,7 +50,7 @@ public class BidAdapter {
 
         // Auction 저장
         Auction auction = auctionRepository.findById(bidRegisterRequest.getAuctionId())
-            .orElseThrow(() -> new RuntimeException("존재하는 경매가 없습니다."));
+                .orElseThrow(() -> new RuntimeException("존재하는 경매가 없습니다."));
 
         auction.updateEndPrice(bidRegisterRequest.getSuggestedPrice());
 
@@ -64,8 +64,8 @@ public class BidAdapter {
     public void saveBiddersAndBroadcast(@Payload String bidRegisterRequestStr) throws JsonProcessingException {
         BidRegisterRequest bidRegisterRequest = objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class); // auctionID, userID
         Bid bid = Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
-            AggregateReference.to(bidRegisterRequest.getUserId()),
-            bidRegisterRequest.getSuggestedPrice(), false);
+                AggregateReference.to(bidRegisterRequest.getUserId()),
+                bidRegisterRequest.getSuggestedPrice(), false);
         bidRedisRepository.save(bid); // redis 저장
         Long auctionId = bidRegisterRequest.getAuctionId();
         AuctionRedisDTO auctionRedis = auctionRedisRepository.findById(auctionId); // 저장된 것을 불러온다.
@@ -88,9 +88,12 @@ public class BidAdapter {
         System.out.println(objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class).getUserId());
     }
 
-    public void produce(BidRegisterRequest bidRegisterRequest) throws JsonProcessingException {
-        String bidRegisterRequestStr = objectMapper.writeValueAsString(bidRegisterRequest);
-        log.info("produce {}", bidRegisterRequestStr);
-        this.kafkaTemplate.send("bid-event", bidRegisterRequestStr);
+    public void produce(BidRegisterRequest bidRegisterRequest) {
+        try {
+            log.info("produce {}", bidRegisterRequest);
+            kafkaTemplate.send("bid-event", objectMapper.writeValueAsString(bidRegisterRequest));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

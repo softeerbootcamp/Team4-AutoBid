@@ -50,54 +50,37 @@ public class AuctionService {
     private final BidRollbackProducer bidRollbackProducer;
 
     @Transactional
-    public boolean saveBid(BidRegisterRequest bidRegisterRequest) {
+    public void saveBid(BidRegisterRequest bidRegisterRequest) {
         try {
             boolean successSavingOnRedis = auctionRedisRepository.saveBid(
-                Bid.of(
-                    AggregateReference.to(bidRegisterRequest.getAuctionId()),
-                    AggregateReference.to(bidRegisterRequest.getUserId()),
-                    bidRegisterRequest.getSuggestedPrice(),
-                    false
-                )
+                    Bid.of(
+                            AggregateReference.to(bidRegisterRequest.getAuctionId()),
+                            AggregateReference.to(bidRegisterRequest.getUserId()),
+                            bidRegisterRequest.getSuggestedPrice(),
+                            false
+                    )
             );
             if (successSavingOnRedis) {
-                produceBidMsg(bidRegisterRequest);
-                return true;
+                bidAdapter.produce(bidRegisterRequest);
+                return;
             }
             throw new Exception("fail saving bid at redis");
         } catch (Exception e) {
-            produceRedisRollbackMsg(bidRegisterRequest);
-        }
-        return false;
-    }
-
-    private void produceRedisRollbackMsg(BidRegisterRequest bidRegisterRequest) {
-        try {
             bidRollbackProducer.produce(bidRegisterRequest);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void produceBidMsg(BidRegisterRequest bidRegisterRequest) {
-        try {
-            bidAdapter.produce(bidRegisterRequest);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
         }
     }
 
     @Transactional
     public Auction addAuction(AuctionRegisterRequest auctionRegisterRequest, User user) {
         Auction auction = Auction.of(
-            auctionRegisterRequest.getCarId(),
-            user.getId(),
-            auctionRegisterRequest.getAuctionTitle(),
-            auctionRegisterRequest.getAuctionStartTime(),
-            auctionRegisterRequest.getAuctionEndTime(),
-            auctionRegisterRequest.getAuctionStartPrice(),
-            auctionRegisterRequest.getAuctionStartPrice(),
-            AuctionStatus.BEFORE
+                auctionRegisterRequest.getCarId(),
+                user.getId(),
+                auctionRegisterRequest.getAuctionTitle(),
+                auctionRegisterRequest.getAuctionStartTime(),
+                auctionRegisterRequest.getAuctionEndTime(),
+                auctionRegisterRequest.getAuctionStartPrice(),
+                auctionRegisterRequest.getAuctionStartPrice(),
+                AuctionStatus.BEFORE
         );
         auctionRepository.save(auction);
         List<MultipartFile> images = auctionRegisterRequest.getMultipartFileList();

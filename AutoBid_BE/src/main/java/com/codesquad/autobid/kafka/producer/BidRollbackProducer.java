@@ -19,8 +19,12 @@ public class BidRollbackProducer {
     private final KafkaTemplate kafkaTemplate;
     private final ObjectMapper om;
 
-    public void produce(BidRegisterRequest bidRegisterRequest) throws JsonProcessingException {
+    public void produce(BidRegisterRequest bidRegisterRequest) {
         log.error("RedisRollbackProducer: {}", bidRegisterRequest);
-        kafkaTemplate.send(AUCTION_OPEN_TOPIC_NAME, new String(om.writeValueAsBytes(bidRegisterRequest)));
+        try {
+            kafkaTemplate.send(AUCTION_OPEN_TOPIC_NAME, new String(om.writeValueAsBytes(bidRegisterRequest)));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
