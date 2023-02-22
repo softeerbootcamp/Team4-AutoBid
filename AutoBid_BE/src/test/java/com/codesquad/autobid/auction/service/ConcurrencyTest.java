@@ -32,7 +32,7 @@ public class ConcurrencyTest {
 	public void test() throws InterruptedException {
 		int threadNum = 500;
 		Long auctionId = 999999L;
-		Map<AuctionRedisKey, String> keys = AuctionRedisUtil.generateKeys(auctionId);
+		Map<AuctionRedisKey, String> keys = AuctionRedisKey.generate(auctionId);
 		redisTemplate.opsForValue().set(keys.get(AuctionRedisKey.PRICE), 1000);
 
 		ExecutorService executorService = Executors.newFixedThreadPool(threadNum);
