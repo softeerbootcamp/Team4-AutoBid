@@ -31,17 +31,18 @@ public interface AuctionRepository extends CrudRepository<Auction, Long> {
 
     List<Auction> getAuctionByAuctionStatusAndAuctionEndTimeLessThanEqual(AuctionStatus auctionStatus, LocalDateTime endTime);
 
-    @Query("select * from auction a join car c on a.car_id = c.car_id where a.auction_status = :auctionStatus and c.car_type = :carType order by a.auction_end_price asc")
-    public List<AuctionInfoDto> findAllByAuctionStatusAndCarType(String auctionStatus, String carType);
+    @Query("select auction_end_price from auction a join car c on a.car_id = c.car_id where a.auction_status = :auctionStatus and c.car_type = :carType order by a.auction_end_price asc")
+    public List<Long> findAllByAuctionStatusAndCarType(String auctionStatus, String carType);
 
-    @Query("select * from auction a join car c on a.car_id = c.car_id where a.auction_status = :auctionStatus order by a.auction_end_price asc")
-    public List<AuctionInfoDto> findAllByAuctionStatus(String auctionStatus);
+    @Query("select auction_end_price from auction where auction_status = :auctionStatus order by auction_end_price asc")
+    public List<Long> findAllByAuctionStatus(String auctionStatus);
 
-    @Query("select * from auction a join car c on a.car_id = c.car_id where c.car_type = :carType order by a.auction_end_price asc")
-    public List<AuctionInfoDto> findAllByCarType(String carType);
+    //@Query("select auction_end_price from auction a join car c on a.car_id = c.car_id where c.car_type = :carType order by a.auction_end_price asc")
+    @Query("select auction_end_price from (select auction_end_price, car_id from auction order by auction_end_price asc) a join car c on a.car_id = c.car_id where c.car_type = :carType order by auction_end_price asc")
+    public List<Long> findAllByCarType(String carType);
 
-    @Query("select * from auction a join car c on a.car_id = c.car_id order by a.auction_end_price asc")
-    public List<AuctionInfoDto> findAllForStatistics();
+    @Query("select auction_end_price from auction order by auction_end_price asc")
+    public List<Long> findAllForStatistics();
 
     public int countAllByAuctionStatus(AuctionStatus auctionStatus);
 
