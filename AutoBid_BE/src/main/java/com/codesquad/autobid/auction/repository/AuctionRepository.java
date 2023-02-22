@@ -22,9 +22,9 @@ public interface AuctionRepository extends CrudRepository<Auction, Long> {
     @Query("select * from auction a join car c on a.car_id = c.car_id where a.auction_end_price >= :auctionStartPrice and a.auction_end_price <= :auctionEndPrice and a.auction_status = :auctionStatus and c.car_type = :carType order by a.auction_start_time desc")
     public List<AuctionInfoDto> findAllByFilterWithAuctionStatusAndCarType(Long auctionStartPrice, Long auctionEndPrice, String auctionStatus, String carType);
 
-    List<Auction> getAuctionByAuctionStatusAndAuctionStartTimeLessThanEqual(AuctionStatus auctionStatus, LocalDateTime startTime);
+    List<Auction> getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus auctionStatus, LocalDateTime startTime);
 
-    List<Auction> getAuctionByAuctionStatusAndAuctionEndTimeLessThanEqual(AuctionStatus auctionStatus, LocalDateTime endTime);
+    List<Auction> getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus auctionStatus, LocalDateTime endTime);
 
     @Query("select * from auction a join car c on a.car_id = c.car_id where a.auction_status = :auctionStatus and c.car_type = :carType order by a.auction_end_price asc")
     public List<AuctionInfoDto> findAllByAuctionStatusAndCarType(String auctionStatus, String carType);
