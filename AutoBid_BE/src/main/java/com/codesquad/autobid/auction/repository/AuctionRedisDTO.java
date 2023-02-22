@@ -4,9 +4,7 @@ import com.codesquad.autobid.auction.domain.Auction;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 public class AuctionRedisDTO {
