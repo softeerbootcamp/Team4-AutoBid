@@ -16,7 +16,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 
 import com.codesquad.autobid.auction.repository.AuctionRedisKey;
 import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
-import com.codesquad.autobid.auction.repository.AuctionRedisUtil;
 import com.codesquad.autobid.bid.domain.Bid;
 
 @SpringBootTest
