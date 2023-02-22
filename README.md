@@ -1,14 +1,11 @@
-# Team4-AutoBid
-
+# Team 4-Autobid
 <img src="http://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F3a9d1378-3832-4678-9cce-eb668bc6d5cd%2Fimage.png?table=block&id=174a2fa0-bbd3-4e4d-bd57-ff5ecdb1f722&spaceId=654c694f-7a05-4bfa-a79f-369335030698&width=250&userId=43a338c7-3486-46bf-8991-5bd9f52814fe&cache=v2" width="300px" height="300px">
 
 > 자동차 경매 플랫폼 [오토벨](https://autobell.co.kr/main?utm_source=googlesearch&utm_medium=cpc&utm_id=main_pc&utm_content=A_Brand&utm_term=%EC%98%A4%ED%86%A0%EB%B2%A8&utm_campaign=2022safety&gclid=Cj0KCQiA8t2eBhDeARIsAAVEga0Pol2UOl6mzdNGHn4RDNrCSZvZUf8xTLeBhp3EFt37tlMwbvWa61YaAkj2EALw_wcB)을 모티브로 한, **개선된 UI/UX를 제공하는 현대 자동차 중고 경매 서비스**
 
-## About US
 |<img src="https://avatars.githubusercontent.com/u/87362456?v=4" width="100px">|<img src="https://avatars.githubusercontent.com/u/28686334?v=4" width="100px">|<img src="https://avatars.githubusercontent.com/u/63576379?v=4" width="100px">|<img src="https://avatars.githubusercontent.com/u/33449712?v=4" width="100px">|<img src="https://avatars.githubusercontent.com/u/33441923?v=4" width="100px">| 
 |--|--|--|--|--| 
-|BE-이원주|BE-유경민|BE-박성준|FE-조재현|FE-이수균| 
-|[Github](https://github.com/wonju-dev)|[Github](https://github.com/benny1020)|[Github](https://github.com/tjdwns4537)|[Github](https://github.com/hyunrice98)|[Github](https://github.com/RandomlyChristen)|
+|[BE-이원주](https://github.com/wonju-dev)|[BE-유경민](https://github.com/benny1020)|[BE-박성준](https://github.com/tjdwns4537)|[FE-조재현](https://github.com/hyunrice98)|[FE-이수균](https://github.com/RandomlyChristen)|
 
 ## 서비스 주요 기능
 ### 로그인/회원가입
@@ -29,21 +26,16 @@
 - 실시간으로 변동되는 현재 가격을 확인 가능
 - 경매 결과를 e-mail로 통지
 
-## Application Overview
-🔨 Under Construction 🔨
-
-## Technical Stuff
-
-### Tech Stacks Used
-#### Front-End
+## Tech Stacks 
+### Front-End
 <img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">  <img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=white"> <img src="https://img.shields.io/badge/fontawesome-339AF0?style=for-the-badge&logo=fontawesome&logoColor=white">
-#### Back-End
+### Back-End
 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"> 
 
 <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/Kafka-231F20?style=for-the-badge&logo=Apache Kafka&logoColor=white"/> <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=Redis&logoColor=white"/> 
 
 <img src="https://img.shields.io/badge/Amazon AWS-232F3E?style=for-the-badge&logo=Amazon AWS&logoColor=white"> <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white"/> <img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=Jenkins&logoColor=white"/>
-
+----------
 ### ERD
 [ERD Diagram](https://user-images.githubusercontent.com/28686334/217983919-ea3fef3c-528a-46d6-aa05-8cd76f0afd7f.png)
 
