@@ -31,8 +31,8 @@ public class EmailService {
 
     private String buildContent(String auctionTitle, Long endPrice, String username, Long userPrice) {
         StringBuilder sb = new StringBuilder();
-        sb.append(auctionTitle).append("의 최종 가격은").append(endPrice).append("원 입니다. \n");
-        sb.append(username).append("님의 최종 입찰 가격은").append(userPrice).append("원 입니다.");
+        sb.append(auctionTitle).append("의 최종 가격은").append(endPrice).append("만원 입니다. \n");
+        sb.append(username).append("님의 최종 입찰 가격은").append(userPrice).append("만원 입니다.");
         return sb.toString();
     }
 
