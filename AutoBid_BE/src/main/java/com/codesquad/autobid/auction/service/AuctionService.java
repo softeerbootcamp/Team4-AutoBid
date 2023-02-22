@@ -222,13 +222,12 @@ public class AuctionService {
         return auctionInfoDtoListToAuctionInfoListResponse(auctionInfoDtoList, auctionInfoDtoList.size());
     }
 
-    public AuctionRedisDTO getAuction(Long auctionId) {
+    public AuctionRedisDTO findAuctionByIdFromRedis(Long auctionId) {
         return auctionRedisRepository.findById(auctionId);
     }
 
-    public Auction getDBAuction(Long auctionId) {
+    public Auction findAuctionByIdFromDB(Long auctionId) {
         Optional<Auction> auction = auctionRepository.findById(auctionId);
         return auction.orElse(null);
     }
-
 }
