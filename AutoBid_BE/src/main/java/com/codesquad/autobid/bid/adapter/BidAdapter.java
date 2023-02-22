@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class BidAdapter {
+
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
     private final BidRepository bidRepository;
@@ -37,7 +38,6 @@ public class BidAdapter {
     @KafkaListener(topics = "bid-event", groupId = "bid-mysql")
     public void saveBidAndUpdate(String bidRegisterRequestStr) throws JsonProcessingException {
         BidRegisterRequest bidRegisterRequest = objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class);
-        System.out.println(bidRegisterRequest);
         log.info("bid-event bid-mysql {}", bidRegisterRequest);
         // bid 저장
         Bid bid = bidRepository.findBidByAuctionIdAndUserId(bidRegisterRequest.getAuctionId(),
@@ -57,9 +57,6 @@ public class BidAdapter {
         auctionRepository.save(auction);
     }
 
-    // TODO
-    // 1. redis에 bidders 저장하기
-    // 2. bidders 웹소켓에 뿌려주기
     @KafkaListener(topics = "bid-event", groupId = "bidder-redis")
     public void saveBiddersAndBroadcast(@Payload String bidRegisterRequestStr) throws JsonProcessingException {
         BidRegisterRequest bidRegisterRequest = objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class); // auctionID, userID
@@ -79,13 +76,10 @@ public class BidAdapter {
         log.info("bid-event bid-redis {}", bidRegisterRequest);
     }
 
-    // TODO
-    // 1. 현재가 브로드캐스트하기
     @KafkaListener(topics = "bid-event", groupId = "bidPrice-broadcast")
     public void broadcast(@Payload String bidRegisterRequestStr) throws JsonProcessingException {
         BidRegisterRequest bidRegisterRequest = objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class);
         log.info("bid-event bid-broadcast {}", bidRegisterRequest);
-        System.out.println(objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class).getUserId());
     }
 
     public void produce(BidRegisterRequest bidRegisterRequest) {
