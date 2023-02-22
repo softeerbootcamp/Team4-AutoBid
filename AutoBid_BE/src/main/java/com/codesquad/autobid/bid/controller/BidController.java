@@ -18,25 +18,27 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class BidController {
-	private final BidAdapter bidAdapter;
-	private final AuctionService auctionService;
+    private final BidAdapter bidAdapter;
+    private final AuctionService auctionService;
 
-	@Autowired
-	public BidController(BidAdapter bidAdapter, AuctionService auctionService) {
-		this.bidAdapter = bidAdapter;
-		this.auctionService = auctionService;
-	}
+    @Autowired
+    public BidController(BidAdapter bidAdapter, AuctionService auctionService) {
+        this.bidAdapter = bidAdapter;
+        this.auctionService = auctionService;
+    }
 
-	@PostMapping("/auction/bid")
-	public ResponseEntity<Boolean> bidRegister(@Parameter @RequestBody BidRegisterRequest bidRegisterRequest,
-		@Parameter(hidden = true) @AuthorizedUser User user) throws JsonProcessingException {
-		bidRegisterRequest.setUserId(user.getId());
-		boolean result = auctionService.saveBidRedis(bidRegisterRequest);
-		log.info(String.valueOf(result));
-		if (!result) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-		}
-		bidAdapter.produce(bidRegisterRequest);
-		return ResponseEntity.status(HttpStatus.OK).body(true);
-	}
+    @PostMapping("/auction/bid")
+    public ResponseEntity<Boolean> bidRegister(
+        @Parameter @RequestBody BidRegisterRequest bidRegisterRequest,
+        @Parameter(hidden = true) @AuthorizedUser User user
+    ) throws JsonProcessingException {
+        log.info("BidController-bidRegister: {}", bidRegisterRequest);
+        bidRegisterRequest.setUserId(user.getId());
+        boolean successOnSaving = auctionService.saveBid(bidRegisterRequest);
+
+        if (!successOnSaving) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(true);
+    }
 }
