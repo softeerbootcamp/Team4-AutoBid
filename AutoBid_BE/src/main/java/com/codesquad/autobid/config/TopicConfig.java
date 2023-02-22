@@ -1,4 +1,4 @@
-package com.codesquad.autobid.config.kafka;
+package com.codesquad.autobid.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -29,6 +29,8 @@ public class TopicConfig {
     private String AUCTION_CLOSE_TOPIC_NAME;
     @Value("${spring.kafka.topic.auction-email}")
     private String AUCTION_EMAIL_TOPIC_NAME;
+    @Value("${spring.kafka.topic.redis-rollback}")
+    private String BID_ROLLBACK_TOPIC_NAME;
 
     @Bean
     public KafkaAdmin admin() {
@@ -63,5 +65,10 @@ public class TopicConfig {
     @Bean
     public NewTopic auctionEmail() {
         return TopicBuilder.name(AUCTION_EMAIL_TOPIC_NAME).build();
+    }
+
+    @Bean
+    public NewTopic rollbackBid() {
+        return TopicBuilder.name(BID_ROLLBACK_TOPIC_NAME).build();
     }
 }
