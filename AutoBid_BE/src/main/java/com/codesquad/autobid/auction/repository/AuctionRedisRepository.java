@@ -119,4 +119,9 @@ public class AuctionRedisRepository {
     private void setPrice(Long auctionId, Long price) {
         stringOps.set(AuctionRedisKey.generate(auctionId).get(AuctionRedisKey.PRICE), price);
     }
+
+    public void deleteBidder(Long auctionId, Long userId) {
+        String auctionBidderKey = AuctionRedisKey.generate(auctionId).get(AuctionRedisKey.BIDDERS);
+        zSetOps.remove(auctionBidderKey, userId);
+    }
 }
