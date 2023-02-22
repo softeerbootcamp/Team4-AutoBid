@@ -2,12 +2,13 @@ package com.codesquad.autobid.auction.response;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @ToString
-@Getter
-@Setter
+@Getter @Setter
+@NoArgsConstructor
 public class AuctionStatisticsResponse {
 
     public static final Long FIXED_INTERVAL_PRICE = 500L;
@@ -32,6 +33,8 @@ public class AuctionStatisticsResponse {
 
 @ToString
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+@Getter @Setter
+@NoArgsConstructor
 class StatisticsHistogram {
 
     private Long intervalPrice;

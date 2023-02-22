@@ -4,13 +4,8 @@ import com.codesquad.autobid.auction.domain.AuctionInfoDto;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-
-import lombok.AllArgsConstructor;
-
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,7 +43,7 @@ public class AuctionInfoListResponse {
         return new AuctionInfoListResponse(totalAuctionNum, auctionInfoLists);
     }
 
-    public boolean isEmpty() {
+    public boolean empty() {
         return totalAuctionNum == 0;
     }
 }

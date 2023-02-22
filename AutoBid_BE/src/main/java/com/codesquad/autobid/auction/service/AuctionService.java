@@ -157,6 +157,7 @@ public class AuctionService {
         return auctionInfoDtoList;
     }
 
+    @Cacheable(value = "auction_stat", key = "#carType+#auctionStatus")
     public AuctionStatisticsResponse getAuctionStaticsResponse(String carType, String auctionStatus) {
         List<Long> auctionInfoDtoList = getAuctionInfoDtoForStatistics(carType, auctionStatus);
         int[] contents = init();
@@ -189,6 +190,7 @@ public class AuctionService {
         Arrays.fill(ints, 0);
         return ints;
     }
+
 
     public List<Long> getAuctionInfoDtoForStatistics(String carType, String auctionStatus) {
 
