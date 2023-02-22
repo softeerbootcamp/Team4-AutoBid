@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,14 +31,13 @@ public class AuctionSendConsumer {
         List<BidderDto> bidderUser = auctionKafkaDTO.getUsers().stream().map(BidderDto::from).collect(Collectors.toList());
         AuctionDtoWebSocket auctionDtoWebSocket = AuctionDtoWebSocket.of(auctionKafkaDTO.getPrice(), bidderUser);
 
-        webSocketService.broadCast(auctionDtoWebSocket,url);
+        webSocketService.broadCast(auctionDtoWebSocket, url);
     }
 
     private String getUrl(AuctionKafkaDTO auctionKafkaDTO) {
-        // 오츤 프로듀서 -> 오픈 어댑터 -> 오픈 프로듀서
         if (auctionKafkaDTO.getAuctionStatus() == AuctionStatus.PROGRESS) {
-            return "/end/" + auctionKafkaDTO.getAuctionId(); // 경매 진행 중 -> 종료
+            return "/end/" + auctionKafkaDTO.getAuctionId();
         }
-        return "/start/" + auctionKafkaDTO.getAuctionId(); // 경매 시작 전 -> 진행
+        return "/start/" + auctionKafkaDTO.getAuctionId();
     }
 }

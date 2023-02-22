@@ -3,6 +3,7 @@ package com.codesquad.autobid.auction.repository;
 import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.domain.AuctionInfoDto;
 import com.codesquad.autobid.auction.domain.AuctionStatus;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -51,4 +52,8 @@ public interface AuctionRepository extends CrudRepository<Auction, Long> {
 
     @Query("select * from auction a join car c on a.car_id = c.car_id where (a.auction_id in (select auction_id from bid where bid.user_id=:userId))")
     public List<AuctionInfoDto> findAllParticipatingAuctions(Long userId);
+
+    @Modifying
+    @Query("UPDATE auction SET auction_end_price = :price WHERE auction_id = :auctionId")
+    public boolean updateEndPrice(Long auctionId, Long price);
 }

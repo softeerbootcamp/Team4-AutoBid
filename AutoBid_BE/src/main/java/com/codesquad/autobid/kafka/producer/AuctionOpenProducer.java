@@ -22,8 +22,8 @@ public class AuctionOpenProducer {
     private final ObjectMapper om;
 
     public void produce(List<AuctionKafkaDTO> auctions) throws JsonProcessingException {
+        log.info("AuctionOpenProducer : {}", auctions);
         for (AuctionKafkaDTO auction : auctions) {
-            log.info("auction : {}", auction.getAuctionId());
             kafkaTemplate.send(AUCTION_OPEN_TOPIC_NAME, new String(om.writeValueAsBytes(auction)));
         }
     }

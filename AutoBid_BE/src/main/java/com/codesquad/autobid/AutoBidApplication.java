@@ -25,19 +25,19 @@ public class AutoBidApplication {
         SpringApplication.run(AutoBidApplication.class, args);
     }
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
 // 				registry.addMapping("/**")
 // 					.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 // 					.allowedHeaders("Access-Control-Allow-Origin","Authorization", "Refreshtoken","Access-Control-Request-Method", "origin", "x-requested-with","Content-Type","Access-Control-Allow-Headers","Access-Control-Request-Headers")
 // 					.allowedOrigins("http://localhost:1234", "http://localhost:51791", "http://localhost:3000", "https://www.autobid.im", "http://localhost:8080","https://www.autobid.site")
 // 					.allowCredentials(true)
 // 					.maxAge(3000);
-			}
+            }
 
-		};
-	}
+        };
+    }
 }

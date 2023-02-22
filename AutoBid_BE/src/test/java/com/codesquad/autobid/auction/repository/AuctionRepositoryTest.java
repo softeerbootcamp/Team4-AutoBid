@@ -4,9 +4,9 @@ import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.domain.AuctionStatus;
 import com.codesquad.autobid.car.domain.Car;
 import com.codesquad.autobid.car.repository.CarRepository;
-import com.codesquad.autobid.util.CarTestUtil;
 import com.codesquad.autobid.user.domain.User;
 import com.codesquad.autobid.user.repository.UserRepository;
+import com.codesquad.autobid.util.CarTestUtil;
 import com.codesquad.autobid.util.UserTestUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,10 +41,10 @@ class AuctionRepositoryTest {
         carRepository.save(car);
 
         LocalDateTime now = LocalDateTime.now();
-        Auction auction = Auction.of(car.getId(), user.getId(),  "test", now, now, 1l, 2l, AuctionStatus.BEFORE);
+        Auction auction = Auction.of(car.getId(), user.getId(), "test", now, now, 1l, 2l, AuctionStatus.BEFORE);
         auctionRepository.save(auction);
         // when
-        List<Auction> findAuctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTimeBeforeOrAuctionStartTime(AuctionStatus.BEFORE, now);
+        List<Auction> findAuctions = auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.BEFORE, now);
         // then
         assertAll(
                 () -> assertThat(findAuctions.size()).isEqualTo(1),
