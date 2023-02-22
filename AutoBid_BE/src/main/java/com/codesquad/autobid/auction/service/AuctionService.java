@@ -141,10 +141,11 @@ public class AuctionService {
         if (totalAuctionNum == 0) {
             return auctionInfoDtoList;
         }
-        auctionInfoDtoList = auctionInfoDtoList.subList(size * (page - 1), size * page);
 
         if (totalAuctionNum < page * size) {
             auctionInfoDtoList = auctionInfoDtoList.subList(size * (page - 1), totalAuctionNum);
+        } else {
+            auctionInfoDtoList = auctionInfoDtoList.subList(size * (page - 1), size * page);
         }
 
         return auctionInfoDtoList;
