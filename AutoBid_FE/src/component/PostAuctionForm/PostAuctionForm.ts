@@ -94,7 +94,7 @@ class PostAuctionForm extends Component<ModalState> {
             this.fetchFiles();
             this.addImages();
         });
-        this.addEvent('change', '.post-auction-form__auction-start-price__input', ({ target }) => {
+        this.addEvent('change', '.post-auction-form__auction-start-price__input', ({target}) => {
             const value = (target as HTMLInputElement).value;
             this.updatePriceStr(parseInt(value));
         });
@@ -115,7 +115,7 @@ class PostAuctionForm extends Component<ModalState> {
         });
     }
 
-    private files: FileList|null = null;
+    private files: FileList | null = null;
 
     openFileSelector() {
         const uploadInput = this.$target.querySelector('.post-auction-form__file-upload-input') as HTMLInputElement;
@@ -132,7 +132,7 @@ class PostAuctionForm extends Component<ModalState> {
         $imageHolder.innerHTML = '';
 
         if (!this.files) return;
-        [...this.files].forEach((file, idx) => {
+        [...this.files].forEach((file) => {
             const reader = new FileReader();
             reader.onload = () => {
                 $imageHolder.innerHTML += `
@@ -150,7 +150,7 @@ class PostAuctionForm extends Component<ModalState> {
         $priceStr.innerText = getPriceStr(value);
     }
 
-    validateAndGetForm(): AuctionForm|null {
+    validateAndGetForm(): AuctionForm | null {
         if (!this.files || !this.files.length) {
             Toast.show('사진이 등록되지 않았습니다', 1000);
             return null;
@@ -231,7 +231,7 @@ class PostAuctionForm extends Component<ModalState> {
     post() {
         const auctionForm = this.validateAndGetForm();
         if (auctionForm) {
-            requestPostAuction(auctionForm, true).then(result => {
+            requestPostAuction(auctionForm).then(result => {
                 if (result) {
                     Toast.show('경매를 등록했습니다', 1000);
                     closeModal();

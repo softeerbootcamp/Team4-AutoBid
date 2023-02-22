@@ -24,7 +24,7 @@ export const requestAuctionList = asyncTaskWrapper(
     });
 
 export const requestPostAuction = asyncTaskWrapper(
-    async ({multipartFileList, carId, auctionTitle, auctionStartTime, auctionEndTime, auctionStartPrice}: AuctionForm, test = false) => {
+    async ({multipartFileList, carId, auctionTitle, auctionStartTime, auctionEndTime, auctionStartPrice}: AuctionForm) => {
         const formData = new FormData();
         [...multipartFileList].forEach(file => {
             formData.append('multipartFileList', file);
@@ -38,8 +38,8 @@ export const requestPostAuction = asyncTaskWrapper(
         try {
             const result = await fetch(`${API_BASE_URL}${POST_AUCTION_ENDPOINT}`, {
                 method: 'POST',
-                headers: { ...(test ? { Authorization: 'Bearer random' } : {}) },
-                body: formData
+                body: formData,
+                credentials: "include",
             });
             return result.ok;
         } catch (e) {
