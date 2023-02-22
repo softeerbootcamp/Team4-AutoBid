@@ -5,6 +5,9 @@
     background-color: white;
     padding: 32px;
     box-shadow: var(--box-shadow-level-1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 [data-component="AuctionList"] .header-button-container {
