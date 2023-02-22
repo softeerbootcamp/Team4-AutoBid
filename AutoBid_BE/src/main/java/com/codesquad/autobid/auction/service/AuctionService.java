@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 @Service
 public class AuctionService {
 
+    private static final String ALL = "ALL";
     private final S3Uploader s3Uploader;
     private final AuctionRepository auctionRepository;
     private final ImageRepository imageRepository;
@@ -119,11 +120,11 @@ public class AuctionService {
     public List<AuctionInfoDto> getAuctionDtoList(String carType, String auctionStatus, Long startPrice, Long endPrice) {
         List<AuctionInfoDto> auctionInfoDtoList;
 
-        if (carType.equals("ALL") && auctionStatus.equals("ALL")) { // 둘 다 ALL인 경우
+        if (carType.equals(ALL) && auctionStatus.equals(ALL)) { // 둘 다 ALL인 경우
             auctionInfoDtoList = auctionRepository.findAllByFilter(startPrice, endPrice);
-        } else if (carType.equals("ALL")) { // carType만 ALL인 경우
+        } else if (carType.equals(ALL)) { // carType만 ALL인 경우
             auctionInfoDtoList = auctionRepository.findAllByFilterWithAuctionStatus(startPrice, endPrice, auctionStatus);
-        } else if (auctionStatus.equals("ALL")) { // auctionStatus만 ALL인 경우
+        } else if (auctionStatus.equals(ALL)) { // auctionStatus만 ALL인 경우
             auctionInfoDtoList = auctionRepository.findAllByFilterWithCarType(startPrice, endPrice, carType);
         } else { // 둘 다 ALL 아닌 경우
             auctionInfoDtoList = auctionRepository.findAllByFilterWithAuctionStatusAndCarType(startPrice, endPrice, auctionStatus, carType);
@@ -198,11 +199,11 @@ public class AuctionService {
     public List<AuctionInfoDto> getAuctionInfoDtoForStatistics(String carType, String auctionStatus) {
 
         List<AuctionInfoDto> auctionInfoDtoList;
-        if (carType.equals("ALL") && auctionStatus.equals("ALL")) {
+        if (carType.equals(ALL) && auctionStatus.equals(ALL)) {
             auctionInfoDtoList = auctionRepository.findAllForStatistics();
-        } else if (carType.equals("ALL")) {
+        } else if (carType.equals(ALL)) {
             auctionInfoDtoList = auctionRepository.findAllByAuctionStatus(auctionStatus);
-        } else if (auctionStatus.equals("ALL")) {
+        } else if (auctionStatus.equals(ALL)) {
             auctionInfoDtoList = auctionRepository.findAllByCarType(carType);
         } else {
             auctionInfoDtoList = auctionRepository.findAllByAuctionStatusAndCarType(auctionStatus, carType);
