@@ -2,8 +2,8 @@ package com.codesquad.autobid.bid.adapter;
 
 import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.repository.AuctionRedisDTO;
+import com.codesquad.autobid.auction.repository.AuctionRedisRepository;
 import com.codesquad.autobid.auction.repository.AuctionRepository;
-import com.codesquad.autobid.auction.service.AuctionService;
 import com.codesquad.autobid.bid.domain.Bid;
 import com.codesquad.autobid.bid.repository.BidRedisRepository;
 import com.codesquad.autobid.bid.repository.BidRepository;
@@ -12,6 +12,7 @@ import com.codesquad.autobid.websocket.domain.AuctionDtoWebSocket;
 import com.codesquad.autobid.websocket.service.WebSocketService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -22,35 +23,17 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class BidAdapter {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
-    private final AuctionService auctionService;
     private final BidRepository bidRepository;
     private final AuctionRepository auctionRepository;
     private final WebSocketService webSocketService;
     private final SimpMessageSendingOperations messagingTemplate;
     private final BidRedisRepository bidRedisRepository;
+    private final AuctionRedisRepository auctionRedisRepository;
 
-    public BidAdapter(KafkaTemplate<String, String> kafkaTemplate,
-                      AuctionService auctionService,
-                      BidRepository bidRepository,
-                      AuctionRepository auctionRepository,
-                      WebSocketService webSocketService,
-                      SimpMessageSendingOperations messagingTemplate,
-                      BidRedisRepository bidRedisRepository) {
-        this.auctionService = auctionService;
-        this.webSocketService = webSocketService;
-        this.messagingTemplate = messagingTemplate;
-        this.bidRedisRepository = bidRedisRepository;
-        this.objectMapper = new ObjectMapper();
-        this.kafkaTemplate = kafkaTemplate;
-        this.bidRepository = bidRepository;
-        this.auctionRepository = auctionRepository;
-    }
-
-    // Bid 데이터베이스에 저장
-    // Auction endPrice 갱신
     @KafkaListener(topics = "bid-event", groupId = "bid-mysql")
     public void saveBidAndUpdate(String bidRegisterRequestStr) throws JsonProcessingException {
         BidRegisterRequest bidRegisterRequest = objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class);
@@ -58,8 +41,8 @@ public class BidAdapter {
         log.info("bid-event bid-mysql {}", bidRegisterRequest);
         // bid 저장
         Bid bid = bidRepository.findBidByAuctionIdAndUserId(bidRegisterRequest.getAuctionId(),
-                bidRegisterRequest.getUserId()).orElse(Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
-                AggregateReference.to(bidRegisterRequest.getUserId()), bidRegisterRequest.getSuggestedPrice(), false));
+            bidRegisterRequest.getUserId()).orElse(Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
+            AggregateReference.to(bidRegisterRequest.getUserId()), bidRegisterRequest.getSuggestedPrice(), false));
 
         bid.updatePrice(bidRegisterRequest.getSuggestedPrice());
 
@@ -67,7 +50,7 @@ public class BidAdapter {
 
         // Auction 저장
         Auction auction = auctionRepository.findById(bidRegisterRequest.getAuctionId())
-                .orElseThrow(() -> new RuntimeException("존재하는 경매가 없습니다."));
+            .orElseThrow(() -> new RuntimeException("존재하는 경매가 없습니다."));
 
         auction.updateEndPrice(bidRegisterRequest.getSuggestedPrice());
 
@@ -81,11 +64,11 @@ public class BidAdapter {
     public void saveBiddersAndBroadcast(@Payload String bidRegisterRequestStr) throws JsonProcessingException {
         BidRegisterRequest bidRegisterRequest = objectMapper.readValue(bidRegisterRequestStr, BidRegisterRequest.class); // auctionID, userID
         Bid bid = Bid.of(AggregateReference.to(bidRegisterRequest.getAuctionId()),
-                AggregateReference.to(bidRegisterRequest.getUserId()),
-                bidRegisterRequest.getSuggestedPrice(), false);
+            AggregateReference.to(bidRegisterRequest.getUserId()),
+            bidRegisterRequest.getSuggestedPrice(), false);
         bidRedisRepository.save(bid); // redis 저장
         Long auctionId = bidRegisterRequest.getAuctionId();
-        AuctionRedisDTO auctionRedis = auctionService.getAuction(auctionId); // 저장된 것을 불러온다.
+        AuctionRedisDTO auctionRedis = auctionRedisRepository.findById(auctionId); // 저장된 것을 불러온다.
         AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionRedis); // 레디스에서 가져온 데이터를 파싱
 
         log.error("auctionRedis-id : {}", auctionRedis.getAuctionId());
