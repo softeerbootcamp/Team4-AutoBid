@@ -36,11 +36,6 @@ public class BidController {
 		if (!result) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
 		}
-		//		 boolean result = bidService.suggestBid(bidRegisterRequest, user);
-		//
-		//		if (!result) {
-		//		 	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-		//		 }
 		bidAdapter.produce(bidRegisterRequest);
 		return ResponseEntity.status(HttpStatus.OK).body(true);
 	}
