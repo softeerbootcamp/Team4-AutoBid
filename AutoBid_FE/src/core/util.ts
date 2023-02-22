@@ -85,3 +85,6 @@ export const deltaTimeToString = (timeMilli: number) => {
 
     return `${isMinus ? '-' : ''}${ret}${timeSeconds}초`
 }
+
+export const rangeTo = (end: number) => [...Array(end).keys()];
+export const rangeFromTo = (start: number, end: number) => [...Array(end - start).keys()].map(v => v + start);
