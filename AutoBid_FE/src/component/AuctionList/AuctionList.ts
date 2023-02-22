@@ -1,15 +1,16 @@
 import Component from "../../core/component";
 import AuctionCard from "../AuctionCard/AuctionCard";
-import {QUERY_INITIAL, queryStateSelector, selectPage, selectStatus} from "../../store/query";
+import {QUERY_INITIAL, queryStateSelector, selectStatus} from "../../store/query";
 import {AuctionQuery} from "../../model/query";
 import {Auction, AuctionStatus} from "../../model/auction";
 import {requestAuctionList} from "../../api/auction";
 import "./auctionlist.css"
 import {ARTICLE_PER_PAGE} from "../../core/util";
+import PagingView from "../PagingView/PagingView";
 
 class AuctionList extends Component<AuctionQuery> {
     private auctionList: Auction[] = [];
-    private pages: number = 1;
+    private pages: number = 0;
 
     stateSelector(globalState: any): AuctionQuery | undefined {
         return globalState[queryStateSelector];
@@ -46,16 +47,8 @@ class AuctionList extends Component<AuctionQuery> {
             ${this.auctionList.map(() => `<div data-component="AuctionCard"></div>`).join('')}
         </div>`
         : '<div class="no-content">조회된 경매 없음</div>'}
-        <div class="pagination">
-        ${[...Array(this.pages).keys()].map((_, idx) => `
-            <button class="pagination__btn 
-                ${idx + 1 === query.page ? 'pagination__btn--selected' : ''}"
-                data-page="${idx + 1}">
-                ${idx + 1}
-            </button>
-        `).join('')}
-        </div>
-        `
+        <div data-component="PagingView"></div>
+        `;
     }
 
     initialize() {
@@ -70,14 +63,6 @@ class AuctionList extends Component<AuctionQuery> {
             () => { selectStatus(AuctionStatus.BEFORE) });
         this.addEvent('click', '.bid-status-complete',
             () => { selectStatus(AuctionStatus.COMPLETED) });
-
-        this.addEvent('click', '.pagination__btn', this.pageButtonEvent.bind(this));
-    }
-
-    pageButtonEvent(e: Event) {
-        const $pageButton = (e.target as Element).closest('.pagination__btn') as HTMLElement;
-        const page = $pageButton.dataset.page as string;
-        selectPage(parseInt(page));
     }
 
     mounted() {
@@ -86,6 +71,13 @@ class AuctionList extends Component<AuctionQuery> {
         $auctionCards.forEach(($auctionCard, idx) => {
             new AuctionCard($auctionCard as HTMLElement, { auction: auctionList[idx] });
         });
+
+        const pages = this.pages;
+        const { page } = this.state || QUERY_INITIAL;
+        if (pages) {
+            const $pagingView = this.$target.querySelector('[data-component="PagingView"]') as HTMLElement;
+            new PagingView($pagingView, { currentPage: page, numberOfPages: pages, pagesPerShow: 10 });
+        }
     }
 
     updateBidList(query: AuctionQuery) {
