@@ -76,7 +76,7 @@ class AuctionServiceTest {
             auctionService.openPendingAuctions(startTime);
             // then
             assertThat(
-                auctionRepository.getAuctionByAuctionStatusAndAuctionStartTimeLessThanEqual(AuctionStatus.PROGRESS, startTime).size()
+                auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.PROGRESS, startTime).size()
             ).isEqualTo(pendingAuctions.size());
         } catch (JsonProcessingException e) {
         }
@@ -102,7 +102,7 @@ class AuctionServiceTest {
             auctionService.closeFulfilledAuctions(endTime);
             // then
             assertThat(
-                auctionRepository.getAuctionByAuctionStatusAndAuctionEndTimeLessThanEqual(AuctionStatus.COMPLETED, endTime).size()
+                auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.COMPLETED, endTime).size()
             ).isEqualTo(progressAuctions.size());
         } catch (JsonProcessingException e) {
         }
@@ -129,7 +129,7 @@ class AuctionServiceTest {
         bidRegisterRequest.setUserId(user.getId());
         bidRegisterRequest.setSuggestedPrice(startPrice + 1);
         // when
-        boolean hasSuccess = auctionService.saveBidRedis(bidRegisterRequest);
+        boolean hasSuccess = auctionService.saveBid(bidRegisterRequest);
         // then
         assertThat(hasSuccess).isTrue();
         auctionRedisRepository.deleteAuction(auctionId);
