@@ -26,10 +26,14 @@ public class BidController {
             @Parameter(hidden = true) @AuthorizedUser User user
     ) {
         log.info("BidController-bidRegister: {}", bidRegisterRequest);
+        boolean result;
         try {
             bidRegisterRequest.setUserId(user.getId());
-            auctionService.saveBid(bidRegisterRequest);
+            result = auctionService.saveBid(bidRegisterRequest);
         } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+        }
+        if (result == false) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
         }
         return ResponseEntity.status(HttpStatus.OK).body(true);

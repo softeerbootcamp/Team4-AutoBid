@@ -55,9 +55,9 @@ public class AuctionService {
     private final BidRollbackProducer bidRollbackProducer;
 
     @Transactional
-    public void saveBid(BidRegisterRequest bidRegisterRequest) {
+    public boolean saveBid(BidRegisterRequest bidRegisterRequest) {
         try {
-            auctionRedisRepository.saveBid(
+            boolean result = auctionRedisRepository.saveBid(
                     Bid.of(
                             AggregateReference.to(bidRegisterRequest.getAuctionId()),
                             AggregateReference.to(bidRegisterRequest.getUserId()),
@@ -66,9 +66,11 @@ public class AuctionService {
                     )
             );
             bidAdapter.produce(bidRegisterRequest);
+            return result;
         } catch (BidSaveFailedException e) {
             bidRollbackProducer.produce(bidRegisterRequest);
         }
+        return false;
     }
 
     @Transactional
