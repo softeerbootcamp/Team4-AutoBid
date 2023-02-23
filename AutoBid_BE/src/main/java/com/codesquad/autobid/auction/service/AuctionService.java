@@ -71,6 +71,7 @@ public class AuctionService {
 
             return result;
         } catch (BidSaveFailedException e) {
+            log.error("roll back error");
             bidRollbackProducer.produce(bidRegisterRequest);
         }
         return false;

@@ -55,6 +55,8 @@ public class AuctionRedisRepository {
                 return true;
             }
         } catch (InterruptedException e) {
+            tryUnlock(rLock);
+            log.error("bid save failed error");
             throw new BidSaveFailedException();
         }
         tryUnlock(rLock);
