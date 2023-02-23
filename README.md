@@ -30,14 +30,19 @@
 
 ## Application Preview
 ### 메인 페이지 화면
+<img width="70%" alt="main" src="https://user-images.githubusercontent.com/33449712/220873387-775a8cdc-d85d-4b61-b661-d242809c4a4f.png">
 
 ### 로그인 연동 화면
+<img width="40%" alt="login" src="https://user-images.githubusercontent.com/33449712/220873668-ddb78948-f0e9-4ee8-9d88-6f1479850756.png">
 
 ### 마이페이지
+<img width="70%" alt="mypage" src="https://user-images.githubusercontent.com/33449712/220873694-52f65367-31df-4bd8-895e-be7939d4fa25.png">
 
 ### 경매 중
+![bid2](https://user-images.githubusercontent.com/33449712/220876480-810660eb-69b9-40f3-bf46-4c0b4c11a72e.gif)
 
 ### 경매 입찰 성공
+https://user-images.githubusercontent.com/33449712/220875296-fc97fa9b-5a80-4bf3-98e6-0d28a176e630.mov
 
 ## Tech Stacks 
 ### Front-End
