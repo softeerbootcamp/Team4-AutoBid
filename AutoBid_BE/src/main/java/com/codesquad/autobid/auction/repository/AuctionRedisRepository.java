@@ -58,7 +58,7 @@ public class AuctionRedisRepository {
             throw new BidSaveFailedException();
         }
         tryUnlock(rLock);
-        throw new BidSaveFailedException();
+        return false;
     }
 
     private void tryUnlock(RLock rLock) {
