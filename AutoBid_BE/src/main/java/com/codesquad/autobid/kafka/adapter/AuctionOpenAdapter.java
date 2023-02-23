@@ -14,8 +14,6 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -31,13 +29,12 @@ public class AuctionOpenAdapter {
 
     @KafkaListener(topics = "auction-open", groupId = "auction-open-consumer")
     public void consume(String json) throws JsonProcessingException {
+        log.info("AuctionOpenAdapter: {}", json);
         AuctionKafkaDTO auctionKafkaDTO = om.readValue(json, AuctionKafkaDTO.class);
-        log.info("auction-open:{}", auctionKafkaDTO);
         // mysql
         Auction auction = auctionRepository.findById(auctionKafkaDTO.getAuctionId()).get();
         auction.open();
         auctionRepository.save(auction);
-        log.info("redis save: {}", auction.getId());
         // redis
         auctionRedisRepository.save(AuctionRedisDTO.from(auction));
 
@@ -45,7 +42,7 @@ public class AuctionOpenAdapter {
     }
 
     private void produce(AuctionKafkaDTO auctionKafkaDTO) throws JsonProcessingException {
-        log.info("produce auction : {}", auctionKafkaDTO.getAuctionId());
+        log.info("AuctionOpenAdapter: {}", auctionKafkaDTO);
         kafkaTemplate.send(AUCTION_SEND_TOPIC_NAME, new String(om.writeValueAsBytes(auctionKafkaDTO)));
     }
 }
