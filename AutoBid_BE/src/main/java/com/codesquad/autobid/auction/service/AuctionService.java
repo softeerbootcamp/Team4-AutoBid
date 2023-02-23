@@ -115,7 +115,7 @@ public class AuctionService {
         return auctions.stream().map(AuctionKafkaDTO::from).collect(Collectors.toList());
     }
 
-    @Cacheable(value = "auction", key = "#carType+#auctionStatus+#startPrice+#endPrice")
+    @Cacheable(value = "auction", key = "#page+#carType+#auctionStatus+#startPrice+#endPrice+#size")
     public AuctionInfoListResponse getAuctions(String carType, String auctionStatus, Long startPrice, Long endPrice, int page, int size) {
         List<AuctionInfoDto> auctionInfoDtoList = getAuctionDtoList(carType, auctionStatus, startPrice, endPrice);
         return getAuctionInfoListResponse(auctionInfoDtoList, page, size);
