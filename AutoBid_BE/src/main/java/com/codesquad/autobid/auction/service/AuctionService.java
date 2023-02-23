@@ -65,7 +65,10 @@ public class AuctionService {
                             false
                     )
             );
-            bidAdapter.produce(bidRegisterRequest);
+            if (result) {
+                bidAdapter.produce(bidRegisterRequest);
+            }
+
             return result;
         } catch (BidSaveFailedException e) {
             bidRollbackProducer.produce(bidRegisterRequest);
