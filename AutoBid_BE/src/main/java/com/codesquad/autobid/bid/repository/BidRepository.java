@@ -1,11 +1,13 @@
 package com.codesquad.autobid.bid.repository;
 
-import java.util.Optional;
-
+import com.codesquad.autobid.bid.domain.Bid;
 import org.springframework.data.repository.CrudRepository;
 
-import com.codesquad.autobid.bid.domain.Bid;
+import java.util.Optional;
 
 public interface BidRepository extends CrudRepository<Bid, Long> {
-	public Optional<Bid> findBidByAuctionIdAndUserId(Long auctionId, Long userId);
+
+    public Optional<Bid> findBidByAuctionIdAndUserId(Long auctionId, Long userId);
+
+    public void deleteByAuctionIdAndUserId(Long auctionId, Long userId);
 }

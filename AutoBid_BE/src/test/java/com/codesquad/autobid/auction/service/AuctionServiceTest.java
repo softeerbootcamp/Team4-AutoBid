@@ -65,9 +65,9 @@ class AuctionServiceTest {
         // given
         User user = UserTestUtil.saveUser(UserTestUtil.getNewUser());
         List<Car> cars = CarTestUtil.getNewCars(user.getId(), 5)
-            .stream()
-            .map(CarTestUtil::saveCar)
-            .collect(Collectors.toList());
+                .stream()
+                .map(CarTestUtil::saveCar)
+                .collect(Collectors.toList());
         LocalDateTime startTime = LocalDateTime.now();
         List<Auction> pendingAuctions = generateAuctions(startTime, cars, AuctionStatus.BEFORE);
         auctionRepository.saveAll(pendingAuctions);
@@ -76,7 +76,7 @@ class AuctionServiceTest {
             auctionService.openPendingAuctions(startTime);
             // then
             assertThat(
-                auctionRepository.getAuctionByAuctionStatusAndAuctionStartTimeLessThanEqual(AuctionStatus.PROGRESS, startTime).size()
+                    auctionRepository.getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus.PROGRESS, startTime).size()
             ).isEqualTo(pendingAuctions.size());
         } catch (JsonProcessingException e) {
         }
@@ -88,9 +88,9 @@ class AuctionServiceTest {
         // given
         User user = UserTestUtil.saveUser(UserTestUtil.getNewUser());
         List<Car> cars = CarTestUtil.getNewCars(user.getId(), 5)
-            .stream()
-            .map(CarTestUtil::saveCar)
-            .collect(Collectors.toList());
+                .stream()
+                .map(CarTestUtil::saveCar)
+                .collect(Collectors.toList());
         LocalDateTime endTime = LocalDateTime.now();
         List<Auction> progressAuctions = generateAuctions(endTime, cars, AuctionStatus.PROGRESS);
         auctionRepository.saveAll(progressAuctions);
@@ -102,7 +102,7 @@ class AuctionServiceTest {
             auctionService.closeFulfilledAuctions(endTime);
             // then
             assertThat(
-                auctionRepository.getAuctionByAuctionStatusAndAuctionEndTimeLessThanEqual(AuctionStatus.COMPLETED, endTime).size()
+                    auctionRepository.getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus.COMPLETED, endTime).size()
             ).isEqualTo(progressAuctions.size());
         } catch (JsonProcessingException e) {
         }
@@ -110,8 +110,8 @@ class AuctionServiceTest {
 
     private List<Auction> generateAuctions(LocalDateTime time, List<Car> cars, AuctionStatus status) {
         return cars.stream()
-            .map(c -> Auction.of(c.getId(), c.getUserId().getId(), "title", time, time, 1l, 2l, status))
-            .collect(Collectors.toList());
+                .map(c -> Auction.of(c.getId(), c.getUserId().getId(), "title", time, time, 1l, 2l, status))
+                .collect(Collectors.toList());
     }
 
     @Test
@@ -129,9 +129,10 @@ class AuctionServiceTest {
         bidRegisterRequest.setUserId(user.getId());
         bidRegisterRequest.setSuggestedPrice(startPrice + 1);
         // when
-        boolean hasSuccess = auctionService.saveBidRedis(bidRegisterRequest);
+        auctionService.saveBid(bidRegisterRequest);
         // then
-        assertThat(hasSuccess).isTrue();
+        AuctionRedisDTO auction = auctionRedisRepository.findById(bidRegisterRequest.getAuctionId());
+        assertThat(auction.getAuctionRedisBidderDto().size()).isEqualTo(1);
         auctionRedisRepository.deleteAuction(auctionId);
     }
 }

@@ -52,15 +52,15 @@ public class AuctionCloseAdapter {
 
     private List<AuctionKafkaUserDTO> findBidders(List<AuctionRedisBidderDTO> auctionRedisBidderDtos) {
         return auctionRedisBidderDtos.stream()
-            .map(auctionBidderDTO -> {
-                User user = userRepository.findById(auctionBidderDTO.getUserId()).get();
-                return AuctionKafkaUserDTO.from(auctionBidderDTO, user);
-            })
-            .collect(Collectors.toList());
+                .map(auctionBidderDTO -> {
+                    User user = userRepository.findById(auctionBidderDTO.getUserId()).get();
+                    return AuctionKafkaUserDTO.from(auctionBidderDTO, user);
+                })
+                .collect(Collectors.toList());
     }
 
     public void produce(AuctionKafkaDTO auctionKafkaDto) throws JsonProcessingException {
-        kafkaTemplate.send(AUCTION_EMAIL_TOPIC_NAME, new String(om.writeValueAsString(auctionKafkaDto)));
-        kafkaTemplate.send(AUCTION_SEND_TOPIC_NAME, new String(om.writeValueAsString(auctionKafkaDto)));
+        kafkaTemplate.send(AUCTION_EMAIL_TOPIC_NAME, om.writeValueAsString(auctionKafkaDto));
+        kafkaTemplate.send(AUCTION_SEND_TOPIC_NAME, om.writeValueAsString(auctionKafkaDto));
     }
 }
