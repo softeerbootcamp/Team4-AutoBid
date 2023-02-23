@@ -95,8 +95,13 @@ public class AuctionRedisRepository {
     public AuctionRedisDTO findById(Long auctionId) {
         try {
             Map<AuctionRedisKey, String> keys = AuctionRedisKey.generate(auctionId);
-            Long price = Integer.toUnsignedLong((int) stringOps.get(keys.get(AuctionRedisKey.PRICE)));
             List<AuctionRedisBidderDTO> auctionRedisBidderDTOS = parseToBidderSet(keys.get(AuctionRedisKey.BIDDERS), REDIS_SCAN_FROM, REDIS_SCAN_TO);
+            Long price;
+            if (auctionRedisBidderDTOS.size() == 0) {
+                price = Integer.toUnsignedLong((int) stringOps.get(keys.get(AuctionRedisKey.PRICE)));
+            } else {
+                price = auctionRedisBidderDTOS.get(0).getPrice();
+            }
             return AuctionRedisDTO.of(auctionId, price, auctionRedisBidderDTOS);
         } catch (NullPointerException e) {
             return null;
