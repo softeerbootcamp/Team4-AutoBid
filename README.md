@@ -5,6 +5,10 @@
 
 > 자동차 경매 플랫폼 [오토벨](https://autobell.co.kr/main?utm_source=googlesearch&utm_medium=cpc&utm_id=main_pc&utm_content=A_Brand&utm_term=%EC%98%A4%ED%86%A0%EB%B2%A8&utm_campaign=2022safety&gclid=Cj0KCQiA8t2eBhDeARIsAAVEga0Pol2UOl6mzdNGHn4RDNrCSZvZUf8xTLeBhp3EFt37tlMwbvWa61YaAkj2EALw_wcB)을 모티브로 한, **개선된 UI/UX를 제공하는 현대 자동차 중고 경매 서비스**
 
+|<img src="https://avatars.githubusercontent.com/u/87362456?v=4" width="100px">|<img src="https://avatars.githubusercontent.com/u/28686334?v=4" width="100px">|<img src="https://avatars.githubusercontent.com/u/63576379?v=4" width="100px">|<img src="https://avatars.githubusercontent.com/u/33449712?v=4" width="100px">|<img src="https://avatars.githubusercontent.com/u/33441923?v=4" width="100px">| 
+|--|--|--|--|--| 
+|[BE-이원주](https://github.com/wonju-dev)|[BE-유경민](https://github.com/benny1020)|[BE-박성준](https://github.com/tjdwns4537)|[FE-조재현](https://github.com/hyunrice98)|[FE-이수균](https://github.com/RandomlyChristen)|
+
 ## 서비스 주요 기능
 ### 로그인/회원가입
 - 로그인: 현대차 [Hyundai Developers](https://developers.hyundai.com/web/v1/hyundai/main)의 OAuth를 사용하여 제공
