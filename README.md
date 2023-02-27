@@ -1,7 +1,7 @@
 # Team 4-Autobid
 <img src="http://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F3a9d1378-3832-4678-9cce-eb668bc6d5cd%2Fimage.png?table=block&id=174a2fa0-bbd3-4e4d-bd57-ff5ecdb1f722&spaceId=654c694f-7a05-4bfa-a79f-369335030698&width=250&userId=43a338c7-3486-46bf-8991-5bd9f52814fe&cache=v2" width="300px" height="300px">
 
-[서비스 링크](https://www.autobid.im/)
+> 현대자동차그룹 소프티어 부트캠프 1기 최우수상(1위) 수상
 
 > 자동차 경매 플랫폼 [오토벨](https://autobell.co.kr/main?utm_source=googlesearch&utm_medium=cpc&utm_id=main_pc&utm_content=A_Brand&utm_term=%EC%98%A4%ED%86%A0%EB%B2%A8&utm_campaign=2022safety&gclid=Cj0KCQiA8t2eBhDeARIsAAVEga0Pol2UOl6mzdNGHn4RDNrCSZvZUf8xTLeBhp3EFt37tlMwbvWa61YaAkj2EALw_wcB)을 모티브로 한, **개선된 UI/UX를 제공하는 현대 자동차 중고 경매 서비스**
 
@@ -30,14 +30,19 @@
 
 ## Application Preview
 ### 메인 페이지 화면
+<img width="70%" alt="main" src="https://user-images.githubusercontent.com/33449712/220873387-775a8cdc-d85d-4b61-b661-d242809c4a4f.png">
 
 ### 로그인 연동 화면
+<img width="40%" alt="login" src="https://user-images.githubusercontent.com/33449712/220873668-ddb78948-f0e9-4ee8-9d88-6f1479850756.png">
 
 ### 마이페이지
+<img width="70%" alt="mypage" src="https://user-images.githubusercontent.com/33449712/220873694-52f65367-31df-4bd8-895e-be7939d4fa25.png">
 
 ### 경매 중
+![bid2](https://user-images.githubusercontent.com/33449712/220876480-810660eb-69b9-40f3-bf46-4c0b4c11a72e.gif)
 
 ### 경매 입찰 성공
+https://user-images.githubusercontent.com/33449712/220875296-fc97fa9b-5a80-4bf3-98e6-0d28a176e630.mov
 
 ## Tech Stacks 
 ### Front-End

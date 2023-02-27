@@ -39,20 +39,20 @@ public class WebSocketController {
             Principal principal
     ) { // convertAndSendToUser
         String name = principal.getName();
-        log.info("name: {} ",name);
+        log.info("name: {} ", name);
 
-        AuctionRedisDTO auctionRedis = auctionService.getAuction(auctionId);
+        AuctionRedisDTO auctionRedis = auctionService.findAuctionByIdFromRedis(auctionId);
         log.info("auctionRedis : {}");
         if (auctionRedis != null) { // 시작된 경우
             AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionRedis);
-            messagingTemplate.convertAndSendToUser(principal.getName(),"/ws/start/" + auctionId, auctionDtoWebSocket);
+            messagingTemplate.convertAndSendToUser(principal.getName(), "/ws/start/" + auctionId, auctionDtoWebSocket);
             return;
         }
-        Auction auctionDb = auctionService.getDBAuction(auctionId);
+        Auction auctionDb = auctionService.findAuctionByIdFromDB(auctionId);
         AuctionStatus auctionStatus = auctionDb.getAuctionStatus();
-        if (auctionStatus == AuctionStatus.COMPLETED){ // auction 이 종료된 경우
+        if (auctionStatus == AuctionStatus.COMPLETED) { // auction 이 종료된 경우
             AuctionDtoWebSocket auctionDtoWebSocket = webSocketService.parsingDto(auctionDb);
-            messagingTemplate.convertAndSendToUser(principal.getName(),"/ws/end/" + auctionId, auctionDtoWebSocket);
+            messagingTemplate.convertAndSendToUser(principal.getName(), "/ws/end/" + auctionId, auctionDtoWebSocket);
         }
     }
 

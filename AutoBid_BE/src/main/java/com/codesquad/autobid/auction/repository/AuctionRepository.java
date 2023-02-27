@@ -3,6 +3,7 @@ package com.codesquad.autobid.auction.repository;
 import com.codesquad.autobid.auction.domain.Auction;
 import com.codesquad.autobid.auction.domain.AuctionInfoDto;
 import com.codesquad.autobid.auction.domain.AuctionStatus;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -27,9 +28,9 @@ public interface AuctionRepository extends CrudRepository<Auction, Long> {
     @Query("select a.auction_title, a.auction_start_time, a.auction_id, a.auction_end_time,a.auction_start_price, a.auction_end_price, a.auction_status, a.user_id, a.car_id, c.car_distance, c.car_name, c.car_sellname, c.car_carid, c.car_type, c.car_state from (select * from auction where auction_end_price between :auctionStartPrice and :auctionEndPrice and auction_status = :auctionStatus) a join car c on a.car_id = c.car_id where c.car_type = :carType")
     public List<AuctionInfoDto> findAllByFilterWithAuctionStatusAndCarType(Long auctionStartPrice, Long auctionEndPrice, String auctionStatus, String carType);
 
-    List<Auction> getAuctionByAuctionStatusAndAuctionStartTimeLessThanEqual(AuctionStatus auctionStatus, LocalDateTime startTime);
+    List<Auction> getAuctionByAuctionStatusAndAuctionStartTime(AuctionStatus auctionStatus, LocalDateTime startTime);
 
-    List<Auction> getAuctionByAuctionStatusAndAuctionEndTimeLessThanEqual(AuctionStatus auctionStatus, LocalDateTime endTime);
+    List<Auction> getAuctionByAuctionStatusAndAuctionEndTime(AuctionStatus auctionStatus, LocalDateTime endTime);
 
     @Query("select auction_end_price from auction a join car c on a.car_id = c.car_id where a.auction_status = :auctionStatus and c.car_type = :carType order by a.auction_end_price asc")
     public List<Long> findAllByAuctionStatusAndCarType(String auctionStatus, String carType);
@@ -51,4 +52,8 @@ public interface AuctionRepository extends CrudRepository<Auction, Long> {
 
     @Query("select * from auction a join car c on a.car_id = c.car_id where (a.auction_id in (select auction_id from bid where bid.user_id=:userId))")
     public List<AuctionInfoDto> findAllParticipatingAuctions(Long userId);
+
+    @Modifying
+    @Query("UPDATE auction SET auction_end_price = :price WHERE auction_id = :auctionId")
+    public boolean updateEndPrice(Long auctionId, Long price);
 }

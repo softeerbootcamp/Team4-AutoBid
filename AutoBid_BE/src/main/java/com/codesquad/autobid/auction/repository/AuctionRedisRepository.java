@@ -1,5 +1,6 @@
 package com.codesquad.autobid.auction.repository;
 
+import com.codesquad.autobid.auction.repository.exceptions.BidSaveFailedException;
 import com.codesquad.autobid.bid.domain.Bid;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
@@ -44,7 +45,7 @@ public class AuctionRedisRepository {
             boolean hasAcquiredLock = rLock.tryLock(LOCKING_TIME, LEASE_TIME, TimeUnit.SECONDS);
             if (!hasAcquiredLock) {
                 log.error("lock failed : {}", bid);
-                return false;
+                throw new BidSaveFailedException();
             }
             Long curPrice = getPrice(auctionId);
             if (bid.getPrice() > curPrice) {
@@ -54,10 +55,10 @@ public class AuctionRedisRepository {
                 return true;
             }
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new BidSaveFailedException();
         }
         tryUnlock(rLock);
-        return false;
+        throw new BidSaveFailedException();
     }
 
     private void tryUnlock(RLock rLock) {
@@ -76,10 +77,10 @@ public class AuctionRedisRepository {
 
     private void saveBidders(String key, List<AuctionRedisBidderDTO> auctionRedisBidderDTOS) {
         zSetOps.add(
-            key,
-            auctionRedisBidderDTOS.stream()
-                .map(bidder -> ZSetOperations.TypedTuple.of(bidder.getUserId(), (double) -1 * bidder.getPrice()))
-                .collect(Collectors.toSet()));
+                key,
+                auctionRedisBidderDTOS.stream()
+                        .map(bidder -> ZSetOperations.TypedTuple.of(bidder.getUserId(), (double) -1 * bidder.getPrice()))
+                        .collect(Collectors.toSet()));
     }
 
     public void deleteAuction(Long auctionId) {
@@ -103,12 +104,12 @@ public class AuctionRedisRepository {
     private List<AuctionRedisBidderDTO> parseToBidderSet(String key, int from, int to) {
         Set<DefaultTypedTuple> set = zSetOps.rangeWithScores(key, from, to);
         return set.stream()
-            .map((dtt) -> AuctionRedisBidderDTO.of(
-                    Integer.toUnsignedLong((int) dtt.getValue()),
-                    -1 * dtt.getScore().longValue()
+                .map((dtt) -> AuctionRedisBidderDTO.of(
+                                Integer.toUnsignedLong((int) dtt.getValue()),
+                                -1 * dtt.getScore().longValue()
+                        )
                 )
-            )
-            .collect(Collectors.toList());
+                .collect(Collectors.toList());
     }
 
     private Long getPrice(Long auctionId) {
@@ -117,5 +118,10 @@ public class AuctionRedisRepository {
 
     private void setPrice(Long auctionId, Long price) {
         stringOps.set(AuctionRedisKey.generate(auctionId).get(AuctionRedisKey.PRICE), price);
+    }
+
+    public void deleteBidder(Long auctionId, Long userId) {
+        String auctionBidderKey = AuctionRedisKey.generate(auctionId).get(AuctionRedisKey.BIDDERS);
+        zSetOps.remove(auctionBidderKey, userId);
     }
 }
