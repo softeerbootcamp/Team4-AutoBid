@@ -58,7 +58,8 @@ https://user-images.githubusercontent.com/33449712/220875296-fc97fa9b-5a80-4bf3-
 [ERD Diagram](https://user-images.githubusercontent.com/28686334/217983919-ea3fef3c-528a-46d6-aa05-8cd76f0afd7f.png)
 
 ### Backend Architecture
-[Backend Architecture](https://user-images.githubusercontent.com/28686334/217983717-36766e62-07f8-4ee1-9e00-45a0acfeb118.png)
+<img width="810" alt="Screenshot 2023-02-28 at 2 17 33 PM" src="https://user-images.githubusercontent.com/28686334/221760820-53e667c7-65b2-4e03-b2ad-b4b3c5408625.png">
+
 
 ### Application Prototype
 [figma](https://www.figma.com/file/Qt1bRpkeUSxen2YhSjqXD9/AutoBid?node-id=0%3A1&t=WWyWItSh1UXyqjWM-0)
@@ -67,4 +68,7 @@ https://user-images.githubusercontent.com/33449712/220875296-fc97fa9b-5a80-4bf3-
 [notion](https://equal-tern-dd8.notion.site/6942683c75fa44f7b8831a4e3b33f699)
 
 [wiki](https://github.com/softeerbootcamp/Team4-AutoBid/wiki)
+
+### BE 발표자료 (구현 내용)
+[Google Slide](https://docs.google.com/presentation/d/196-yaXNOuDKX87JsXm17T1UmOGv2oUL75neNKAXrQkg/edit?usp=sharing)
 
