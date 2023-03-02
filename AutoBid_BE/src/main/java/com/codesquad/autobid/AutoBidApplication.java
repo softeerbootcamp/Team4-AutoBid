@@ -15,10 +15,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableRedisHttpSession
 @EnableJdbcAuditing
 @SpringBootApplication
-@EnableScheduling
 @EnableAsync
 @EnableCaching
-@EnableSchedulerLock(defaultLockAtLeastFor = "PT10S", defaultLockAtMostFor = "PT5M")
 public class AutoBidApplication {
 
     public static void main(String[] args) {
